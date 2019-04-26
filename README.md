@@ -1,7 +1,10 @@
 
 WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
 
-Originally released on sourceforge and freecode.com over 19 years ago in 2000:
+Originally released on sourceforge and freecode.com over 19 years ago (april 2000):
+Sourceforge pages: http://wsbasic.sourceforge.net/ and https://sourceforge.net/projects/wsbasic/
+Freecode pages: http://freshmeat.sourceforge.net/projects/wsbasic 
+
 
 Later forked and used by kturtle project of KDE:
 https://kde.org/applications/education/kturtle/
