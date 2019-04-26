@@ -25,7 +25,6 @@ InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault
 
 ```
 
-Most likely still compiles on linux with regular gcc and on windows using mingw ;).
 
 And watch out for this Gotcha: KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in choosing licenses. 
 Basically no permission was asked to myself to make an even stricter license. One could argue that this project gives you a free pass and treat large parts of KTurtle as LGPL instead of
@@ -34,15 +33,17 @@ implementation as a reference it's a great starting point to make something more
 
 Somehow Cies decided to remove people as his project evolved from the about box and he ended up being the only one mentioned on wikipedia now:
 https://en.wikipedia.org/wiki/KTurtle. 
-It's a wiki that can evolve, and maybe someday the other authors will be added? One can only hope..., right? ;)
+It's a wiki that can evolve, and maybe someday the other authors will be added? One can only hope... right? ;)
 
 Proof of other authers, including myself:
 https://man.cx/kturtle 
+https://github.com/KDE/kturtle/blob/master/AUTHORS
 
 Original version showing my name and Anne-Marie Mahfouf in about box:
 https://walter.schreppers.com/files/kturtle.gif
 
-Without further ado. Just compile this project and run some scripts form commandline and enjoy reading, learning and implementing your own compilers now:
+Without further ado: Just compile this project and run some scripts form commandline and enjoy reading, learning and implementing your own compilers by playing
+with a working example:
 
 ## Compiling:
 
@@ -56,7 +57,7 @@ g++  -O2 -Wall -c executer.cpp
 g++  -O2 -Wall main.cpp -o wsbasic lexer.o parser.o treenode.o executer.o number.o
 ```
 
-
+Same applies for compiling on linux, windows with mingw. Feel free to ask if you get some error or warning on those platforms.
 
 ### The implemented basic language
 
@@ -127,8 +128,8 @@ This project is released under LGPL.
 
 
 ### Note on license
-As stated in the original release this is a LGPL project but requires a mention of the original author:
+As stated in the original release, this is a LGPL project but with a small addition that it requires a mention of the original author.
 So enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author 
-being Walter Schreppers. Any changes to the sources are encouraged to be released according to LGPL.
+being Walter Schreppers. Any changes to the sources are encouraged to be released as LGPL.
 
 
