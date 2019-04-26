@@ -1,4 +1,5 @@
 
+*About
 WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
 
 Originally released on sourceforge and freecode.com over 19 years ago (april 2000):
@@ -24,7 +25,7 @@ Most likely still compiles on linux with regular gcc and on windows using mingw 
 
 
 
-Compiling:
+*Compiling:
 
 ```
 ➜  wsbasic git:(master) make
@@ -34,6 +35,27 @@ g++  -O2 -Wall -c parser.cpp
 g++  -O2 -Wall -c treenode.cpp
 g++  -O2 -Wall -c executer.cpp
 g++  -O2 -Wall main.cpp -o wsbasic lexer.o parser.o treenode.o executer.o number.o
+```
+
+
+
+* The implemented basic language
+
+Someone already started documenting it in the past here http://wsbasic.sourceforge.net/.
+Basically you've got something turing complete and that resembles the basic language from C64 but without line numbers and gotos but functions instead (so a bit more modern).
+String manipulations, input, reading+writing files are already possible. 
+Feel free to document and submit a pull request.
+
+I've got it way to busy nowadays to be spending time on this. Even back then making something that just worked was more important than documenting the BNF ;).
+Here's a start, feel free to complete it:
+```
+BNF for arithmetic expressions (improved unary minus)
+
+    <expression>    ::= <term> [<addop> <term>]*
+    <term>          ::= <signed factor> [<mulop> <signed factor>]*
+    <signed factor> ::= [<addop>] <factor>
+    <factor>        ::= <integer> | <variable> | (<expression>)
+
 ```
 
 
@@ -69,6 +91,10 @@ https://llvm.org/docs/tutorial/LangImpl01.html
 Still for minimal implementations (like on embedded on a microcontroller for instance having basic on a atmega or something) wsbasic is still 
 a good way to go.
 
+
+
+
+*License
 As stated in the original release this is a LGPL project but requires a mention of the original author:
 So enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author 
 being Walter Schreppers. Any changes to the sources are encouraged to be released according to LGPL.
