@@ -70,10 +70,12 @@ Still for minimal implementations (like on embedded on a microcontroller for ins
 a good way to go.
 
 As stated in the original release this is a LGPL project but requires a mention of the original author:
-Enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author 
-being Walter Schreppers and any changes to the sources are encouraged to be released according to GPL just like the KTurtle project did after forking this.
-And watch out: KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in choosing licenses. 
-Basically no permission was asked to myself to make an even stricter license. One could argue that this code gives you a free pass and treat large parts of KTurtle as LGPL instead of
-GPL because wsbasic has precedence. Not only that it was the whole reason Kturtle was possible to be created quickly in the first place...
+So enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author 
+being Walter Schreppers. Any changes to the sources are encouraged to be released according to LGPL.
+
+And watch out for this Gotcha: KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in choosing licenses. 
+Basically no permission was asked to myself to make an even stricter license. One could argue that this project gives you a free pass and treat large parts of KTurtle as LGPL instead of
+GPL because wsbasic has precedence. WSBasic was created to make it easier for other developers to create their own interpreters without any extra tools. By having a clean and simple
+implementation as a reference it's a great starting point to make something more specific like KTurtle did.
 
 
