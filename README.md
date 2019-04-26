@@ -69,7 +69,7 @@ https://llvm.org/docs/tutorial/LangImpl01.html
 Still for minimal implementations (like on embedded on a microcontroller for instance having basic on a atmega or something) wsbasic is still 
 a good way to go.
 
-As stated in the original release this is a GPL project + requires a mention of the original author:
-Enjoy and feel to modify + reuse as much as you like. But do remember to include a reference to the original author 
-being Walter Schreppers and any changes to the sources have to be released according to GPL just like the KTurtle project did after forking this.
+As stated in the original release this is a LGPL project but requires a mention of the original author:
+Enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author 
+being Walter Schreppers and any changes to the sources are encouraged to be released according to GPL just like the KTurtle project did after forking this (and yes KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in licenses. Basically no permission was asked to myself to do this...).
 
