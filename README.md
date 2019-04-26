@@ -19,7 +19,6 @@ InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault
 
 Most likely still compiles on linux with regular gcc and on windows using mingw ;).
 
-As stated in the original release this is a GPL project:
 
 
 Compiling:
@@ -67,7 +66,7 @@ https://llvm.org/docs/tutorial/LangImpl01.html
 Still for minimal implementations (like on embedded on a microcontroller for instance having basic on a atmega or something) wsbasic is still 
 a good way to go.
 
-Enjoy but do remember to include a reference to the author being myself ;). 
-And yes to state the obvious it's still GPL, so any changes and improvements you should also make open source like KTurtle did.
-
+As stated in the original release this is a GPL project + requires a mention of the original author:
+Enjoy and feel to modify + reuse as much as you like. But do remember to include a reference to the original author 
+being Walter Schreppers and any changes to the sources have to be released according to GPL just like the KTurtle project did after forking this.
 
