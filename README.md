@@ -5,11 +5,14 @@ WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniq
 
 ## History
 Originally released on sourceforge and freecode.com over 19 years ago (april 2000):
-Sourceforge pages: http://wsbasic.sourceforge.net/ and https://sourceforge.net/projects/wsbasic/
-Freecode pages: http://freshmeat.sourceforge.net/projects/wsbasic 
+* Sourceforge pages: 
+  - http://wsbasic.sourceforge.net/ 
+  - https://sourceforge.net/projects/wsbasic/
+* Freecode pages: 
+  - http://freshmeat.sourceforge.net/projects/wsbasic 
 
 Later forked and used by kturtle project of KDE:
-https://kde.org/applications/education/kturtle/
+  - https://kde.org/applications/education/kturtle/
 
 Cleaned up and made to compile again on latest Xcode in 2019:
 ```
