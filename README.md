@@ -30,19 +30,19 @@ Most likely still compiles on linux with regular gcc and on windows using mingw 
 And watch out for this Gotcha: KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in choosing licenses. 
 Basically no permission was asked to myself to make an even stricter license. One could argue that this project gives you a free pass and treat large parts of KTurtle as LGPL instead of
 GPL because wsbasic has precedence. WSBasic was created to make it easier for other developers to create their own interpreters without any extra tools. By having a clean and simple
-implementation as a reference it's a great starting point to make something more specific like KTurtle did. And originally KTurtle also stated me as a co-auther in the about box.
+implementation as a reference it's a great starting point to make something more specific like KTurtle did. And originally KTurtle also stated me as a co-author in the about box.
 
 Somehow Cies decided to remove people as his project evolved from the about box and he ended up being the only one mentioned on wikipedia now:
 https://en.wikipedia.org/wiki/KTurtle. 
-It's a wiki that can evolve, and maybe someday the other authers will be added.
+It's a wiki that can evolve, and maybe someday the other authors will be added? One can only hope..., right? ;)
 
 Proof of other authers, including myself:
-https://man.cx/kturtle where my name is luckily still mentioned as second author.
+https://man.cx/kturtle 
 
 Original version showing my name and Anne-Marie Mahfouf in about box:
 https://walter.schreppers.com/files/kturtle.gif
 
-
+Without further ado. Just compile this project and run some scripts form commandline and enjoy reading, learning and implementing your own compilers now:
 
 ## Compiling:
 
