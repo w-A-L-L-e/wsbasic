@@ -1,11 +1,12 @@
+# WSBasic
 
-*About
 WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
 
+
+## History
 Originally released on sourceforge and freecode.com over 19 years ago (april 2000):
 Sourceforge pages: http://wsbasic.sourceforge.net/ and https://sourceforge.net/projects/wsbasic/
 Freecode pages: http://freshmeat.sourceforge.net/projects/wsbasic 
-
 
 Later forked and used by kturtle project of KDE:
 https://kde.org/applications/education/kturtle/
@@ -23,9 +24,14 @@ InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault
 
 Most likely still compiles on linux with regular gcc and on windows using mingw ;).
 
+And watch out for this Gotcha: KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in choosing licenses. 
+Basically no permission was asked to myself to make an even stricter license. One could argue that this project gives you a free pass and treat large parts of KTurtle as LGPL instead of
+GPL because wsbasic has precedence. WSBasic was created to make it easier for other developers to create their own interpreters without any extra tools. By having a clean and simple
+implementation as a reference it's a great starting point to make something more specific like KTurtle did.
 
 
-*Compiling:
+
+## Compiling:
 
 ```
 ➜  wsbasic git:(master) make
@@ -39,15 +45,17 @@ g++  -O2 -Wall main.cpp -o wsbasic lexer.o parser.o treenode.o executer.o number
 
 
 
-* The implemented basic language
+### The implemented basic language
 
-Someone already started documenting it in the past here http://wsbasic.sourceforge.net/.
+Someone already started documenting it in the past here http://wsbasic.sourceforge.net/. But I've got no spare time to do it myself. Currently too busy with work, family 
+and even a kickstarter project https://www.kickstarter.com/projects/715415099/anykey-the-usb-password-key
+
 Basically you've got something turing complete and that resembles the basic language from C64 but without line numbers and gotos but functions instead (so a bit more modern).
 String manipulations, input, reading+writing files are already possible. 
 Feel free to document and submit a pull request.
 
-I've got it way to busy nowadays to be spending time on this. Even back then making something that just worked was more important than documenting the BNF ;).
-Here's a start, feel free to complete it:
+Even back then making something that just worked was more important than documenting the BNF also anyone feel free to complete and submit a PR ;).
+Here's a start as seen in parser.cpp, feel free to complete the comments:
 ```
 BNF for arithmetic expressions (improved unary minus)
 
@@ -57,9 +65,14 @@ BNF for arithmetic expressions (improved unary minus)
     <factor>        ::= <integer> | <variable> | (<expression>)
 
 ```
+But rest assured the actual implementation is complete and has a full language implemented with all basic features, loops, expressions, function calls, the works.
+And the entire parser class is less than 800 lines of c++ code so readability and simplicity is key here ;).
+Same for the lexer and execution classes, keeping the implementation as tight and simple as possible while still providing a fully working interpreter that can even
+be extended to a compiler by adding 1 more class (a compiler class that iterates the N-tree similarly to Executer but now just spits out code with cout statements would be enough to do that in the same minimal philosophy )
 
+### Usage and examples
 
-Running some test scripts:
+Try running some test scripts:
 ```
 ➜  wsbasic git:(master) ✗ ./tests.sh 
 2.000000
@@ -92,16 +105,17 @@ Still for minimal implementations (like on embedded on a microcontroller for ins
 a good way to go.
 
 
+## Authors
+Walter Schreppers
 
 
-*License
+## License
+This project is released under LGPL.
+
+
+### Note on license
 As stated in the original release this is a LGPL project but requires a mention of the original author:
 So enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author 
 being Walter Schreppers. Any changes to the sources are encouraged to be released according to LGPL.
-
-And watch out for this Gotcha: KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in choosing licenses. 
-Basically no permission was asked to myself to make an even stricter license. One could argue that this project gives you a free pass and treat large parts of KTurtle as LGPL instead of
-GPL because wsbasic has precedence. WSBasic was created to make it easier for other developers to create their own interpreters without any extra tools. By having a clean and simple
-implementation as a reference it's a great starting point to make something more specific like KTurtle did.
 
 
