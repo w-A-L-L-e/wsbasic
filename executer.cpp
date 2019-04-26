@@ -1,5 +1,11 @@
-#include "executer.h"
+/*=============================================================================
+author        : Walter Schreppers
+filename      : executer.cpp
+description   : Executes a parsetree
+bugreport(log):/
+=============================================================================*/
 
+#include "executer.h"
 
 Executer::Executer(TreeNode* tree){
   this->tree = tree;
@@ -33,7 +39,6 @@ void Executer::run(){
   }
 
 }
-
 
 
 void Executer::execute(TreeNode* node){

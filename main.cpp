@@ -1,3 +1,9 @@
+/*=============================================================================
+author        : Walter Schreppers
+filename      : main.cpp
+description   : Open a file, parse it into a tree and then execute it
+=============================================================================*/
+
 #include "parser.h"
 #include "executer.h"
 
@@ -19,10 +25,8 @@ int main(int argc, char** arg){
 
     TreeNode* root=parser.getTree();
     //root->showTree(root); //show parsetree
-    
     Executer exe(root); //execute this tree
     exe.run();
-
   }
   else{
     cerr<<"Parsing failed!"<<endl;
@@ -30,5 +34,4 @@ int main(int argc, char** arg){
   
   return 0;
 }
-
 

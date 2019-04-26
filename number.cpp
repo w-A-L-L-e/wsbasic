@@ -1,5 +1,11 @@
+/*=============================================================================
+author        : Walter Schreppers
+filename      : number.cpp
+description   : Number class to implement value objects in simplest way 
+                that allows intuitive coercion
+bugreport(log):/
+=============================================================================*/
 #include "number.h"
-
 
 Number::Number(){
   strVal="";

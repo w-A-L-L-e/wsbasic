@@ -1,13 +1,12 @@
 /*=============================================================================
-author        :Walter Schreppers
-filename      :ntree.cpp
-description   :Here we test the XMLNode class (it represents an n-airy tree)
+author        : Walter Schreppers
+filename      : ntree.cpp
+description   : Here we test the XMLNode class (it represents an n-airy tree)
 bugreport(log):/
 =============================================================================*/
 
 #include "treenode.h"
 #include <iostream>
-
 
 
 int main(){

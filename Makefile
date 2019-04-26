@@ -1,3 +1,4 @@
+#!/usr/local/bin/wsbasic
 CXX         = g++ 
 FLAGS       = -O2 -Wall
 INSTALL_DIR = /usr/local/bin/

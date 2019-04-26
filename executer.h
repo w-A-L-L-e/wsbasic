@@ -1,7 +1,7 @@
 /*============================================================================
-author        :Walter Schreppers
-filename      :executer.h
-description   :Execute a parse tree.
+author        : Walter Schreppers
+filename      : executer.h
+description   : Execute a parse tree.
 bugreport(log):/
 =============================================================================*/
 

@@ -4,7 +4,7 @@ begin
   pass = "change this"
   url  = "http://win-www.uia.ac.be/u/wschrep/ip-post/set_ip.php"
   
-  cmd     = "echo \"pass="+pass+"\" | lynx -post_data \""+url+"\""
+  cmd     = "echo \"pass="+pass+"\" | curl -post_data \""+url+"\""
   result  = run( cmd )
   
   test    = substr( result, 5,6 )
@@ -15,3 +15,5 @@ begin
     println "post failed: ",result
   
 end
+
+

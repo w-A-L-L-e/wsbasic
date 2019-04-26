@@ -1,9 +1,9 @@
 /*=============================================================================
-author        :Walter Schreppers
-filename      :lexer.h
-description   :Split an input stream up into tokens, eat up white space and
-               comments and keep track of row and column
-bugreport(log):column will not be incremented enough when numbers are read
+author        : Walter Schreppers
+filename      : lexer.h
+description   : Split an input stream up into tokens, eat up white space and
+                comments and keep track of row and column
+bugreport(log): column will not be incremented enough when numbers are read
 =============================================================================*/
 
 #ifndef LEXER_H

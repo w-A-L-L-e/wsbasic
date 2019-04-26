@@ -1,8 +1,8 @@
 /*=============================================================================
-author        :Walter Schreppers
-filename      :treenode.h
-description   :A node in an n-ary tree
-bugreport(log):/
+author        : Walter Schreppers
+filename      : treenode.h
+description   : A node in an n-ary tree
+bugreport(log): prevSibling and nextSibling sometimes segfault and are not optimal, in short, don't use em! :)
 =============================================================================*/
 
 #ifndef TREENODE_H
@@ -10,13 +10,7 @@ bugreport(log):/
 
 #include <string>
 #include <list>
-
 #include "number.h"
-
-//using namespace std;
-
-//BUGS: prevSibling and nextSibling sometimes segfault and are not optimal, in short, don't use em! :)
-
 
 enum NodeType { 
                 Unknown = -1,

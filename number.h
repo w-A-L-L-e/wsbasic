@@ -1,5 +1,9 @@
-//typedef double number;
-//number class to store variables ...
+/*=============================================================================
+author        : Walter Schreppers
+filename      : number.h
+description   : Represent values and operations on them
+bugreport(log):/
+=============================================================================*/
 
 #ifndef NUMBER_H
 #define NUMBER_H

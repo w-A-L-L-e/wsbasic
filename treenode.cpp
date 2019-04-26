@@ -1,12 +1,10 @@
 /*=============================================================================
-author        :Walter Schreppers
-filename      :treenode.cpp
-description   :A node in n-tree
+author        : Walter Schreppers
+filename      : treenode.cpp
+description   : A node in n-tree
 bugreport(log):/
 =============================================================================*/
 #include "treenode.h"
-
-
 
 void TreeNode::init(){
   clear();

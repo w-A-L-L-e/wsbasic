@@ -1,9 +1,7 @@
 
-wsbasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
+WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
 
 Originally released on sourceforge and freecode.com over 19 years ago in 2000:
-https://sourceforge.net/projects/wsbasic/
-http://freshmeat.sourceforge.net/projects/wsbasic
 
 Later forked and used by kturtle project of KDE:
 https://kde.org/applications/education/kturtle/
@@ -21,8 +19,55 @@ InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault
 
 Most likely still compiles on linux with regular gcc and on windows using mingw ;).
 
-As stated in the original release this is a GPL project.
+As stated in the original release this is a GPL project:
 
-http://wsbasic.sourceforge.net/
+
+Compiling:
+
+```
+➜  wsbasic git:(master) make
+g++  -O2 -Wall -c number.cpp
+g++  -O2 -Wall -c lexer.cpp
+g++  -O2 -Wall -c parser.cpp
+g++  -O2 -Wall -c treenode.cpp
+g++  -O2 -Wall -c executer.cpp
+g++  -O2 -Wall main.cpp -o wsbasic lexer.o parser.o treenode.o executer.o number.o
+```
+
+
+Running some test scripts:
+```
+➜  wsbasic git:(master) ✗ ./tests.sh 
+2.000000
+b=20.000000
+c=11.000000
+tricky=0.900000
+b1=1.000000
+b2=0.000000
+b3=1.000000
+g=-6.000000
+1.000000.	total 752
+2.000000.	drwxr-xr-x  27 wschrep  staff     864 Apr 26 17:12 .
+3.000000.	drwxr-xr-x  89 wschrep  staff    2848 Apr 26 16:43 ..
+4.000000.	drwxr-xr-x  13 wschrep  staff     416 Apr 26 17:12 .git
+
+.... some more output and input requested here (basically runs all scripts in scripts dir)
+```
+
+
+Executing a single script, here we for example compute some prime numbers:
+```
+./wsbasic scripts/primes.b 
+```
+
+Nowadays you can still learn from this but will most likely move on to LLVM tools to make yourself a neat compiler with minimal effort.
+A good starting point is this tutorial:
+https://llvm.org/docs/tutorial/LangImpl01.html
+
+Still for minimal implementations (like on embedded on a microcontroller for instance having basic on a atmega or something) wsbasic is still 
+a good way to go.
+
+Enjoy but do remember to include a reference to the author being myself ;). 
+And yes to state the obvious it's still GPL, so any changes and improvements you should also make open source like KTurtle did.
 
 

@@ -1,7 +1,7 @@
 
 begin
 
-for i=0 to 3000 begin
+for i=0 to 50 begin
   prime = 1
 
   for j=2 to i-1

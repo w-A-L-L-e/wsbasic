@@ -1,3 +1,10 @@
+/*=============================================================================
+author        : Walter Schreppers
+filename      : lexer.cpp
+description   : Turns plaintext into tokens for use in the parser classes
+bugreport(log):/
+=============================================================================*/
+
 #include "lexer.h"
 
 Lexer::~Lexer(){
