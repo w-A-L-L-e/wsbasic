@@ -68,6 +68,7 @@ class Parser{
     TreeNode* IdList();
     TreeNode* ParamList();
     TreeNode* Block();
+    TreeNode* MainBlock();
     TreeNode* Statement();
     
     TreeNode* runFunction();

@@ -133,3 +133,42 @@ So enjoy and feel to modify + reuse and even use in a commercial product. But do
 being Walter Schreppers. Any changes to the sources are encouraged to be released as LGPL.
 
 
+update on 24/1/2020
+
+Made some changes now the main block does not need begin/end and function declarations need def.
+
+Example:
+
+```
+def showName( name )
+begin
+  println( "My name is "+ name )
+end
+
+println("here is the main block running now")
+showName( "Walter")
+```
+
+Running example:
+```
+➜  wsbasic git:(master) ✗ ./wsbasic scripts/hello.b
+here is the main block running now
+My name is Walter
+```
+
+
+
+This makes the hello world also much shorter:
+
+```
+println("Hello world")
+```
+
+Running hello world:
+```
+➜  wsbasic git:(master) ✗ ./wsbasic scripts/hello_world.b 
+Hello world
+```
+
+Look in scripts dir for more elaborate examples. It's pretty much got everything like bash has to offer and more...
+

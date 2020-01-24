@@ -691,6 +691,7 @@ TreeNode* Parser::Statement(){
     case tokWrite   : return writeFunction(); break;
         
     case tokEnd     : break; //caught by Block
+    case tokEof     : return 0; break;
     
     case tokBegin   : Error("Begin without matching end");
                       getToken();
@@ -699,6 +700,11 @@ TreeNode* Parser::Statement(){
                                             
     default         : break;    
   }
+
+  if(( look.type == -1) || (look.type == tokEof) ){
+    return 0;
+  }
+  
 
   Error("Incorrect statement :"+look.str); 
   getToken();
@@ -718,6 +724,35 @@ TreeNode* Parser::Block(){
   
   return block;
 }
+
+// main block added so you don't have to wrap code in begin/end, is more python like as well
+TreeNode* Parser::MainBlock(){
+  TreeNode* block=new TreeNode( blockNode, row, col );
+  block->setName("block");
+  
+  bool checkEndBlock = false;
+  if( look.type == tokBegin ){
+    Match(tokBegin);
+    checkEndBlock = true;
+  }
+
+  while( (look.type!=tokEnd) && (look.type!=tokEof) ){
+    TreeNode* s = Statement();
+    if( s ){
+      block->appendChild( s );
+    }
+    else{
+      return block;
+    }
+  }
+
+  if(checkEndBlock) Match(tokEnd);
+  //else Match(tokEof);
+  
+  return block;
+}
+
+
 
 
 TreeNode* Parser::IdList(){
@@ -749,6 +784,8 @@ TreeNode* Parser::IdList(){
 ===================================================================*/
 TreeNode* Parser::Function(){
   TreeNode* func=new TreeNode( functionNode, row, col );
+  
+  Match(tokDef);
   TreeNode* idn=getId();
   
   func->appendChild( idn );
@@ -766,12 +803,12 @@ TreeNode* Parser::Program(){
   program->setName("program");
 
   //get the functions
-  while( look.type == tokId ){
+  while( look.type == tokDef ){
     program->appendChild( Function() );
   }
 
   //the main, or execution starting block
-  program->appendChild( Block() );
+  program->appendChild( MainBlock() );
   
   return program;
 }

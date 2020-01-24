@@ -84,6 +84,7 @@ int Lexer::getName(string& s){
 void Lexer::checkKeywords(token& t){
   if(t.type == tokId){
     if(      t.str == "begin"     ) t.type=tokBegin;
+    else if( t.str == "def"       ) t.type=tokDef;
     else if( t.str == "end"       ) t.type=tokEnd;
     else if( t.str == "while"     ) t.type=tokWhile;
     else if( t.str == "if"        ) t.type=tokIf;

@@ -30,6 +30,7 @@ enum types {
   tokNumber,
   tokString,
   tokId,
+  tokDef,
   tokProcId,
   tokBegin,
   tokEnd,
