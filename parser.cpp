@@ -178,7 +178,10 @@ TreeNode* Parser::substrFunction(){
 
 
 /*---------------------------------------------------------------*/
-/* Parse and Translate a Math Factor */
+/* Parse and Translate a Math Factor or a function that needs to
+ * return something like ok=run(...) or st2=substr(st1,2,3) 
+ * in other words factor is always on the rhs of an assignment or 
+ * in the paramlist of func call */
 TreeNode* Parser::Factor()
 {
   TreeNode* n;
