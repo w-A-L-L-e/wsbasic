@@ -90,6 +90,37 @@ void Executer::execute(TreeNode* node){
   }  
 }
 
+// dunno yet if I will persue this... maybe focus on a more general
+// way to import a shared lib into the executer instead ...
+void Executer::execGraphics(TreeNode* node){
+  //todo open gfx screen with node's params
+}
+
+void Executer::mayclearScr(TreeNode* node){
+  //todo clear screen defined above
+}
+
+void Executer::drawPixel(TreeNode* node){
+  //todo draw pixel directly to screen
+}
+
+
+void Executer::createScreenBuffer(TreeNode* node){
+  //todo alocate double buffer 
+}
+
+void Executer::drawPixelBuffer(TreeNode* node){
+  //todo draw pixel to double buffer provided in node param
+}
+
+void Executer::swapScreen(TreeNode* node){
+  //fast copy buffer to screen node param 1 to node param 2
+}
+
+void Executer::drawRectangle(TreeNode* node){
+  //ug etc etc unless... hmm well find a better way to write a shared lib that includes these drawing functions
+  // into our language...
+}
 
 
 //execute a function

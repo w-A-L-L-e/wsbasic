@@ -60,6 +60,18 @@ class Executer{
     void execRetFunction( TreeNode* );
     void execReturn     ( TreeNode* );
     void execBreak      ( TreeNode* );
+
+
+    //gfx stuff, most likely to be refactored or deprecated soon
+    void execGraphics(TreeNode* );
+    void mayclearScr(TreeNode* );
+    void drawPixel(TreeNode* );
+    void createScreenBuffer(TreeNode* );
+    void drawPixelBuffer(TreeNode* );
+    void swapScreen(TreeNode* );
+    void drawRectangle(TreeNode* );
+
+
  
     Number getVal ( TreeNode* );
     
