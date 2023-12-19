@@ -52,9 +52,11 @@ int main(){
   // mov rax, 42
   // push rax 
   //
-  // retrieve 42 from stack
-  // pop rax
-  // mov rdi, rax : -> put oru value on stack whic is 42 into rdi for making our syscall...
+  // retrieve 42 from stack and put into rdi
+  // ...
+  // pop rdi 
+  // syscall 
+  // ....
 
   // use nasm to convert asm to object file
   // use ld to link it into an exe
