@@ -46,6 +46,16 @@ int main(){
   file << "  msg:    db      \"Hello, world!\", 10"  << std::endl;  // 10 is our \n here
   file << "  .len:   equ     $ - msg"                << std::endl;  // nasm trick to compute len of msg
 
+  
+  // TODO: for variables we can do stuff like
+  // push value 42 on stack:
+  // mov rax, 42
+  // push rax 
+  //
+  // retrieve 42 from stack
+  // pop rax
+  // mov rdi, rax : -> put oru value on stack whic is 42 into rdi for making our syscall...
+
   // use nasm to convert asm to object file
   // use ld to link it into an exe
   // brew install nasm
