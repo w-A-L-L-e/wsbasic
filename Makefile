@@ -3,7 +3,7 @@ CXX         = g++
 FLAGS       = -O2 -Wall
 INSTALL_DIR = /usr/local/bin/
 
-all: wsbasic
+all: wsbasic compiler
 
 number.o: number.cpp number.h
 	$(CXX) $(FLAGS) -c number.cpp
@@ -26,10 +26,20 @@ wsbasic: main.cpp number.o lexer.o parser.o treenode.o executer.o
 treetest: treenode.o treetest.cpp
 	$(CXX) $(FLAGS) -o treetest treetest.cpp treenode.o
 
+compiler: compiler.o compiler.cpp
+	$(CXX) $(FLAGS) -o compiler compiler.cpp
+	@echo "make testcompile   -> proof of concept on how we can compile real executables"
+
+testcompile:
+	@./compiler
+	@./out
+	echo $?
+
 install:
 	cp wsbasic $(INSTALL_DIR)
 
 clean:
 	@rm -vf *~ *.o a.out core wsbasic treetest
 	@rm -vf scripts/*~
+	@rm -vf out out.asm out.o
 
