@@ -1,5 +1,10 @@
+// Description:
 // example on how to hot reload a shared library in a running executable
 // you can remove the .so file and even build a new one and code live updates
+// The 2 hard parts in c++ is you need a cast of the void pointer and you need to add
+// extern "C" in your functions otherwise names will get mangled (gcc does not need this)
+//
+// Author: Walter Schreppers
 
 #include <unistd.h> // for sleep
 #include <dlfcn.h>  // for dlopen
@@ -15,8 +20,8 @@ plugin_add_t plug_add = NULL;
 bool loadlib(const char* plugin_file){
   if (libplug != NULL) dlclose(libplug);
 
-  // libplug = dlopen(plugin_file, RTLD_NOW);
-  libplug = dlopen(plugin_file, RTLD_LAZY);
+  // libplug = dlopen(plugin_file, RTLD_LAZY);
+  libplug = dlopen(plugin_file, RTLD_NOW);
   if (libplug == NULL) {
     std::cout << "ERROR could not load so file "<<plugin_file<<" "<<dlerror()<<std::endl;
     return false;
