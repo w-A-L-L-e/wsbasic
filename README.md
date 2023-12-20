@@ -121,46 +121,10 @@ So enjoy and feel to modify + reuse and even use in a commercial product. But do
 being Walter Schreppers. Any changes to the sources are encouraged to be released as LGPL.
 
 
-update on 24/1/2020
-
-Made some changes now the main block does not need begin/end and function declarations need def.
-
-Functions example:
-
-```
-def showName( name )
-begin
-  println( "My name is "+ name )
-end
-
-println("here is the main block running now")
-showName( "Walter")
-```
-
-Running example:
-```
-➜  wsbasic git:(master) ✗ ./wsbasic scripts/hello.b
-here is the main block running now
-My name is Walter
-```
-
-
-
-This makes the hello world also much shorter:
-
-```
-println("Hello world")
-```
-
-Running hello world:
-```
-➜  wsbasic git:(master) ✗ ./wsbasic scripts/hello_world.b 
-Hello world
-```
 
 Look in scripts dir for more elaborate examples. It's pretty much got everything like bash has to offer and more...
 
-Here's a another script and its output:
+Here's a an example script and its output:
 
 ```
 $ cat example.bas
@@ -205,11 +169,49 @@ count = 81.000000
 count = 100.000000
 ```
 
+## UPDATES
 
-UPDATE: Cleaned up and made to compile again on latest Xcode in 2019. Then revisited this for a few hours in 2023 and started on a compiler
-class that would generate asm to also support compiling into a binary executable. Did a little proof of concept. 
+Cleaned up and made to compile again on latest Xcode in 2019. 
+24/1/2020: Made some changes now the main block does not need begin/end and function declarations need def.
 
-The compiling is just in proof of concept fase. however the interpreter using executor class is already fully turing complete.
+Functions example:
+
+```
+def showName( name )
+begin
+  println( "My name is "+ name )
+end
+
+println("here is the main block running now")
+showName( "Walter")
+```
+
+Running example:
+```
+➜  wsbasic git:(master) ✗ ./wsbasic scripts/hello.b
+here is the main block running now
+My name is Walter
+```
+
+
+
+This makes the hello world also much shorter:
+
+```
+println("Hello world")
+```
+
+Running hello world:
+```
+➜  wsbasic git:(master) ✗ ./wsbasic scripts/hello_world.b 
+Hello world
+```
+
+19/12/2023: Shortly revisited this for a few hours in and started on a compiler class that would generate asm to also support compiling into a binary executable. Did a little proof of concept to see it would work with nasm after seeing some youtube video that sparked my interest. 
+
+Compiling to binary is just in proof of concept fase right now, might revisit this and complete it somewhere in 2024 if I have time. However
+as poc it shows it would be pretty easy to get most features up and running quite quickly. Using llvm would however make it much more performant
+than doing our simple asm generation but not relying on llvm does allow this to be ported to embedded or an amiga or something :D
 
 ```
 $ make testcompile
