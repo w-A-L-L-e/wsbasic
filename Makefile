@@ -20,11 +20,15 @@ treenode.o: src/treenode.cpp src/treenode.h
 executer.o: src/executer.cpp src/executer.h
 	$(CXX) $(FLAGS) -c src/executer.cpp
 
-compiler.o: src/compiler.cpp src/compiler.h
-	$(CXX) $(FLAGS) -c src/compiler.cpp
+asm_compiler.o: src/asm_compiler.cpp src/asm_compiler.h
+	$(CXX) $(FLAGS) -c src/asm_compiler.cpp
 
-wsbasic: src/main.cpp var.o lexer.o parser.o treenode.o executer.o compiler.o
-	$(CXX) $(FLAGS) src/main.cpp -o wsbasic lexer.o parser.o var.o treenode.o executer.o compiler.o
+c_compiler.o: src/c_compiler.cpp src/c_compiler.h
+	$(CXX) $(FLAGS) -c src/c_compiler.cpp
+
+
+wsbasic: src/main.cpp var.o lexer.o parser.o treenode.o executer.o asm_compiler.o c_compiler.o
+	$(CXX) $(FLAGS) src/main.cpp -o wsbasic lexer.o parser.o var.o treenode.o executer.o asm_compiler.o c_compiler.o
 
 treetest: src/treenode.o src/treetest.cpp
 	$(CXX) $(FLAGS) -o treetest src/treetest.cpp treenode.o

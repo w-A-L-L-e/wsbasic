@@ -1,12 +1,12 @@
 /*============================================================================
 author        : Walter Schreppers
 filename      : compiler.h
-description   : Compile a parsetree into asm
+description   : Compile a parsetree into assembler for nasm
 bugreport(log): /
 =============================================================================*/
 
-#ifndef EXECUTER_H
-#define EXECUTER_H
+#ifndef C_COMPILER_H
+#define C_COMPILER_H
 
 #include "treenode.h"
 #include <iostream>
@@ -25,13 +25,13 @@ typedef stack<Var> runstack;
 
 //using namespace std;
 
-class Compiler{
+class CCompiler{
   
   public:
   
     //constructor
     //===========
-    Compiler(TreeNode*);
+    CCompiler(TreeNode*);
     
     //public members
     //==============

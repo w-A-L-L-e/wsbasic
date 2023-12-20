@@ -8,16 +8,16 @@ and easier to maintain. However for being minimalistic its cool to generate our 
 asm and use nasm to create a binary here
 =============================================================================*/
 
-#include "compiler.h"
+#include "asm_compiler.h"
 
-Compiler::Compiler(TreeNode* tree){
+AsmCompiler::AsmCompiler(TreeNode* tree){
   this->tree = tree;
   functionTable.clear();
   bBreak=false;
   bReturn=false;
 }
 
-void Compiler::run(){
+void AsmCompiler::run(){
   bBreak=false;
   bReturn=false;
   
@@ -44,7 +44,7 @@ void Compiler::run(){
 }
 
 
-void Compiler::compile(TreeNode* node){
+void AsmCompiler::compile(TreeNode* node){
   switch( node->getType() ){
     case blockNode          : compBlock( node );        break;
     case forNode            : compFor( node );          break;
@@ -95,32 +95,32 @@ void Compiler::compile(TreeNode* node){
 
 // dunno yet if I will persue this... maybe focus on a more general
 // way to import a shared lib into the compiler instead ...
-void Compiler::compGraphics(TreeNode* node){
+void AsmCompiler::compGraphics(TreeNode* node){
   //todo open gfx screen with node's params
 }
 
-void Compiler::mayclearScr(TreeNode* node){
+void AsmCompiler::mayclearScr(TreeNode* node){
   //todo clear screen defined above
 }
 
-void Compiler::drawPixel(TreeNode* node){
+void AsmCompiler::drawPixel(TreeNode* node){
   //todo draw pixel directly to screen
 }
 
 
-void Compiler::createScreenBuffer(TreeNode* node){
+void AsmCompiler::createScreenBuffer(TreeNode* node){
   //todo alocate double buffer 
 }
 
-void Compiler::drawPixelBuffer(TreeNode* node){
+void AsmCompiler::drawPixelBuffer(TreeNode* node){
   //todo draw pixel to double buffer provided in node param
 }
 
-void Compiler::swapScreen(TreeNode* node){
+void AsmCompiler::swapScreen(TreeNode* node){
   //fast copy buffer to screen node param 1 to node param 2
 }
 
-void Compiler::drawRectangle(TreeNode* node){
+void AsmCompiler::drawRectangle(TreeNode* node){
   //ug etc etc unless... hmm well find a better way to write a shared lib that includes these drawing functions
   // into our language...
 }
@@ -129,7 +129,7 @@ void Compiler::drawRectangle(TreeNode* node){
 //compile a function
 //first child   = function name
 //second child  = parameters
-void Compiler::compFunction( TreeNode* node ){
+void AsmCompiler::compFunction( TreeNode* node ){
   string funcname = node->firstChild()->getName();
 
   //locate function node  
@@ -180,7 +180,7 @@ void Compiler::compFunction( TreeNode* node ){
 //value from stack
 //first child   = function name
 //second child  = parameters
-void Compiler::compRetFunction( TreeNode* node ){
+void AsmCompiler::compRetFunction( TreeNode* node ){
   compFunction( node );
   if( runStack.size() == 0 ){
     cerr<<"RUN ERROR: function "<<node->firstChild()->getName()
@@ -192,19 +192,19 @@ void Compiler::compRetFunction( TreeNode* node ){
 }
 
 
-void Compiler::compReturn( TreeNode* node ){
+void AsmCompiler::compReturn( TreeNode* node ){
   compile( node->firstChild() ); //compile return expression
   runStack.push( node->firstChild()->getValue() );
   bReturn=true; //notify blocks of return
 }
 
 
-void Compiler::compBreak( TreeNode* node ){
+void AsmCompiler::compBreak( TreeNode* node ){
   bBreak=true; //stops loop block compution
 }
 
 
-void Compiler::compBlock( TreeNode* node ){
+void AsmCompiler::compBlock( TreeNode* node ){
   //compile all statements in block
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
@@ -220,7 +220,7 @@ void Compiler::compBlock( TreeNode* node ){
 
 
 
-void Compiler::compForEach( TreeNode* node ){
+void AsmCompiler::compForEach( TreeNode* node ){
   //cout<<"sorry dude not implemented yet"<<endl;
   TreeNode* id         = node->firstChild();
   TreeNode* expr       = node->secondChild();
@@ -257,7 +257,7 @@ void Compiler::compForEach( TreeNode* node ){
 
 
 
-void Compiler::compFor( TreeNode* node ){
+void AsmCompiler::compFor( TreeNode* node ){
   TreeNode* id=node->firstChild();
   TreeNode* startNode=node->secondChild();
   TreeNode* stopNode=node->thirdChild();
@@ -311,7 +311,7 @@ void Compiler::compFor( TreeNode* node ){
 
 
 
-void Compiler::compWhile( TreeNode* node ){
+void AsmCompiler::compWhile( TreeNode* node ){
 
   TreeNode* condition = node->firstChild();
   TreeNode* statements = node->secondChild();
@@ -327,7 +327,7 @@ void Compiler::compWhile( TreeNode* node ){
 }
 
      
-void Compiler::compIf( TreeNode* node ){
+void AsmCompiler::compIf( TreeNode* node ){
 
   TreeNode* condition = node->firstChild();
   TreeNode* ifblok = node->secondChild();
@@ -356,7 +356,7 @@ void Compiler::compIf( TreeNode* node ){
 }
 
 
-void Compiler::compPrint( TreeNode* node ){
+void AsmCompiler::compPrint( TreeNode* node ){
 
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
@@ -368,14 +368,14 @@ void Compiler::compPrint( TreeNode* node ){
 
 
 /*     
-void Compiler::compPrintLn( TreeNode* node ){
+void AsmCompiler::compPrintLn( TreeNode* node ){
   compPrint( node );
   cout<<endl;
 }
 */
 
 
-void Compiler::compInput( TreeNode* node ){
+void AsmCompiler::compInput( TreeNode* node ){
   string varName = node->firstChild()->getName();
   Var val;
   
@@ -387,7 +387,7 @@ void Compiler::compInput( TreeNode* node ){
 }
 
    
-void Compiler::compAssign( TreeNode* node ){
+void AsmCompiler::compAssign( TreeNode* node ){
   TreeNode* var  = node->firstChild();
   TreeNode* expr = node->secondChild();
 
@@ -396,60 +396,60 @@ void Compiler::compAssign( TreeNode* node ){
 }
 
     
-void Compiler::compExpression( TreeNode* node ){
+void AsmCompiler::compExpression( TreeNode* node ){
   cerr<<"compExpression is not implemented, because it should not be needed!"<<endl;
 }
 
 
-void Compiler::compId( TreeNode* node ){
+void AsmCompiler::compId( TreeNode* node ){
   node->setValue( ( symbolTables.top() )[ node->getName() ] );
 }
 
-void Compiler::compConstant( TreeNode* node ){
+void AsmCompiler::compConstant( TreeNode* node ){
   //do nothing, value is already set
 }
 
-Var Compiler::getVal( TreeNode* node ){
+Var AsmCompiler::getVal( TreeNode* node ){
   compile( node );
   return node->getValue();
 }
 
         
-void Compiler::compAdd( TreeNode* node ){
+void AsmCompiler::compAdd( TreeNode* node ){
   node->setValue( getVal( node->firstChild() )
                   + 
                   getVal( node->secondChild() ) );
 }
 
        
-void Compiler::compMul( TreeNode* node ){
+void AsmCompiler::compMul( TreeNode* node ){
   node->setValue( getVal( node->firstChild() )
                   * 
                   getVal( node->secondChild() ) );
 }
 
        
-void Compiler::compDiv( TreeNode* node ){
+void AsmCompiler::compDiv( TreeNode* node ){
   node->setValue( getVal( node->firstChild() )
                   / 
                   getVal( node->secondChild() ) );
 }
 
        
-void Compiler::compSub( TreeNode* node ){
+void AsmCompiler::compSub( TreeNode* node ){
   node->setValue( getVal( node->firstChild() )
                   - 
                   getVal( node->secondChild() ) );
 }
 
-void Compiler::compMod( TreeNode* node ){
+void AsmCompiler::compMod( TreeNode* node ){
   node->setValue( getVal( node->firstChild() )
                   %
                   getVal( node->secondChild() ) );
 }
 
        
-void Compiler::compLT( TreeNode* node ){
+void AsmCompiler::compLT( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
                   < 
@@ -458,7 +458,7 @@ void Compiler::compLT( TreeNode* node ){
                 );
 }
 
-void Compiler::compLE( TreeNode* node ){
+void AsmCompiler::compLE( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
                   <= 
@@ -467,7 +467,7 @@ void Compiler::compLE( TreeNode* node ){
                 );
 }
 
-void Compiler::compGT( TreeNode* node ){
+void AsmCompiler::compGT( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
                   >
@@ -476,7 +476,7 @@ void Compiler::compGT( TreeNode* node ){
                 );
 }
 
-void Compiler::compGE( TreeNode* node ){
+void AsmCompiler::compGE( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
                   >=
@@ -486,7 +486,7 @@ void Compiler::compGE( TreeNode* node ){
 }
 
 
-void Compiler::compEQ( TreeNode* node ){
+void AsmCompiler::compEQ( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
                   ==
@@ -496,7 +496,7 @@ void Compiler::compEQ( TreeNode* node ){
 }
 
 
-void Compiler::compNE( TreeNode* node ){
+void AsmCompiler::compNE( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
                   !=
@@ -507,31 +507,31 @@ void Compiler::compNE( TreeNode* node ){
 
 
   
-void Compiler::compAnd( TreeNode* node ){
+void AsmCompiler::compAnd( TreeNode* node ){
   bool nl = getVal( node->firstChild() ).val != 0;
   bool nr = getVal( node->secondChild() ).val != 0;
   node->setValue( (double) (nl && nr) );
 }
 
        
-void Compiler::compOr( TreeNode* node ){
+void AsmCompiler::compOr( TreeNode* node ){
   bool nl = getVal( node->firstChild() ).val != 0;
   bool nr = getVal( node->secondChild() ).val != 0;
   node->setValue( (double) (nl || nr) );
 }
 
 
-void Compiler::compNot( TreeNode* node ){
+void AsmCompiler::compNot( TreeNode* node ){
   node->setValue( 1 - getVal( node->firstChild() ).val ); 
 }
 
 
-void Compiler::compMinus( TreeNode* node ){
+void AsmCompiler::compMinus( TreeNode* node ){
   node->setValue( - getVal( node->firstChild() ).val ); 
 }
 
 
-string Compiler::runCommand( const string& command ){
+string AsmCompiler::runCommand( const string& command ){
   FILE *pstream;
   
   if(  ( pstream = popen( command.c_str(), "r" ) ) == NULL ) return "";
@@ -548,12 +548,12 @@ string Compiler::runCommand( const string& command ){
 }
 
 
-void Compiler::compRun( TreeNode* node ){
+void AsmCompiler::compRun( TreeNode* node ){
   string cmd= getVal( node->firstChild() ).strVal;
   node->setValue( runCommand(cmd) );
 }
 
-void Compiler::compWrite( TreeNode* node ){
+void AsmCompiler::compWrite( TreeNode* node ){
   string fileName = getVal( node->firstChild() ).strVal;
   ofstream out(fileName.c_str());
   if(out.is_open()){
@@ -566,7 +566,7 @@ void Compiler::compWrite( TreeNode* node ){
   
 }
 
-void Compiler::compSubstr( TreeNode* node ){
+void AsmCompiler::compSubstr( TreeNode* node ){
   string id   = node->firstChild()->getName();
   int from    = (int) getVal( node->secondChild() ).val-1;
   int to      = (int) getVal( node->thirdChild() ).val;
