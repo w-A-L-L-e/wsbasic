@@ -10,33 +10,66 @@ description   : Open a file, parse it into a tree and then execute it
 #include "asm_compiler.h"
 
 int main(int argc, char** arg){
-  if(argc!=2){
-    cout<<"Usage: "<<arg[0]<<" FILE "<<endl;
+  int argpos = 1;
+  if(argc < 2){
+    cout<<"Usage: [-debug, -c, -a] "<<arg[0]<<" <FILE> "<<endl;
     return 1;
   }
-  
-  ifstream in(arg[1]);
+ 
+  bool debug = false;
+  bool asm_compile = false;
+  bool c_compile = false;
+
+
+  if (string(arg[argpos]) == "-debug"){
+    debug = true;
+    argpos++;
+  }
+
+  if (string(arg[argpos]) == "-c"){
+    c_compile = true;
+    argpos++;
+  }
+
+  if (string(arg[argpos]) == "-a") {
+    asm_compile = true; 
+    argpos++;
+  }
+
+  ifstream in(arg[argpos]);
   if( !in.is_open () ){
-    cerr<<"could not open file: "<<arg[1]<<endl;
+    cerr<<"could not open file: "<<arg[argpos]<<endl;
     return 1;
   }
-  
+
   Parser parser(in);
   
   if( parser.parse() ){
     TreeNode* root=parser.getTree();
-    //root->showTree(root); //show parsetree
 
-    // TODO: use commandline args to determine execution (interpreter mode)
-    // or asm compiler or c compiler to create executables
-    Executer exe(root); //execute this tree
-    exe.run();
+    if (debug) {
+      root->showTree(root); //show AST parsetree
+      return 0;
+    }
 
-    // create an nasm compiler instance
-    AsmCompiler acomp(root);
-
-    // create a c compiler instance
-    CCompiler ccomp(root);
+    if(asm_compile){
+      // create an nasm compiler instance
+      cout << "generating asm code and linking..." << endl;
+      AsmCompiler compiler(root);
+      compiler.generate("output.asm");
+      compiler.link("output.asm");
+    }
+    else if(c_compile){
+      cout << "generating c code and linking..." << endl;
+      CCompiler compiler(root);
+      compiler.generate("output.cpp");
+      compiler.link("output.cpp");
+    }
+    else {
+      // directly execute the AST
+      Executer exe(root);
+      exe.run();
+    }
   }
   else{
     cerr<<"Parsing failed!"<<endl;

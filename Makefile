@@ -48,5 +48,5 @@ install:
 clean:
 	@rm -vf *~ *.o a.out core wsbasic treetest compiler_poc
 	@rm -vf scripts/*~
-	@rm -vf out out.asm out.o
+	@rm -vf output output.asm output.cpp output.o
 

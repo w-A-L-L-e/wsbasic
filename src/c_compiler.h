@@ -35,7 +35,9 @@ class CCompiler{
     
     //public members
     //==============
-    void run();  
+    void run(); // will be deprecated 
+    void generate(const string& outfile);
+    void link(const string& cppfile);
   
   
   private:

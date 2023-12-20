@@ -35,7 +35,9 @@ class AsmCompiler{
     
     //public members
     //==============
-    void run();  
+    void run();  // will be deprecated soon 
+    void generate(const string& outfile);
+    void link(const string& asmfile);
   
   
   private:
