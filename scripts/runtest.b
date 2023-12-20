@@ -1,4 +1,4 @@
-#!/usr/local/bin/wsbasic
+#!../wsbasic
 
 dir = run ("ls -m -1")
 println "dir=",dir

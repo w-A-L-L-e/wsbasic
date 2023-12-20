@@ -7,12 +7,14 @@ bugreport(log):/
 
 #include "executer.h"
 
+
 Executer::Executer(TreeNode* tree){
   this->tree = tree;
   functionTable.clear();
   bBreak=false;
   bReturn=false;
 }
+
 
 void Executer::run(){
   bBreak=false;
@@ -37,7 +39,6 @@ void Executer::run(){
     }
 
   }
-
 }
 
 
@@ -91,6 +92,7 @@ void Executer::execute(TreeNode* node){
   }  
 }
 
+
 // dunno yet if I will persue this... maybe focus on a more general
 // way to import a shared lib into the executer instead ...
 void Executer::execGraphics(TreeNode* node){
@@ -110,9 +112,11 @@ void Executer::createScreenBuffer(TreeNode* node){
   //todo alocate double buffer 
 }
 
+
 void Executer::drawPixelBuffer(TreeNode* node){
   //todo draw pixel to double buffer provided in node param
 }
+
 
 void Executer::swapScreen(TreeNode* node){
   //fast copy buffer to screen node param 1 to node param 2
@@ -163,21 +167,21 @@ void Executer::execFunction( TreeNode* node ){
   
   }
   
-  symbolTables.push(funcSymTable); //use new symboltable for current function
+  symbolTables.push(funcSymTable); // use new symboltable for current function
   
-  //execute function statement block
-  bReturn=false; //set to true when return is called
+  // execute function statement block
+  bReturn=false;  // set to true when return is called
   execute( funcnode->thirdChild() );
-  bReturn=false; //function execution done
+  bReturn=false;  // function execution done
   
   symbolTables.pop(); //release function symboltable    
 }
 
 
-//execute a function and expect and get return 
-//value from stack
-//first child   = function name
-//second child  = parameters
+// execute a function and expect and get return 
+// value from stack
+// first child   = function name
+// second child  = parameters
 void Executer::execRetFunction( TreeNode* node ){
   execFunction( node );
   if( runStack.size() == 0 ){
@@ -203,6 +207,7 @@ void Executer::execExit( TreeNode* node ){
   exit(exitcode);
 }
 
+
 void Executer::execBreak( TreeNode* node ){
   bBreak=true; //stops loop block execution
 }
@@ -220,8 +225,6 @@ void Executer::execBlock( TreeNode* node ){
     
   }
 }
-
-
 
 
 void Executer::execForEach( TreeNode* node ){
@@ -258,7 +261,6 @@ void Executer::execForEach( TreeNode* node ){
   bBreak=false;
   
 }
-
 
 
 void Executer::execFor( TreeNode* node ){
@@ -310,13 +312,10 @@ void Executer::execFor( TreeNode* node ){
     }
     bBreak=false;
   }
-
 }
 
 
-
 void Executer::execWhile( TreeNode* node ){
-
   TreeNode* condition = node->firstChild();
   TreeNode* statements = node->secondChild();
 
@@ -332,7 +331,6 @@ void Executer::execWhile( TreeNode* node ){
 
      
 void Executer::execIf( TreeNode* node ){
-
   TreeNode* condition = node->firstChild();
   TreeNode* ifblok = node->secondChild();
 
@@ -361,7 +359,6 @@ void Executer::execIf( TreeNode* node ){
 
 
 void Executer::execPrint( TreeNode* node ){
-
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
     execute( *i ); //execute expression
@@ -370,14 +367,12 @@ void Executer::execPrint( TreeNode* node ){
   cout<<flush;
 }
 
-
 /*     
 void Executer::execPrintLn( TreeNode* node ){
   execPrint( node );
   cout<<endl;
 }
 */
-
 
 void Executer::execInput( TreeNode* node ){
   string varName = node->firstChild()->getName();
@@ -409,9 +404,11 @@ void Executer::execId( TreeNode* node ){
   node->setValue( ( symbolTables.top() )[ node->getName() ] );
 }
 
+
 void Executer::execConstant( TreeNode* node ){
   //do nothing, value is already set
 }
+
 
 Var Executer::getVal( TreeNode* node ){
   execute( node );
@@ -446,6 +443,7 @@ void Executer::execSub( TreeNode* node ){
                   getVal( node->secondChild() ) );
 }
 
+
 void Executer::execMod( TreeNode* node ){
   node->setValue( getVal( node->firstChild() )
                   %
@@ -462,6 +460,7 @@ void Executer::execLT( TreeNode* node ){
                 );
 }
 
+
 void Executer::execLE( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
@@ -471,6 +470,7 @@ void Executer::execLE( TreeNode* node ){
                 );
 }
 
+
 void Executer::execGT( TreeNode* node ){
   node->setValue( (double) (
                   getVal( node->firstChild() )
@@ -479,6 +479,7 @@ void Executer::execGT( TreeNode* node ){
                   ) 
                 );
 }
+
 
 void Executer::execGE( TreeNode* node ){
   node->setValue( (double) (
@@ -510,7 +511,6 @@ void Executer::execNE( TreeNode* node ){
 }
 
 
-  
 void Executer::execAnd( TreeNode* node ){
   bool nl = getVal( node->firstChild() ).val != 0;
   bool nr = getVal( node->secondChild() ).val != 0;
@@ -537,7 +537,6 @@ void Executer::execMinus( TreeNode* node ){
 
 string Executer::runCommand( const string& command ){
   FILE *pstream;
-  
   if(  ( pstream = popen( command.c_str(), "r" ) ) == NULL ) return "";
   
   string Line;

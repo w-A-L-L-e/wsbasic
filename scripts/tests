@@ -1,0 +1,13 @@
+../wsbasic assigns.b
+../wsbasic dir-foreach.b
+../wsbasic dir.b
+../wsbasic foreach.b
+../wsbasic forloops.b
+../wsbasic functions.b
+../wsbasic ifs.b
+../wsbasic input.b
+../wsbasic post_ip.b
+../wsbasic primes.b
+../wsbasic runtest.b
+../wsbasic strings.b
+../wsbasic while.b
