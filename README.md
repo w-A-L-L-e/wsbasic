@@ -14,18 +14,6 @@ Originally released on sourceforge and freecode.com over 19 years ago (april 200
 Later forked and used by kturtle project of KDE:
   - https://kde.org/applications/education/kturtle/
 
-Cleaned up and made to compile again on latest Xcode in 2019:
-```
-gcc --version
-Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include/c++/4.2.1
-Apple LLVM version 10.0.1 (clang-1001.0.46.4)
-Target: x86_64-apple-darwin18.5.0
-Thread model: posix
-InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
-
-```
-
-
 And watch out for this Gotcha: KTurtle is even stricter by using GPL and not LGPL, also something I frown upon now many years later when I see more importance in choosing licenses. 
 Basically no permission was asked to myself to make an even stricter license. One could argue that this project gives you a free pass and treat large parts of KTurtle as LGPL instead of
 GPL because wsbasic has precedence. WSBasic was created to make it easier for other developers to create their own interpreters without any extra tools. By having a clean and simple
@@ -215,5 +203,19 @@ count = 49.000000
 count = 64.000000
 count = 81.000000
 count = 100.000000
+```
+
+
+UPDATE: Cleaned up and made to compile again on latest Xcode in 2019. Then revisited this for a few hours in 2023 and started on a compiler
+class that would generate asm to also support compiling into a binary executable. Did a little proof of concept. 
+
+The compiling is just in proof of concept fase. however the interpreter using executor class is already fully turing complete.
+
+```
+$ make testcompile
+
+succesfully compiled binary: 'out'
+Hello, world!
+make: *** [testcompile] Error 42
 ```
 
