@@ -74,26 +74,6 @@ be extended to a compiler by adding 1 more class (a compiler class that iterates
 
 ### Usage and examples
 
-Try running some test scripts:
-```
-➜  wsbasic git:(master) ✗ ./tests.sh 
-2.000000
-b=20.000000
-c=11.000000
-tricky=0.900000
-b1=1.000000
-b2=0.000000
-b3=1.000000
-g=-6.000000
-1.000000.	total 752
-2.000000.	drwxr-xr-x  27 wschrep  staff     864 Apr 26 17:12 .
-3.000000.	drwxr-xr-x  89 wschrep  staff    2848 Apr 26 16:43 ..
-4.000000.	drwxr-xr-x  13 wschrep  staff     416 Apr 26 17:12 .git
-
-.... some more output and input requested here (basically runs all scripts in scripts dir)
-```
-
-
 Executing a single script, here we for example compute some prime numbers:
 ```
 ./wsbasic scripts/primes.b 
@@ -169,6 +149,28 @@ count = 81.000000
 count = 100.000000
 ```
 
+
+Try running some test scripts:
+```
+➜  wsbasic git:(master) ✗ ./examples/tests.sh 
+2.000000
+b=20.000000
+c=11.000000
+tricky=0.900000
+b1=1.000000
+b2=0.000000
+b3=1.000000
+g=-6.000000
+1.000000.	total 752
+2.000000.	drwxr-xr-x  27 wschrep  staff     864 Apr 26 17:12 .
+3.000000.	drwxr-xr-x  89 wschrep  staff    2848 Apr 26 16:43 ..
+4.000000.	drwxr-xr-x  13 wschrep  staff     416 Apr 26 17:12 .git
+
+.... some more output and input requested here (basically runs all scripts in scripts dir)
+```
+
+
+
 ## UPDATES
 
 Cleaned up and made to compile again on latest Xcode in 2019. 
@@ -211,7 +213,7 @@ Hello world
 
 Compiling to binary is just in proof of concept fase right now, might revisit this and complete it somewhere in 2024 if I have time. However
 as poc it shows it would be pretty easy to get most features up and running quite quickly. Using llvm would however make it much more performant
-than doing our simple asm generation but not relying on llvm does allow this to be ported to embedded or an amiga or something :D
+than doing our simple asm generation here. But not relying on llvm does allow this to be ported to a low resource embedded system or an amiga or something like that :D
 
 ```
 $ make testcompile
