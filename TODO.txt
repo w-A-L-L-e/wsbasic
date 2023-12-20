@@ -1,5 +1,0 @@
-get a rasberry pi to run wsbasic running bare metal.
-1. basically provide a zImage like a kernal build but then something that runs wsbasic as shell and has threading + gfx support
-2. implement direct gpu fast gfx on rpi using framebuffer etc http://raspberrycompote.blogspot.com/2012/12/low-level-graphics-on-raspberry-pi-part_9509.html
-3. target something the c64 offered a prompt that allows you to do either a simple while true print "something" like the commodore's 10 print, 20 goto 10. but also allow amiga amos like stuff to draw fast gfx using a simple basic-like language (or maybe like gwbasic did on dos?) lots to be defined/determined during implementing this... Now that I think of it a sperate git project like the 'wash' project (that never got finished due to bills to pay and family life) still I gotta jot this down and start somewhere ;).
-
