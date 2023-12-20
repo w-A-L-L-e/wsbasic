@@ -1,37 +1,37 @@
 /*=============================================================================
 author        : Walter Schreppers
-filename      : number.cpp
-description   : Number class to implement value objects in simplest way 
+filename      : var.cpp
+description   : Var class to implement value objects in simplest way 
                 that allows intuitive coercion
 bugreport(log):/
 =============================================================================*/
-#include "number.h"
+#include "var.h"
 
-Number::Number(){
+Var::Var(){
   strVal="";
   val=0;
   bString=false;
 }
 
-Number::Number( const Number& n ){
+Var::Var( const Var& n ){
   *this=n;
 }
 
-void Number::toString(){
+void Var::toString(){
   ostringstream os;
   os<<val;
   strVal=os.str();
   bString=true;
 }
 
-void Number::toDouble(){
+void Var::toDouble(){
   istringstream is(strVal);
   is>>val;
   bString=false;
 }
     
 
-Number& Number::operator=( const Number& n ){
+Var& Var::operator=( const Var& n ){
   if(this != &n){
 
     if( bString == n.bString ){
@@ -44,7 +44,7 @@ Number& Number::operator=( const Number& n ){
       bString=true;
       strVal=n.strVal;
       
-      Number tmp;
+      Var tmp;
       tmp.strVal=n.strVal;
       tmp.toDouble();
       val=tmp.val;
@@ -54,7 +54,7 @@ Number& Number::operator=( const Number& n ){
       bString=false;
       val=n.val;
       
-      Number tmp;
+      Var tmp;
       tmp.val=n.val;
       tmp.toString();
       strVal=tmp.strVal;
@@ -65,14 +65,14 @@ Number& Number::operator=( const Number& n ){
 }
 
 
-Number& Number::operator=( const string& s ){
+Var& Var::operator=( const string& s ){
   strVal=s;
   bString=true;
   return *this;
 }
 
 
-Number& Number::operator=( double n ){
+Var& Var::operator=( double n ){
   val=n;
   bString=false;
   return *this;
@@ -80,7 +80,7 @@ Number& Number::operator=( double n ){
 
 
 
-Number& Number::operator+( const Number& n ){
+Var& Var::operator+( const Var& n ){
   if(!bString && !n.bString){
     val+=n.val;
   }
@@ -95,7 +95,7 @@ Number& Number::operator+( const Number& n ){
     }
     
     if(!n.bString){
-      Number tmp=n;
+      Var tmp=n;
       tmp.toString();
       strVal+=tmp.strVal;
     }
@@ -109,7 +109,7 @@ Number& Number::operator+( const Number& n ){
 }
 
 
-Number& Number::operator%( const Number& n ){
+Var& Var::operator%( const Var& n ){
   if(!bString && !n.bString){
     val = (long)val % (long)n.val;
   }
@@ -126,7 +126,7 @@ Number& Number::operator%( const Number& n ){
 
 
 
-Number& Number::operator-( const Number& n ){
+Var& Var::operator-( const Var& n ){
   if(!bString && !n.bString){
     val-=n.val;
   }
@@ -144,7 +144,7 @@ Number& Number::operator-( const Number& n ){
 }
 
 
-Number& Number::operator*( const Number& n ){
+Var& Var::operator*( const Var& n ){
   if(!bString && !n.bString){
     val*=n.val;
   }
@@ -161,7 +161,7 @@ Number& Number::operator*( const Number& n ){
 }
 
 
-Number& Number::operator/( const Number& n ){
+Var& Var::operator/( const Var& n ){
   if(!bString && !n.bString){
     val/=n.val;
   }
@@ -179,42 +179,42 @@ Number& Number::operator/( const Number& n ){
 
 
 
-bool Number::operator==( const Number& n ) const {
+bool Var::operator==( const Var& n ) const {
   if( bString && n.bString ) return strVal==n.strVal; 
   if( !bString && !n.bString ) return val == n.val;
   return false;
 }
 
 
-bool Number::operator!=( const Number& n ) const {
+bool Var::operator!=( const Var& n ) const {
   if( bString && n.bString ) return strVal!=n.strVal; 
   if( !bString && !n.bString ) return val != n.val;
   return false;
 }
 
 
-bool Number::operator<( const Number& n ) const {
+bool Var::operator<( const Var& n ) const {
   if( bString && n.bString ) return strVal<n.strVal; 
   if( !bString && !n.bString ) return val < n.val;
   return false;
 }
 
 
-bool Number::operator<=( const Number& n ) const {
+bool Var::operator<=( const Var& n ) const {
   if( bString && n.bString ) return strVal<=n.strVal; 
   if( !bString && !n.bString ) return val <= n.val;
   return false;
 }
 
 
-bool Number::operator>( const Number& n ) const {
+bool Var::operator>( const Var& n ) const {
   if( bString && n.bString ) return strVal>n.strVal; 
   if( !bString && !n.bString ) return val > n.val;
   return false;
 }
 
 
-bool Number::operator>=( const Number& n ) const {
+bool Var::operator>=( const Var& n ) const {
   if( bString && n.bString ) return strVal>=n.strVal; 
   if( !bString && !n.bString ) return val >= n.val;
   return false;
@@ -223,7 +223,7 @@ bool Number::operator>=( const Number& n ) const {
 
 
 //output double or string
-ostream& operator<<(ostream& os, const Number& n){
+ostream& operator<<(ostream& os, const Var& n){
   if(n.bString){
     os<<n.strVal;
   }  
@@ -234,7 +234,7 @@ ostream& operator<<(ostream& os, const Number& n){
 }
 
 //read double
-istream& operator>>(istream& is, Number& n){
+istream& operator>>(istream& is, Var& n){
   n.bString=false;
   is>>n.val;
   return is;

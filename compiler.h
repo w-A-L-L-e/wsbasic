@@ -1,8 +1,8 @@
 /*============================================================================
 author        : Walter Schreppers
-filename      : executer.h
-description   : Execute a parse tree.
-bugreport(log):/
+filename      : compiler.h
+description   : Compile a parsetree into asm
+bugreport(log): /
 =============================================================================*/
 
 #ifndef EXECUTER_H
@@ -25,13 +25,13 @@ typedef stack<Var> runstack;
 
 //using namespace std;
 
-class Executer{
+class Compiler{
   
   public:
   
     //constructor
     //===========
-    Executer(TreeNode*);
+    Compiler(TreeNode*);
     
     //public members
     //==============
@@ -42,28 +42,28 @@ class Executer{
 
     //private members
     //===============
-    void execute( TreeNode* );  
+    void compile( TreeNode* );  
 
-    void execBlock      ( TreeNode* );
-    void execFor        ( TreeNode* );
-    void execForEach    ( TreeNode* );
-    void execWhile      ( TreeNode* );
-    void execIf         ( TreeNode* );
-    void execPrint      ( TreeNode* );
-    void execInput      ( TreeNode* );
-    void execAssign     ( TreeNode* );
-    void execExpression ( TreeNode* );
-    void execId         ( TreeNode* );
-    void execConstant   ( TreeNode* );
+    void compBlock      ( TreeNode* );
+    void compFor        ( TreeNode* );
+    void compForEach    ( TreeNode* );
+    void compWhile      ( TreeNode* );
+    void compIf         ( TreeNode* );
+    void compPrint      ( TreeNode* );
+    void compInput      ( TreeNode* );
+    void compAssign     ( TreeNode* );
+    void compExpression ( TreeNode* );
+    void compId         ( TreeNode* );
+    void compConstant   ( TreeNode* );
     
-    void execFunction   ( TreeNode* );
-    void execRetFunction( TreeNode* );
-    void execReturn     ( TreeNode* );
-    void execBreak      ( TreeNode* );
+    void compFunction   ( TreeNode* );
+    void compRetFunction( TreeNode* );
+    void compReturn     ( TreeNode* );
+    void compBreak      ( TreeNode* );
 
 
     //gfx stuff, most likely to be refactored or deprecated soon
-    void execGraphics(TreeNode* );
+    void compGraphics(TreeNode* );
     void mayclearScr(TreeNode* );
     void drawPixel(TreeNode* );
     void createScreenBuffer(TreeNode* );
@@ -75,27 +75,27 @@ class Executer{
  
     Var getVal ( TreeNode* );
     
-    void execAdd  ( TreeNode* );
-    void execMul  ( TreeNode* );
-    void execDiv  ( TreeNode* );
-    void execSub  ( TreeNode* );
-    void execMod  ( TreeNode* );
-    void execNot  ( TreeNode* );
+    void compAdd  ( TreeNode* );
+    void compMul  ( TreeNode* );
+    void compDiv  ( TreeNode* );
+    void compSub  ( TreeNode* );
+    void compMod  ( TreeNode* );
+    void compNot  ( TreeNode* );
 
-    void execGE   ( TreeNode* );
-    void execGT   ( TreeNode* );
-    void execLE   ( TreeNode* );
-    void execLT   ( TreeNode* );
-    void execNE   ( TreeNode* );
-    void execEQ   ( TreeNode* );
+    void compGE   ( TreeNode* );
+    void compGT   ( TreeNode* );
+    void compLE   ( TreeNode* );
+    void compLT   ( TreeNode* );
+    void compNE   ( TreeNode* );
+    void compEQ   ( TreeNode* );
     
-    void execAnd   ( TreeNode* );
-    void execOr    ( TreeNode* );
-    void execMinus ( TreeNode* );
+    void compAnd   ( TreeNode* );
+    void compOr    ( TreeNode* );
+    void compMinus ( TreeNode* );
 
-    void execRun   ( TreeNode* );
-    void execWrite ( TreeNode* );
-    void execSubstr( TreeNode* );
+    void compRun   ( TreeNode* );
+    void compWrite ( TreeNode* );
+    void compSubstr( TreeNode* );
     
     string runCommand( const string& );
         

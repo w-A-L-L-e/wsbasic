@@ -68,11 +68,11 @@ void TreeNode::destroy(TreeNode* node){
 
 
 
-void TreeNode::setValue(const Number& n){
+void TreeNode::setValue(const Var& n){
   value=n;
 }
 
-Number TreeNode::getValue(){
+Var TreeNode::getValue(){
   return value;
 }
 

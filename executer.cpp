@@ -83,9 +83,9 @@ void Executer::execute(TreeNode* node){
     case writeNode          : execWrite( node );        break;
     case substrNode         : execSubstr( node );       break;
     
-    default                 : cerr<<"Found unsupported node: name='"<<
+    default                 : std::cerr<<"Found unsupported node: name='"<<
                               node->getName()<<"', type="<<
-                              node->getType()<<" in tree!"<<endl; 
+                              node->getType()<<" in tree!" << std::endl; 
                               break;
   }  
 }
@@ -132,7 +132,7 @@ void Executer::execFunction( TreeNode* node ){
   //locate function node  
   functable::iterator p=functionTable.find( funcname );
   if( p==functionTable.end() ){
-    cerr<<"RUN ERROR: Call to undefined function : "<<funcname<<"."<<endl;
+    std::cerr << "RUN ERROR: Call to undefined function : "<<funcname<<"."<<std::endl;
     return;
   }
   
@@ -142,7 +142,7 @@ void Executer::execFunction( TreeNode* node ){
     
   //check if number of parameters match
   if( callparams->size() != funcIds->size() ){
-    cerr<<"RUN ERROR: Call to function "<<funcname<<" with wrong number of parameters."<<endl;
+    std::cerr << "RUN ERROR: Call to function "<<funcname<<" with wrong number of parameters." << std::endl;
     return;
   }
 
@@ -180,8 +180,8 @@ void Executer::execFunction( TreeNode* node ){
 void Executer::execRetFunction( TreeNode* node ){
   execFunction( node );
   if( runStack.size() == 0 ){
-    cerr<<"RUN ERROR: function "<<node->firstChild()->getName()
-        <<" did not return a value!"<<endl;
+    std::cerr<<"RUN ERROR: function "<<node->firstChild()->getName()
+        <<" did not return a value!"<< std::endl;
     return;
   }
   node->setValue( runStack.top() ); //set return val
@@ -264,12 +264,12 @@ void Executer::execFor( TreeNode* node ){
 
   execute(startNode);
   //assign startval to id
-  Number startVal=startNode->getValue();
+  Var startVal=startNode->getValue();
   ( symbolTables.top() )[ name ] = startVal;
   
   
   execute(stopNode);
-  Number stopVal=stopNode->getValue();
+  Var stopVal=stopNode->getValue();
   
   if(node->size() == 4 ){ //for loop without step part
     bBreak=false;
@@ -285,7 +285,7 @@ void Executer::execFor( TreeNode* node ){
     statements      = node->fifthChild();
     
     execute(step);
-    Number stepVal=step->getValue();
+    Var stepVal=step->getValue();
     bBreak=false;
     if( (stepVal.val >= 0.0) && (startVal.val <= stopVal.val) ){
       for( double d=startVal.val; d<=stopVal.val; d=d+stepVal.val ){
@@ -374,7 +374,7 @@ void Executer::execPrintLn( TreeNode* node ){
 
 void Executer::execInput( TreeNode* node ){
   string varName = node->firstChild()->getName();
-  Number val;
+  Var val;
   
   //ask input from cin
   //cout<<"?"; // basic style , don't like it :)
@@ -394,7 +394,7 @@ void Executer::execAssign( TreeNode* node ){
 
     
 void Executer::execExpression( TreeNode* node ){
-  cerr<<"execExpression is not implemented, because it should not be needed!"<<endl;
+  std::cerr<<"execExpression is not implemented, because it should not be needed!" << std::endl;
 }
 
 
@@ -406,7 +406,7 @@ void Executer::execConstant( TreeNode* node ){
   //do nothing, value is already set
 }
 
-Number Executer::getVal( TreeNode* node ){
+Var Executer::getVal( TreeNode* node ){
   execute( node );
   return node->getValue();
 }
@@ -557,7 +557,7 @@ void Executer::execWrite( TreeNode* node ){
     out<<getVal( node->secondChild() );
   }
   else{
-    cerr<<"could not open file :"<<fileName<<" for writing"<<endl;
+    std::cerr<<"could not open file :"<<fileName<<" for writing"<<std::endl;
   }
   out.close();
   
@@ -575,7 +575,7 @@ void Executer::execSubstr( TreeNode* node ){
     node->setValue( val.substr( from, to-from ) );
   }
   else{
-    cerr<<"RUN ERROR: substring from, to arguments run out of string boundaries or from pos is not less than to."<<endl;
+    std::cerr << "RUN ERROR: substring from, to arguments run out of string boundaries or from pos is not less than to."<< std::endl;
     node->setValue( "" );
   }
 }

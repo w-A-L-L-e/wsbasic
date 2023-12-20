@@ -3,7 +3,7 @@ author        : Walter Schreppers
 filename      : lexer.h
 description   : Split an input stream up into tokens, eat up white space and
                 comments and keep track of row and column
-bugreport(log): column will not be incremented enough when numbers are read
+bugreport(log): column will not be incremented enough when vars are read
 =============================================================================*/
 
 #ifndef LEXER_H
@@ -13,7 +13,7 @@ bugreport(log): column will not be incremented enough when numbers are read
 
 #include <string>
 #include <fstream>
-#include "number.h"
+#include "var.h"
 
 using namespace std;
 
@@ -69,7 +69,7 @@ enum types {
 
 
 struct token {
-  Number  val;
+  Var val;
   string  str;
   int     type;
 };
@@ -100,7 +100,7 @@ class Lexer {
     void skipComment();
     void skipWhite();
     void checkKeywords(token&);
-    int getNumber(Number&);
+    int getNumber(Var&);
     int getName(string&);
     void getStringConstant(token& t);
   

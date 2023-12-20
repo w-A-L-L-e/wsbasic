@@ -10,7 +10,7 @@ bugreport(log): prevSibling and nextSibling sometimes segfault and are not optim
 
 #include <string>
 #include <list>
-#include "number.h"
+#include "var.h"
 
 enum NodeType { 
                 Unknown = -1,
@@ -102,11 +102,11 @@ class TreeNode:public list<TreeNode*> {
     void setName(const string&);
     string getName() const;  
     
-    void setValue(const Number&);
+    void setValue(const Var&);
     void setValue(double d){ value = d; }
     void setValue(const string& s){ value = s; }
     
-    Number getValue();
+    Var getValue();
     int getRow(){ return fRow; }
     int getCol(){ return fCol; }
 
@@ -132,7 +132,7 @@ class TreeNode:public list<TreeNode*> {
     //==============
     string name;
     NodeType fType;
-    Number value;
+    Var value;
     string strValue;
     
     int fRow, fCol; //for runtime error messages.

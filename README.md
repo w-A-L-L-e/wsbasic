@@ -137,7 +137,7 @@ update on 24/1/2020
 
 Made some changes now the main block does not need begin/end and function declarations need def.
 
-Example:
+Functions example:
 
 ```
 def showName( name )
@@ -171,4 +171,49 @@ Hello world
 ```
 
 Look in scripts dir for more elaborate examples. It's pretty much got everything like bash has to offer and more...
+
+Here's a another script and its output:
+
+```
+$ cat example.bas
+# an example of a method that returns something
+def square(val)
+begin
+  return val * val
+end
+
+
+##### main #####
+println 2*3+21
+println 2*(3+21)
+
+b=2*4+1             
+c=b*2
+println c
+
+for i = 1 to 10
+begin
+  print("count = ")
+  println(square(i))
+end
+```
+
+To parse and execute the above script just pass the filename to wsbasic:
+```
+$ ./wsbasic example.bas
+
+27.000000
+48.000000
+18.000000
+count = 1.000000
+count = 4.000000
+count = 9.000000
+count = 16.000000
+count = 25.000000
+count = 36.000000
+count = 49.000000
+count = 64.000000
+count = 81.000000
+count = 100.000000
+```
 

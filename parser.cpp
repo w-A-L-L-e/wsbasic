@@ -95,7 +95,7 @@ TreeNode* Parser::signedFactor(){
     case '-':     Match('-');
                   sfac=Factor();
                   if( sfac->getType() == constantNode ){
-                    Number n=sfac->getValue();
+                    Var n=sfac->getValue();
                     n.val= - n.val;
                     sfac->setValue( n );
                     return sfac;
@@ -110,7 +110,7 @@ TreeNode* Parser::signedFactor(){
     case tokNot:  Match(tokNot);
                   sfac=Factor();
                   if( sfac->getType() == constantNode ){
-                    Number n=sfac->getValue();
+                    Var n=sfac->getValue();
                     n.val= 1 - n.val;
                     sfac->setValue( n );
                     return sfac;
@@ -636,7 +636,7 @@ TreeNode* Parser::Print(){
 
 TreeNode* Parser::NewLineNode(){
   TreeNode* newline = new TreeNode( stringConstantNode, row, col );
-  Number n;
+  Var n;
   n=string("\n");
   newline->setValue( n );
   return newline;        
@@ -816,13 +816,3 @@ TreeNode* Parser::Program(){
   return program;
 }
 
-
-
-/*
-  //obsolete
-  string Parser::toString( number n ){
-    ostringstream os;
-    os<<n;
-    return os.str();
-  }
-*/

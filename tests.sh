@@ -1,0 +1,13 @@
+./wsbasic scripts/assigns.b
+./wsbasic scripts/dir-foreach.b
+./wsbasic scripts/dir.b
+./wsbasic scripts/foreach.b
+./wsbasic scripts/forloops.b
+./wsbasic scripts/functions.b
+./wsbasic scripts/ifs.b
+./wsbasic scripts/input.b
+./wsbasic scripts/post_ip.b
+./wsbasic scripts/primes.b
+./wsbasic scripts/runtest.b
+./wsbasic scripts/strings.b
+./wsbasic scripts/while.b

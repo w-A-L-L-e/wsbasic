@@ -97,8 +97,6 @@ class Parser{
     TreeNode* Return();
     TreeNode* Break();
 
-    //string toString(number);
-
     //private locals
     //==============    
     Lexer* lexer;

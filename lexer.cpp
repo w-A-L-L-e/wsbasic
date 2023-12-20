@@ -51,7 +51,7 @@ void Lexer::ungetChar(int ch){
 }
 
 
-int Lexer::getNumber(Number& n){
+int Lexer::getNumber(Var& n){
   (*in)>>n;
   if( in->good() ){
     return tokNumber;
