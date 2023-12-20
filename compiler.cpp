@@ -10,6 +10,8 @@ description   : Proof of concept to make a compiler class that outputs strait
                 But for a lightweight compiler that generates real binary exe
                 this will work also. And its something that can be done on 
                 ancient hardware like amiga or some embedded device...
+dependencies:   Xcode or gcc compiler installed and nasm
+                  brew install nasm
 =============================================================================*/
 
 #include <iostream>
@@ -23,6 +25,8 @@ int main(){
     println("Hello world!")
     exit(42)
   */
+
+  // TODO: generate some asm using our AST in TreeNode like so:
 
   // define start which will be the main starting point like main() for c
   file << "global start"    << std::endl;
@@ -47,7 +51,7 @@ int main(){
   file << "  .len:   equ     $ - msg"                << std::endl;  // nasm trick to compute len of msg
 
   
-  // TODO: for variables we can do stuff like
+  // TODO: for variables we can use stack and heap:
   // push value 42 on stack:
   // mov rax, 42
   // push rax 
@@ -58,15 +62,12 @@ int main(){
   // syscall 
   // ....
 
-  // use nasm to convert asm to object file
-  // use ld to link it into an exe
-  // brew install nasm
 
   // for linux binary
   // system("nasm -felf64 out.asm"); // on linux use elf format
   // system("ld -o out out.o");
 
-  // for macos 10.10 binary (works on ventura)
+  // assemble and link commands (this works on macos ventura)
   system("nasm -f macho64 out.asm");
   system("ld -arch x86_64 -macos_version_min 10.10.0 -static out.o -o out");
 
