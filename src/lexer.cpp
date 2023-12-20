@@ -99,6 +99,7 @@ void Lexer::checkKeywords(token& t){
     else if( t.str == "or"        ) t.type=tokOr;
     else if( t.str == "not"       ) t.type=tokNot;
     else if( t.str == "return"    ) t.type=tokReturn;
+    else if( t.str == "exit"      ) t.type=tokExit;
     else if( t.str == "break"     ) t.type=tokBreak;
     else if( t.str == "run"       ) t.type=tokRun;
     else if( t.str == "write"     ) t.type=tokWrite;

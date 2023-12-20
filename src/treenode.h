@@ -14,25 +14,26 @@ bugreport(log): prevSibling and nextSibling sometimes segfault and are not optim
 
 enum NodeType { 
                 Unknown = -1,
-                programNode,
+                programNode,   // 0
                 functionNode,
                 functionCallNode,
                 funcReturnNode,
                 returnNode,
-                breakNode,
+                exitNode,     // 5
+                breakNode,      
                 idListNode,
                 blockNode,
                 forNode,
-                forEachNode,
-                whileNode,
+                forEachNode,  // 10
+                whileNode,    // 11
                 ifNode,
                 printNode,
                 inputNode,
                 assignNode,
-                expressionNode,
+                expressionNode,  // 16
                 idNode,
                 constantNode,
-                stringConstantNode,
+                stringConstantNode,  // 19
             
                 addNode,
                 mulNode,

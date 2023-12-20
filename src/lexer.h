@@ -51,6 +51,7 @@ enum types {
   tokAssign,
 
   tokReturn,
+  tokExit,
   tokBreak,
 
   tokForEach,

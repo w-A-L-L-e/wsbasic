@@ -638,6 +638,7 @@ TreeNode* Parser::NewLineNode(){
   TreeNode* newline = new TreeNode( stringConstantNode, row, col );
   Var n;
   n=string("\n");
+  // newline->setStrValue("newline");
   newline->setValue( n );
   return newline;        
 }
@@ -671,6 +672,15 @@ TreeNode* Parser::Return(){
   return ret;
 }
 
+TreeNode* Parser::Exit(){
+  TreeNode* ret=new TreeNode( exitNode, row, col );
+  
+  Match( tokExit );
+  ret->appendChild( Expression() );
+  
+  return ret;
+}
+
 TreeNode* Parser::Break(){
   TreeNode* brk = new TreeNode( breakNode, row, col );
   Match ( tokBreak );
@@ -689,6 +699,7 @@ TreeNode* Parser::Statement(){
     case tokInput   : return Input();         break;
     case tokReturn  : return Return();        break;
     case tokBreak   : return Break();         break;
+    case tokExit    : return Exit();          break;                                               
     case tokId      : return Other();         break; //assignment or function call
 
     case tokWrite   : return writeFunction(); break;

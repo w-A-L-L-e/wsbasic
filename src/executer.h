@@ -59,6 +59,7 @@ class Executer{
     void execFunction   ( TreeNode* );
     void execRetFunction( TreeNode* );
     void execReturn     ( TreeNode* );
+    void execExit       ( TreeNode* );
     void execBreak      ( TreeNode* );
 
 

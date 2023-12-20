@@ -44,7 +44,7 @@ void AsmCompiler::run(){
 
 }
 
-
+// https://steemit.com/programming/@orangeflash81/dynamic-memory-allocation-on-windows-in-nasm
 void AsmCompiler::generate(const string& outfile){
   ofstream out(outfile);
 

@@ -95,6 +95,7 @@ class Parser{
     TreeNode* PrintLn();
     TreeNode* Input();
     TreeNode* Return();
+    TreeNode* Exit();
     TreeNode* Break();
 
     //private locals

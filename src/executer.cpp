@@ -77,6 +77,7 @@ void Executer::execute(TreeNode* node){
     case functionCallNode   : execFunction( node );     break;
     case funcReturnNode     : execRetFunction( node );  break;
     case returnNode         : execReturn( node );       break;
+    case exitNode           : execExit( node );         break;
     case breakNode          : execBreak( node );        break;
     
     case runNode            : execRun( node );          break;
@@ -195,6 +196,12 @@ void Executer::execReturn( TreeNode* node ){
   bReturn=true; //notify blocks of return
 }
 
+
+void Executer::execExit( TreeNode* node ){
+  execute( node->firstChild() );
+  int exitcode = node->firstChild()->getValue().val;
+  exit(exitcode);
+}
 
 void Executer::execBreak( TreeNode* node ){
   bBreak=true; //stops loop block execution
