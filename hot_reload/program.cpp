@@ -18,7 +18,7 @@ void *libplug = NULL;
 
 // unfonrtunately in clang on macos the name##_t and #name to get string and preprocessor concat
 // does not work here
-#define METHOD(name) name##_t name = NULL; 
+#define METHOD(name) name name = NULL;
 PLUGIN_METHODS
 #undef METHOD
 
