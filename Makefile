@@ -42,6 +42,10 @@ testcompile:
 	@./out
 	echo $?
 
+debug: wsbasic
+	$(CXX) -g src/main.cpp -o wsbasic_debug lexer.o parser.o var.o treenode.o executer.o asm_compiler.o c_compiler.o
+	lldb ./wsbasic_debug hello.bas
+
 install:
 	cp wsbasic $(INSTALL_DIR)
 

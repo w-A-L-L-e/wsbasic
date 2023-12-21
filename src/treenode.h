@@ -82,7 +82,7 @@ class TreeNode:public list<TreeNode*> {
     TreeNode* getParent(){return parent;}
     
     virtual void show(int indent=0);
-    void showTree(TreeNode* node, int indent=0) const;
+    void showTree(TreeNode* node, int indent=-1) const;
     
     void appendChild(TreeNode*);
     void appendSibling(TreeNode*); //works only if it has parent set!

@@ -123,8 +123,6 @@ TreeNode& TreeNode::operator=(const TreeNode& t){
 
 
 void TreeNode::show(int indent){
-  cout << getType() << " ";
-
   string s="";
   for(int i=0;i<indent;i++) s+="  ";
   s +=  "- ";
@@ -143,17 +141,25 @@ void TreeNode::show(int indent){
     s += "constant = " + cval; 
   } 
   else if (getType() == stringConstantNode) {
+    s += getName();
+
     const Var& v = getValue();
-    cval += "\"";
-    cval += v.strVal;
-    cval += "\"";
-    // cout << "string constnt val=" << v.val;
+    if (v.bString) {
+      cval = v.strVal;
+    }
+    else {
+      ostringstream os;
+      os << v.val;
+      cval += os.str();
+    }
+    if(getName() != "newline") s += " = " + cval;
   }
   else{ // if(getType() == idNode){
     s += getName();
   }
 
   cout << s;
+  cout << " (" << getType() << ") ";
   cout << endl;
 }
 

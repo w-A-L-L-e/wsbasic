@@ -202,11 +202,13 @@ TreeNode* Parser::Factor()
                   
     case tokString: n=new TreeNode( stringConstantNode, row, col );
                     n->setValue( look.str );
+                    n->setName("const str");
                     Match(tokString);
                     break;
 
     case tokNumber: n=new TreeNode( constantNode, row, col );
                     n->setValue( look.val );
+                    n->setName("number");
                     Match(tokNumber);
                     break;
     
@@ -416,6 +418,7 @@ TreeNode* Parser::Assignment( const string& name ){
 */
 TreeNode* Parser::ParamList(){
   TreeNode* ilist=new TreeNode( idListNode, row, col );
+  ilist->setName("param id list");
 
   //check for empty idlist -> function with no parameters
   if( look.type == ')' ) return ilist;
@@ -436,10 +439,11 @@ TreeNode* Parser::ParamList(){
   <functioncall> := tokId '(' <paramlist> ')' 
 */
 TreeNode* Parser::FunctionCall( const string& name ){
-  TreeNode* fcall=new TreeNode( functionCallNode, row, col );
+  TreeNode* fcall = new TreeNode( functionCallNode, row, col );
+  fcall->setName("function call");
   
   //first child contains function name
-  TreeNode* funcid= new TreeNode( idNode, row, col );
+  TreeNode* funcid = new TreeNode( idNode, row, col );
   funcid->setName( name );
   fcall->appendChild( funcid );
   
@@ -602,15 +606,16 @@ TreeNode* Parser::If(){
   return node;
 }
 
-
-TreeNode* Parser::getString(){
-  TreeNode* str = new TreeNode( stringConstantNode, row, col );
-  
-  str->setStrValue( look.str );
-  Match( tokString );
-  
-  return str;
-}
+// 
+// TreeNode* Parser::getString(){
+//   TreeNode* str = new TreeNode( stringConstantNode, row, col );
+//   str->setName("str const");
+//   
+//   str->setStrValue( look.str );
+//   Match( tokString );
+//   
+//   return str;
+// }
 
 /*
   <print> ::= 'print' ( ( <expression> | <string> ) ',' )+
@@ -640,6 +645,7 @@ TreeNode* Parser::NewLineNode(){
   n=string("\n");
   // newline->setStrValue("newline");
   newline->setValue( n );
+  newline->setName("newline");
   return newline;        
 }
 
@@ -665,6 +671,7 @@ TreeNode* Parser::Input(){
 
 TreeNode* Parser::Return(){
   TreeNode* ret=new TreeNode( returnNode, row, col );
+  ret->setName("return");
   
   Match( tokReturn );
   ret->appendChild( Expression() );
@@ -674,6 +681,7 @@ TreeNode* Parser::Return(){
 
 TreeNode* Parser::Exit(){
   TreeNode* ret=new TreeNode( exitNode, row, col );
+  ret->setName("exit");
   
   Match( tokExit );
   ret->appendChild( Expression() );
@@ -683,6 +691,7 @@ TreeNode* Parser::Exit(){
 
 TreeNode* Parser::Break(){
   TreeNode* brk = new TreeNode( breakNode, row, col );
+  brk->setName("break");
   Match ( tokBreak );
   
   return brk;
@@ -742,7 +751,7 @@ TreeNode* Parser::Block(){
 // main block added so you don't have to wrap code in begin/end, is more python like as well
 TreeNode* Parser::MainBlock(){
   TreeNode* block=new TreeNode( blockNode, row, col );
-  block->setName("block");
+  block->setName("main block");
   
   bool checkEndBlock = false;
   if( look.type == tokBegin ){
@@ -771,6 +780,7 @@ TreeNode* Parser::MainBlock(){
 
 TreeNode* Parser::IdList(){
   TreeNode* ilist=new TreeNode( idListNode, row, col );
+  ilist->setName("id list");
 
   //check for empty idlist -> function with no parameters
   if( look.type == ')' ) return ilist;
@@ -798,6 +808,7 @@ TreeNode* Parser::IdList(){
 ===================================================================*/
 TreeNode* Parser::Function(){
   TreeNode* func=new TreeNode( functionNode, row, col );
+  func->setName("function");
   
   Match(tokDef);
   TreeNode* idn=getId();

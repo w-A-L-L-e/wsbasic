@@ -12,29 +12,34 @@ description   : Open a file, parse it into a tree and then execute it
 int main(int argc, char** arg){
   int argpos = 1;
   if(argc < 2){
-    cout<<"Usage: [-debug, -c, -a] "<<arg[0]<<" <FILE> "<<endl;
+    cout <<"Usage: "<<arg[0]<<" [-ast, -cpp, -asm] <WSBASIC SCRIPT> "<<endl;
+    cout <<"   -ast : show parse result in absact syntax tree for debugging" << endl;
+    cout <<"   -cpp : convert to cpp and then compile + link" << endl;
+    cout <<"   -asm : convert to asm for nasm and then compile + link" << endl;
+    cout << endl;
+
     return 1;
   }
  
-  bool debug = false;
+  bool show_tree = false;
   bool asm_compile = false;
   bool c_compile = false;
 
-
-  if (string(arg[argpos]) == "-debug"){
-    debug = true;
+  if (string(arg[argpos]) == "-ast"){
+    show_tree = true;
     argpos++;
   }
 
-  if (string(arg[argpos]) == "-c"){
+  if (string(arg[argpos]) == "-cpp"){
     c_compile = true;
     argpos++;
   }
 
-  if (string(arg[argpos]) == "-a") {
+  if (string(arg[argpos]) == "-asm") {
     asm_compile = true; 
     argpos++;
   }
+
 
   ifstream in(arg[argpos]);
   if( !in.is_open () ){
@@ -47,9 +52,10 @@ int main(int argc, char** arg){
   if( parser.parse() ){
     TreeNode* root=parser.getTree();
 
-    if (debug) {
-      root->showTree(root); //show AST parsetree
-      return 0;
+    if (show_tree) {
+      cout << "============================( AST ) ===========================" << endl;
+      root->showTree(root);
+      cout << "---------------------------------------------------------------" << endl;
     }
 
     if(asm_compile){
