@@ -16,9 +16,8 @@
 
 void *libplug = NULL;
 
-// unfonrtunately in clang on macos the name##_t and #name to get string and preprocessor concat
-// does not work here
-#define METHOD(name) name name = NULL;
+
+#define METHOD(name_t, name, name_str, ret, ...) name_t name = NULL;
 PLUGIN_METHODS
 #undef METHOD
 
@@ -37,13 +36,13 @@ bool loadlib(const char* plugin_file){
 
 
   void *fhandle;
-  #define METHOD(name) \
-    fhandle = dlsym(libplug, #name); \
+  #define METHOD(name_t, name, name_str, ret, ...) \
+    fhandle = dlsym(libplug, name_str); \
     if (name == NULL) { \
-      std::cout << "ERROR could not find "<< #name << "in "<<plugin_file<<" "<<dlerror()<<std::endl; \
+      std::cout << "ERROR could not find "<< name_str << "in "<<plugin_file<<" "<<dlerror()<<std::endl; \
       return false; \
     } \
-    name = reinterpret_cast<name##_t>(reinterpret_cast<long>(fhandle));
+    name = reinterpret_cast<name_t>(reinterpret_cast<long>(fhandle));
   PLUGIN_METHODS
   #undef METHOD
 
