@@ -2,7 +2,7 @@
 
 WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
 
-## Compiling:
+## Compiling
 
 ```
 $ make
@@ -74,7 +74,40 @@ $ echo $?
 42
 ```
 
-Try running some more elaborate test scripts with loops, function calls etc:
+
+## example calling shell commands
+We can even use things like we do in bash here's a nice example of fetching your ip address from the internet.
+```
+$ cat example.bas
+
+#!/usr/local/bin/wsbasic
+
+def make_webrequest()
+begin
+  url =  "https://ipinfo.io/ip"   
+  result  = run("curl -s " + url)
+  println "your public ip = ", result
+end
+
+make_webrequest()
+
+println "simple forloop example"
+for i=1 to 5
+  println i
+
+```
+$ ./wsbasic example.bas
+
+your public ip = 94.226.168.242
+simple forloop example
+1.000000
+2.000000
+3.000000
+4.000000
+5.000000
+```
+
+More script examples can be found in the scripts dir.
 ```
 $ cd scripts
 $ ./tests

@@ -1,20 +1,15 @@
-def square(val)
+#!/usr/local/bin/wsbasic
+
+def make_webrequest()
 begin
-  return val * val
+  url =  "https://ipinfo.io/ip"   
+  result  = run("curl -s " + url)
+  println "your public ip = ", result
 end
 
+make_webrequest()
 
-##### main #####
-println 2*3+21
-println 2*(3+21)
-
-b=2*4+1             
-c=b*2
-println c
-
-for i = 1 to 10
-begin
-  print("count = ")
-  println(square(i))
-end
+println "simplest forloop example"
+for i=1 to 5
+  println i
 
