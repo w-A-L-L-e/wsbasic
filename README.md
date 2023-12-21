@@ -2,6 +2,84 @@
 
 WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
 
+## Compiling:
+
+```
+$ make
+g++  -O2 -Wall -c number.cpp
+g++  -O2 -Wall -c lexer.cpp
+g++  -O2 -Wall -c parser.cpp
+g++  -O2 -Wall -c treenode.cpp
+g++  -O2 -Wall -c executer.cpp
+g++  -O2 -Wall main.cpp -o wsbasic lexer.o parser.o treenode.o executer.o number.o
+```
+
+Same applies for compiling on linux, windows with mingw. Feel free to ask if you get some error or warning on those platforms.
+
+
+## Usage
+
+Run without arguments and get usage:
+```
+$ ./wsbasic
+Usage: ./wsbasic [-ast, -cpp, -asm] <WSBASIC SCRIPT> 
+   -ast : show parse result in absact syntax tree for debugging
+   -cpp : convert to cpp and then compile + link
+   -asm : convert to asm for nasm and then compile + link
+```
+
+```
+$ cat hello.bas
+x=40
+println("Hello world!")
+exit(x+2)
+```
+
+Just running above script directly:
+
+```
+./wsbasic hello.bas
+Hello world!
+```
+
+Show the AST after parsing and use assembly to create executable:
+```
+./wsbasic -ast -asm hello.bas
+============================( AST ) ===========================
+- main block (8) 
+  - assignment (15) 
+    - x (17) 
+    - constant = 40 (18) 
+  - println (13) 
+    - const str = Hello world! (19) 
+    - newline (19) 
+  - exit (5) 
+    - add (20) 
+      - x (17) 
+      - constant = 2 (18) 
+---------------------------------------------------------------
+generating asm code and linking...
+saved executable 'output'
+```
+
+We can run the generated executable (in future version it will be called hello.exe here, right now its always output.o and output)
+```
+$ ./output
+Hello, world!
+```
+
+We can check the exit statement properly set the right return code in bash:
+```
+$ echo $?
+42
+```
+
+Try running some more elaborate test scripts with loops, function calls etc:
+```
+$ cd scripts
+$ ./tests
+```
+
 
 ## History
 Originally released on sourceforge and freecode.com over 19 years ago (april 2000):
@@ -33,20 +111,6 @@ https://walter.schreppers.com/files/kturtle.gif
 Without further ado: Just compile this project and run some scripts form commandline and enjoy reading, learning and implementing your own compilers by playing
 with a working example:
 
-## Compiling:
-
-```
-➜  wsbasic git:(master) make
-g++  -O2 -Wall -c number.cpp
-g++  -O2 -Wall -c lexer.cpp
-g++  -O2 -Wall -c parser.cpp
-g++  -O2 -Wall -c treenode.cpp
-g++  -O2 -Wall -c executer.cpp
-g++  -O2 -Wall main.cpp -o wsbasic lexer.o parser.o treenode.o executer.o number.o
-```
-
-Same applies for compiling on linux, windows with mingw. Feel free to ask if you get some error or warning on those platforms.
-
 ### The implemented basic language
 
 Someone already started documenting it in the past here http://wsbasic.sourceforge.net/. But I've got no spare time to do it myself. Currently too busy with work, family 
@@ -72,12 +136,7 @@ And the entire parser class is less than 800 lines of c++ code so readability an
 Same for the lexer and execution classes, keeping the implementation as tight and simple as possible while still providing a fully working interpreter that can even
 be extended to a compiler by adding 1 more class (a compiler class that iterates the N-tree similarly to Executer but now just spits out code with cout statements would be enough to do that in the same minimal philosophy )
 
-### Usage and examples
-
-Executing a single script, here we for example compute some prime numbers:
-```
-./wsbasic scripts/primes.b 
-```
+### Future work
 
 Nowadays you can still learn from this but will most likely move on to LLVM tools to make yourself a neat compiler with minimal effort.
 A good starting point is this tutorial:
@@ -103,72 +162,6 @@ being Walter Schreppers. Any changes to the sources are encouraged to be release
 
 
 Look in scripts dir for more elaborate examples. It's pretty much got everything like bash has to offer and more...
-
-Here's a an example script and its output:
-
-```
-$ cat example.bas
-# an example of a method that returns something
-def square(val)
-begin
-  return val * val
-end
-
-
-##### main #####
-println 2*3+21
-println 2*(3+21)
-
-b=2*4+1             
-c=b*2
-println c
-
-for i = 1 to 10
-begin
-  print("count = ")
-  println(square(i))
-end
-```
-
-To parse and execute the above script just pass the filename to wsbasic:
-```
-$ ./wsbasic example.bas
-
-27.000000
-48.000000
-18.000000
-count = 1.000000
-count = 4.000000
-count = 9.000000
-count = 16.000000
-count = 25.000000
-count = 36.000000
-count = 49.000000
-count = 64.000000
-count = 81.000000
-count = 100.000000
-```
-
-
-Try running some test scripts:
-```
-➜  wsbasic git:(master) ✗ ./examples/tests.sh 
-2.000000
-b=20.000000
-c=11.000000
-tricky=0.900000
-b1=1.000000
-b2=0.000000
-b3=1.000000
-g=-6.000000
-1.000000.	total 752
-2.000000.	drwxr-xr-x  27 wschrep  staff     864 Apr 26 17:12 .
-3.000000.	drwxr-xr-x  89 wschrep  staff    2848 Apr 26 16:43 ..
-4.000000.	drwxr-xr-x  13 wschrep  staff     416 Apr 26 17:12 .git
-
-.... some more output and input requested here (basically runs all scripts in scripts dir)
-```
-
 
 
 ## UPDATES
