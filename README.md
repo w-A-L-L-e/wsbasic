@@ -95,7 +95,6 @@ println "simple forloop example"
 for i=1 to 5
   println i
 
-```
 $ ./wsbasic example.bas
 
 your public ip = 94.226.168.242
