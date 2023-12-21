@@ -75,7 +75,6 @@ $ echo $?
 ```
 
 
-## example calling shell commands
 We can even use things like we do in bash here's a nice example of fetching your ip address from the internet.
 ```
 $ cat example.bas
@@ -95,6 +94,10 @@ println "simple forloop example"
 for i=1 to 5
   println i
 
+```
+
+When we run this example curl will be used and the output is available in our basic script to do anything we want:
+```
 $ ./wsbasic example.bas
 
 your public ip = 94.226.168.242
