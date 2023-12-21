@@ -18,31 +18,31 @@ AsmCompiler::AsmCompiler(TreeNode* tree){
   bReturn=false;
 }
 
-void AsmCompiler::run(){
-  bBreak=false;
-  bReturn=false;
-  
-  // compile program block
-  TreeNode* node;
-  TreeNode::const_iterator i;
-  for(i = tree->begin() ; i != tree->end(); ++i ){
-
-    node=*i;
-    if( node->getType() == blockNode){
-      symtable main;
-      symbolTables.push( main ); //new symbol table for main block
-      compile( node );  //compile into asm
-      symbolTables.pop(); //free up stack
-      
-    }
-    else if( node->getType() == functionNode ){
-      string funcname=node->firstChild()->getName();
-      functionTable[ funcname ] = node; //store for later use
-    }
-
-  }
-
-}
+// void AsmCompiler::run(){
+//   bBreak=false;
+//   bReturn=false;
+//   
+//   // compile program block
+//   TreeNode* node;
+//   TreeNode::const_iterator i;
+//   for(i = tree->begin() ; i != tree->end(); ++i ){
+// 
+//     node=*i;
+//     if( node->getType() == blockNode){
+//       symtable main;
+//       symbolTables.push( main ); //new symbol table for main block
+//       compile( node );  //compile into asm
+//       symbolTables.pop(); //free up stack
+//       
+//     }
+//     else if( node->getType() == functionNode ){
+//       string funcname=node->firstChild()->getName();
+//       functionTable[ funcname ] = node; //store for later use
+//     }
+// 
+//   }
+// 
+// }
 
 // https://steemit.com/programming/@orangeflash81/dynamic-memory-allocation-on-windows-in-nasm
 void AsmCompiler::generate(const string& outfile){
@@ -69,7 +69,7 @@ void AsmCompiler::generate(const string& outfile){
 
   // data section to store all strings (our compiler will need to do this by looking at all string tokens in our .bas out
   out << "section .data"                            << std::endl;
-  out << "  msg:    db      \"Hello, world! (generated with ASM)\", 10"  << std::endl;  // (ascii 10==new line)
+  out << "  msg:    db      \"Hello, world!\", 10"  << std::endl;  // (ascii 10==new line)
   out << "  .len:   equ     $ - msg"                << std::endl;  // nasm trick to compute len of msg
 
 
