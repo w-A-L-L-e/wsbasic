@@ -12,12 +12,11 @@
 #include "plugin.h"
 
 
-const char* plugin_file = "libplugin.so";
 void *libplug = NULL;
 plugin_execute_t plug_execute = NULL;
 plugin_add_t plug_add = NULL;
 
-bool loadlib(const char* plugin_file){
+bool load_library(const char* plugin_file){
   if (libplug != NULL) dlclose(libplug);
 
   // libplug = dlopen(plugin_file, RTLD_LAZY);
@@ -56,7 +55,7 @@ int main(){
   while(true){
     usleep(2000000);
     std::cout << std::endl << counter++ << std::endl;
-    if (!loadlib(plugin_file)) continue;
+    if (!load_library("libplugin.so")) continue;
 
     plug_execute();
     bool res = plug_add(5, 2);
