@@ -4,16 +4,21 @@
 #include <iostream>
 
 extern "C"
-void execute(void){
+void plugin_execute(void){
   std::cout << "execute method was called" << std::endl;
 }
 
-
 extern "C"
-bool add(int a, int b){
+bool plugin_add(int a, int b){
   std::cout << "a+b = "<< a+b << std::endl;
   if ((a+b) > 5) return true;
   else return false;
+}
+
+extern "C"
+int plugin_sub(int a, int b){
+  std::cout << "a-b = "<< a-b << std::endl;
+  return a-b;
 }
 
 

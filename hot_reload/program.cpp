@@ -6,16 +6,24 @@
 //
 // Author: Walter Schreppers
 
+
+
 #include <unistd.h> // for sleep
 #include <dlfcn.h>  // for dlopen
 #include <iostream>
 #include "plugin.h"
 
 
-const char* plugin_file = "libplugin.so";
 void *libplug = NULL;
-plugin_execute_t plug_execute = NULL;
-plugin_add_t plug_add = NULL;
+
+// unfonrtunately in clang on macos the name##_t and #name to get string and preprocessor concat
+// does not work here
+#define METHOD(name) name##_t name = NULL; 
+PLUGIN_METHODS
+#undef METHOD
+
+// above macor generates things like this:
+// plugin_add_t plug_add = NULL;
 
 bool loadlib(const char* plugin_file){
   if (libplug != NULL) dlclose(libplug);
@@ -27,16 +35,20 @@ bool loadlib(const char* plugin_file){
     return false;
   }
 
-  void *fhandle = dlsym(libplug, "execute");
-  if (fhandle == NULL) {
-    std::cout << "ERROR could not find method in "<<plugin_file<<" "<<dlerror()<<std::endl;
-    return false;
-  }
 
-  // cast to correct typed function pointer
-  plug_execute = reinterpret_cast<plugin_execute_t>(reinterpret_cast<long>(fhandle)) ;
+  void *fhandle;
+  #define METHOD(name) \
+    fhandle = dlsym(libplug, #name); \
+    if (name == NULL) { \
+      std::cout << "ERROR could not find "<< #name << "in "<<plugin_file<<" "<<dlerror()<<std::endl; \
+      return false; \
+    } \
+    name = reinterpret_cast<name##_t>(reinterpret_cast<long>(fhandle));
+  PLUGIN_METHODS
+  #undef METHOD
 
-
+  /*
+  how code looks without above x macro above:
   fhandle = dlsym(libplug, "add");
   if (fhandle == NULL) {
     std::cout << "ERROR could not find method in "<<plugin_file<<" "<<dlerror()<<std::endl;
@@ -45,6 +57,7 @@ bool loadlib(const char* plugin_file){
 
   // cast to correct typed function pointer
   plug_add = reinterpret_cast<plugin_add_t>(reinterpret_cast<long>(fhandle)) ;
+  */
 
   return true;
 }
@@ -56,11 +69,12 @@ int main(){
   while(true){
     usleep(2000000);
     std::cout << std::endl << counter++ << std::endl;
-    if (!loadlib(plugin_file)) continue;
+    if (!loadlib("libplugin.so")) continue;
 
-    plug_execute();
-    bool res = plug_add(5, 2);
+    plugin_execute();
+    bool res = plugin_add(5, 2);
     std::cout << "returned from add=" << res << std::endl;
+    plugin_sub(5,2);
 
   }
 }
