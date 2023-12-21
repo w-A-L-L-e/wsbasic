@@ -5,7 +5,7 @@
 
 extern "C"
 void plugin_execute(void){
-  std::cout << "execute method was called" << std::endl;
+  std::cout << "execute method called." << std::endl;
 }
 
 extern "C"

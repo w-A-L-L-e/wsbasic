@@ -5,61 +5,11 @@
 // extern "C" in your functions otherwise names will get mangled (gcc does not need this)
 //
 // Author: Walter Schreppers
-
-
-
+// 
 #include <unistd.h> // for sleep
-#include <dlfcn.h>  // for dlopen
 #include <iostream>
 #include "plugin.h"
 
-
-void *libplug = NULL;
-
-
-#define METHOD(name_t, name, name_str, ret, ...) name_t name = NULL;
-PLUGIN_METHODS
-#undef METHOD
-
-// above macor generates things like this:
-// plugin_add_t plug_add = NULL;
-
-bool loadlib(const char* plugin_file){
-  if (libplug != NULL) dlclose(libplug);
-
-  // libplug = dlopen(plugin_file, RTLD_LAZY);
-  libplug = dlopen(plugin_file, RTLD_NOW);
-  if (libplug == NULL) {
-    std::cout << "ERROR could not load so file "<<plugin_file<<" "<<dlerror()<<std::endl;
-    return false;
-  }
-
-
-  void *fhandle;
-  #define METHOD(name_t, name, name_str, ret, ...) \
-    fhandle = dlsym(libplug, name_str); \
-    if (name == NULL) { \
-      std::cout << "ERROR could not find "<< name_str << "in "<<plugin_file<<" "<<dlerror()<<std::endl; \
-      return false; \
-    } \
-    name = reinterpret_cast<name_t>(reinterpret_cast<long>(fhandle));
-  PLUGIN_METHODS
-  #undef METHOD
-
-  /*
-  how code looks without above x macro above:
-  fhandle = dlsym(libplug, "add");
-  if (fhandle == NULL) {
-    std::cout << "ERROR could not find method in "<<plugin_file<<" "<<dlerror()<<std::endl;
-    return false;
-  }
-
-  // cast to correct typed function pointer
-  plug_add = reinterpret_cast<plugin_add_t>(reinterpret_cast<long>(fhandle)) ;
-  */
-
-  return true;
-}
 
 
 int main(){
