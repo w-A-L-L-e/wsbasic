@@ -5,48 +5,10 @@
 // extern "C" in your functions otherwise names will get mangled (gcc does not need this)
 //
 // Author: Walter Schreppers
-
+// 
 #include <unistd.h> // for sleep
-#include <dlfcn.h>  // for dlopen
 #include <iostream>
 #include "plugin.h"
-
-
-void *libplug = NULL;
-plugin_execute_t plug_execute = NULL;
-plugin_add_t plug_add = NULL;
-
-bool load_library(const char* plugin_file){
-  if (libplug != NULL) dlclose(libplug);
-
-  // libplug = dlopen(plugin_file, RTLD_LAZY);
-  libplug = dlopen(plugin_file, RTLD_NOW);
-  if (libplug == NULL) {
-    std::cout << "ERROR could not load so file "<<plugin_file<<" "<<dlerror()<<std::endl;
-    return false;
-  }
-
-  void *fhandle = dlsym(libplug, "execute");
-  if (fhandle == NULL) {
-    std::cout << "ERROR could not find method in "<<plugin_file<<" "<<dlerror()<<std::endl;
-    return false;
-  }
-
-  // cast to correct typed function pointer
-  plug_execute = reinterpret_cast<plugin_execute_t>(reinterpret_cast<long>(fhandle)) ;
-
-
-  fhandle = dlsym(libplug, "add");
-  if (fhandle == NULL) {
-    std::cout << "ERROR could not find method in "<<plugin_file<<" "<<dlerror()<<std::endl;
-    return false;
-  }
-
-  // cast to correct typed function pointer
-  plug_add = reinterpret_cast<plugin_add_t>(reinterpret_cast<long>(fhandle)) ;
-
-  return true;
-}
 
 
 int main(){
@@ -57,9 +19,10 @@ int main(){
     std::cout << std::endl << counter++ << std::endl;
     if (!load_library("libplugin.so")) continue;
 
-    plug_execute();
-    bool res = plug_add(5, 2);
+    plugin_execute();
+    bool res = plugin_add(5, 2);
     std::cout << "returned from add=" << res << std::endl;
+    plugin_sub(5,2);
 
   }
 }
