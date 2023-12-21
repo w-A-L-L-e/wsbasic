@@ -4,8 +4,9 @@
   METHOD(plugin_sub)      
        
 
+#define STR(X) #X
 
-#define METHOD(name) name name = NULL; 
+#define METHOD(name) name" "_t name= NULL; 
 PLUGIN_METHODS
 #undef METHOD
 
@@ -22,4 +23,7 @@ PLUGIN_METHODS
 #undef METHOD
 
 
+#define CONCAT(p1,p2)  p1##p2
+
+CONCAT(hello,world)
 // run cpp test_macro.cpp to see output (this works on linux, not on macox clang however)
