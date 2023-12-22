@@ -44,8 +44,9 @@ class CCompiler{
 
     //private members
     //===============
-    void compile( TreeNode* );  
+    void compile(TreeNode*);  
 
+    void compConstantString ( TreeNode* );
     void compBlock      ( TreeNode* );
     void compFor        ( TreeNode* );
     void compForEach    ( TreeNode* );
@@ -60,21 +61,10 @@ class CCompiler{
     
     void compFunction   ( TreeNode* );
     void compRetFunction( TreeNode* );
-    void compReturn     ( TreeNode* );
     void compBreak      ( TreeNode* );
+    void compReturn     ( TreeNode* );
+    void compExit       ( TreeNode* );
 
-
-    //gfx stuff, most likely to be refactored or deprecated soon
-    void compGraphics(TreeNode* );
-    void mayclearScr(TreeNode* );
-    void drawPixel(TreeNode* );
-    void createScreenBuffer(TreeNode* );
-    void drawPixelBuffer(TreeNode* );
-    void swapScreen(TreeNode* );
-    void drawRectangle(TreeNode* );
-
-
- 
     Var getVal ( TreeNode* );
     
     void compAdd  ( TreeNode* );
@@ -110,6 +100,8 @@ class CCompiler{
     
     bool bReturn;  //used for return statements
     bool bBreak;   //used for break statement
+    
+    ofstream out;
 };
 
 
