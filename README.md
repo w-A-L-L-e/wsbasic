@@ -45,7 +45,7 @@ Hello world!
 Show the AST after parsing and use assembly to create executable:
 ```
 ./wsbasic -ast -asm hello.bas
-============================( AST ) ===========================
+============================( AST )============================
 - main block (8) 
   - assignment (15) 
     - x (17) 

@@ -41,7 +41,6 @@ AsmCompiler::AsmCompiler(TreeNode* tree){
 //     }
 // 
 //   }
-// 
 // }
 
 // https://steemit.com/programming/@orangeflash81/dynamic-memory-allocation-on-windows-in-nasm
