@@ -1,14 +1,14 @@
 /*============================================================================
 author        : Walter Schreppers
-filename      : c_compiler.h
-description   : Compile a parsetree into c which can then turn into exe.
-                The difference with cpp is taht we also convert all types 
-                to basics (long, double or char*). Work in progress...
+filename      : ccp_compiler.h
+description   : Compile a parsetree into c++ to be compiled to binary at link step
+                just call .generate to get cpp output and call link to compile and
+                link actual binary
 bugreport(log): /
 =============================================================================*/
 
-#ifndef C_COMPILER_H
-#define C_COMPILER_H
+#ifndef CPP_COMPILER_H
+#define CPP_COMPILER_H
 
 #include "treenode.h"
 #include <iostream>
@@ -27,13 +27,13 @@ typedef stack<Var> runstack;
 
 //using namespace std;
 
-class CCompiler{
+class CppCompiler{
   
   public:
   
     //constructor
     //===========
-    CCompiler(TreeNode*);
+    CppCompiler(TreeNode*);
     
     //public members
     //==============

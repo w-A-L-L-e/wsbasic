@@ -1,27 +1,27 @@
 /*=============================================================================
 author        : Walter Schreppers
-filename      : c_compiler.cpp
+filename      : cpp_compiler.cpp
 description   : Compiles a parsetree
-bugreport(log): Work in progress. Alternate way of working. Generate c source
+bugreport(log): Work in progress. Alternate way of working. Generate c++ source
 file from a .basic file and then compile that. This is easier to implement and
 will be more performant however we do have a bigger depencency on gcc when used
 =============================================================================*/
 
-#include "c_compiler.h"
+#include "cpp_compiler.h"
 
-CCompiler::CCompiler(TreeNode* tree){
+CppCompiler::CppCompiler(TreeNode* tree){
   this->tree = tree;
   functionTable.clear();
   bBreak=false;
   bReturn=false;
 }
 
-void CCompiler::generate(const string& outfile){
+void CppCompiler::generate(const string& outfile){
   out.open(outfile);
   hdr.open("output.h");
 
-  out << "#include <stdlib.h>" << std::endl;
-  out << "#include <strings.h>" << std::endl;
+  out << "#include <iostream>" << std::endl;
+  out << "#include <string>" << std::endl;
 
   // we will store function implementations in seperate .h file
   out << "#include \"output.h\"" << std::endl; 
@@ -58,16 +58,16 @@ void CCompiler::generate(const string& outfile){
   hdr.close(); // close output.h
 }
 
-void CCompiler::link(const string& cppfile){
+void CppCompiler::link(const string& cppfile){
   // TODO: output file = cfile without .c extension
-  string gcc_command = "gcc " + cppfile + " -o output";
+  string gcc_command = "g++ " + cppfile + " -o output";
   system(gcc_command.c_str());
 
   cout << "saved executable 'output'" << std::endl;
 
 }
 
-void CCompiler::compile(TreeNode* node, ofstream& out){
+void CppCompiler::compile(TreeNode* node, ofstream& out){
   switch( node->getType() ){
     case blockNode          : compBlock( node, out );           break;
     case printNode          : compPrint( node, out );           break;
@@ -117,7 +117,7 @@ void CCompiler::compile(TreeNode* node, ofstream& out){
 }
 
  
-void CCompiler::compBlock( TreeNode* node, ofstream& out ){
+void CppCompiler::compBlock( TreeNode* node, ofstream& out ){
   //compile all statements in block
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
@@ -127,16 +127,19 @@ void CCompiler::compBlock( TreeNode* node, ofstream& out ){
   }
 }
 
-void CCompiler::compPrint( TreeNode* node, ofstream& out ){
+void CppCompiler::compPrint( TreeNode* node, ofstream& out ){
+  out << "std::cout";
+
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
-    out << "printf(";
+    out << " << ";
     compile( *i, out ); //compile expression
-    out << ");";
   }
+
+  out << ";";
 }
 
-void CCompiler::compConstantString( TreeNode* node, ofstream& out ){
+void CppCompiler::compConstantString( TreeNode* node, ofstream& out ){
   if (node->getName() == "newline") {
     out << "std::endl";
     return;
@@ -145,7 +148,7 @@ void CCompiler::compConstantString( TreeNode* node, ofstream& out ){
   out << "\"" << node->getValue().strVal << "\"";
 }
 
-void CCompiler::compConstant( TreeNode* node, ofstream& out ){
+void CppCompiler::compConstant( TreeNode* node, ofstream& out ){
   Var v = node->getValue();
   if (v.bString) {
     out << "\"" << v.strVal << "\"";
@@ -155,7 +158,7 @@ void CCompiler::compConstant( TreeNode* node, ofstream& out ){
   }
 }
 
-void CCompiler::compAssign( TreeNode* node, ofstream& out ){
+void CppCompiler::compAssign( TreeNode* node, ofstream& out ){
   TreeNode* expr = node->secondChild();
   
   // assume double but ideally we should compile first to get type and then output it!
@@ -191,19 +194,19 @@ void CCompiler::compAssign( TreeNode* node, ofstream& out ){
 
 
 // maybe we can get away with doing a compile type thing without writing to output
-// void CCompiler::compExpressionType( TreeNode* node ){
+// void CppCompiler::compExpressionType( TreeNode* node ){
 // this should just iterate our ast and determine expression type that would be returned when executed
 // }
 
 
  
-void CCompiler::compId( TreeNode* node, ofstream& out ){
+void CppCompiler::compId( TreeNode* node, ofstream& out ){
   // TODO: store type here on symtable instead of val!!!
   // node->setValue( ( symbolTables.top() )[ node->getName() ] );
   out << node->getName();
 }
 
-void CCompiler::compExit( TreeNode* node, ofstream& out ){
+void CppCompiler::compExit( TreeNode* node, ofstream& out ){
   out << "exit(";
   // todo: verify expression is an int or double here
   compile( node->firstChild(), out );
@@ -217,7 +220,7 @@ void CCompiler::compExit( TreeNode* node, ofstream& out ){
 // first child   = function name
 // second child  = parameters
 // this is the variant wihtout a return and should gen a void function implementation
-void CCompiler::compFunction( TreeNode* node, ofstream& out ){
+void CppCompiler::compFunction( TreeNode* node, ofstream& out ){
   string funcname = node->firstChild()->getName();
 
   //locate function node  
@@ -276,75 +279,75 @@ void CCompiler::compFunction( TreeNode* node, ofstream& out ){
 }
 
 
-void CCompiler::compBinaryOperator( TreeNode* node, const string& opp, ofstream& out) {
+void CppCompiler::compBinaryOperator( TreeNode* node, const string& opp, ofstream& out) {
   compile( node->firstChild(), out );
   out << opp;
   compile( node-> secondChild(), out );
 }
         
-void CCompiler::compAdd( TreeNode* node, ofstream& out ){
+void CppCompiler::compAdd( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " + ", out);
 }
 
-void CCompiler::compMul( TreeNode* node, ofstream& out ){
+void CppCompiler::compMul( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " * ", out);
 }
 
-void CCompiler::compDiv( TreeNode* node, ofstream& out ){
+void CppCompiler::compDiv( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " / ", out);
 }
 
-void CCompiler::compSub( TreeNode* node, ofstream& out ){
+void CppCompiler::compSub( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " - ", out);
 }
 
-void CCompiler::compMod( TreeNode* node, ofstream& out ){
+void CppCompiler::compMod( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " % ", out);
 }
 
-void CCompiler::compMinus( TreeNode* node, ofstream& out ){
+void CppCompiler::compMinus( TreeNode* node, ofstream& out ){
   out << "-";
   compile( node->firstChild(), out);
 }
 
-void CCompiler::compGE( TreeNode* node, ofstream& out ){
+void CppCompiler::compGE( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " >= ", out);
 }
 
-void CCompiler::compGT( TreeNode* node, ofstream& out ){
+void CppCompiler::compGT( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " > ", out);
 }
-void CCompiler::compLE( TreeNode* node, ofstream& out ){
+void CppCompiler::compLE( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " <= ", out);
 }
 
-void CCompiler::compLT( TreeNode* node, ofstream& out ){
+void CppCompiler::compLT( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " < ", out);
 }
 
-void CCompiler::compNE( TreeNode* node, ofstream& out ){
+void CppCompiler::compNE( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " != ", out);
 }
 
-void CCompiler::compEQ( TreeNode* node, ofstream& out ){
+void CppCompiler::compEQ( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " == ", out);
 }
 
-void CCompiler::compAnd( TreeNode* node, ofstream& out ){
+void CppCompiler::compAnd( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " && ", out);
 }
 
-void CCompiler::compOr( TreeNode* node, ofstream& out ){
+void CppCompiler::compOr( TreeNode* node, ofstream& out ){
   compBinaryOperator(node, " || ", out);
 }
 
-void CCompiler::compNot( TreeNode* node, ofstream& out ){
+void CppCompiler::compNot( TreeNode* node, ofstream& out ){
   out << "!";
   compile( node->firstChild(), out);
 }
 
 
-void CCompiler::compWhile( TreeNode* node, ofstream& out ){
+void CppCompiler::compWhile( TreeNode* node, ofstream& out ){
   TreeNode* condition = node->firstChild();
   TreeNode* statements = node->secondChild();
 
@@ -360,14 +363,14 @@ void CCompiler::compWhile( TreeNode* node, ofstream& out ){
  // bBreak=false;
 }
 
-void CCompiler::compBreak( TreeNode* node, ofstream& out ){
+void CppCompiler::compBreak( TreeNode* node, ofstream& out ){
   // bBreak=true; //stops loop block compution
   out << "break";
 }
 
 
 // GETVAL AND SETVAL IS NOT NEEDED HERE!
-// Var CCompiler::getVal( TreeNode* node, ofstream& out ){
+// Var CppCompiler::getVal( TreeNode* node, ofstream& out ){
 //   compile( node, out );
 //   return node->getValue();
 // }
@@ -376,7 +379,7 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // //value from stack
 // //first child   = function name
 // //second child  = parameters
-// void CCompiler::compRetFunction( TreeNode* node ){
+// void CppCompiler::compRetFunction( TreeNode* node ){
 //   compFunction( node );
 //   if( runStack.size() == 0 ){
 //     cerr<<"RUN ERROR: function "<<node->firstChild()->getName()
@@ -388,7 +391,7 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // }
 // 
 // 
-// void CCompiler::compReturn( TreeNode* node ){
+// void CppCompiler::compReturn( TreeNode* node ){
 //   compile( node->firstChild() ); //compile return expression
 //   runStack.push( node->firstChild()->getValue() );
 //   bReturn=true; //notify blocks of return
@@ -396,7 +399,7 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // 
 // 
 // 
-// void CCompiler::compForEach( TreeNode* node ){
+// void CppCompiler::compForEach( TreeNode* node ){
 //   //cout<<"sorry dude not implemented yet"<<endl;
 //   TreeNode* id         = node->firstChild();
 //   TreeNode* expr       = node->secondChild();
@@ -431,7 +434,7 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 //   
 // }
 // 
-// void CCompiler::compFor( TreeNode* node ){
+// void CppCompiler::compFor( TreeNode* node ){
 //   TreeNode* id=node->firstChild();
 //   TreeNode* startNode=node->secondChild();
 //   TreeNode* stopNode=node->thirdChild();
@@ -485,7 +488,7 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // 
 // 
 //      
-// void CCompiler::compIf( TreeNode* node ){
+// void CppCompiler::compIf( TreeNode* node ){
 // 
 //   TreeNode* condition = node->firstChild();
 //   TreeNode* ifblok = node->secondChild();
@@ -517,14 +520,14 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // 
 // 
 // /*     
-// void CCompiler::compPrintLn( TreeNode* node ){
+// void CppCompiler::compPrintLn( TreeNode* node ){
 //   compPrint( node );
 //   cout<<endl;
 // }
 // */
 // 
 // 
-// void CCompiler::compInput( TreeNode* node ){
+// void CppCompiler::compInput( TreeNode* node ){
 //   string varName = node->firstChild()->getName();
 //   Var val;
 //   
@@ -538,12 +541,12 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 //
 //      
 // 
-// void CCompiler::compNot( TreeNode* node ){
+// void CppCompiler::compNot( TreeNode* node ){
 //   node->setValue( 1 - getVal( node->firstChild() ).val ); 
 // }
 // 
 // 
-// string CCompiler::runCommand( const string& command ){
+// string CppCompiler::runCommand( const string& command ){
 //   FILE *pstream;
 //   
 //   if(  ( pstream = popen( command.c_str(), "r" ) ) == NULL ) return "";
@@ -560,12 +563,12 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // }
 // 
 // 
-// void CCompiler::compRun( TreeNode* node ){
+// void CppCompiler::compRun( TreeNode* node ){
 //   string cmd= getVal( node->firstChild() ).strVal;
 //   node->setValue( runCommand(cmd) );
 // }
 // 
-// void CCompiler::compWrite( TreeNode* node ){
+// void CppCompiler::compWrite( TreeNode* node ){
 //   string fileName = getVal( node->firstChild() ).strVal;
 //   ofstream out(fileName.c_str());
 //   if(out.is_open()){
@@ -578,7 +581,7 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 //   
 // }
 // 
-// void CCompiler::compSubstr( TreeNode* node ){
+// void CppCompiler::compSubstr( TreeNode* node ){
 //   string id   = node->firstChild()->getName();
 //   int from    = (int) getVal( node->secondChild() ).val-1;
 //   int to      = (int) getVal( node->thirdChild() ).val;

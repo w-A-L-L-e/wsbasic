@@ -1,6 +1,6 @@
 /*============================================================================
 author        : Walter Schreppers
-filename      : compiler.h
+filename      : asm_compiler.h
 description   : Compile a parsetree into assembler for nasm
 bugreport(log): /
 =============================================================================*/

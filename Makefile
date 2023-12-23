@@ -26,9 +26,11 @@ asm_compiler.o: src/asm_compiler.cpp src/asm_compiler.h
 c_compiler.o: src/c_compiler.cpp src/c_compiler.h
 	$(CXX) $(FLAGS) -c src/c_compiler.cpp
 
+cpp_compiler.o: src/cpp_compiler.cpp src/cpp_compiler.h
+	$(CXX) $(FLAGS) -c src/cpp_compiler.cpp
 
-wsbasic: src/main.cpp var.o lexer.o parser.o treenode.o executer.o asm_compiler.o c_compiler.o
-	$(CXX) $(FLAGS) src/main.cpp -o wsbasic lexer.o parser.o var.o treenode.o executer.o asm_compiler.o c_compiler.o
+wsbasic: src/main.cpp var.o lexer.o parser.o treenode.o executer.o asm_compiler.o c_compiler.o cpp_compiler.o
+	$(CXX) $(FLAGS) src/main.cpp -o wsbasic lexer.o parser.o var.o treenode.o executer.o asm_compiler.o c_compiler.o cpp_compiler.o
 
 treetest: src/treenode.o src/treetest.cpp
 	$(CXX) $(FLAGS) -o treetest src/treetest.cpp treenode.o

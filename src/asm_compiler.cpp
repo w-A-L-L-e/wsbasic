@@ -1,7 +1,7 @@
 /*=============================================================================
 author        : Walter Schreppers
-filename      : compiler.cpp
-description   : Compiles a parsetree
+filename      : asm_compiler.cpp
+description   : Compiles a parsetree into raw assymbly for nasm
 bugreport(log): Work in progress. take what we've done in compiler_poc and use
 that here. Later on we might just use LLVM instead which would be more performant
 and easier to maintain. However for being minimalistic its cool to generate our own
