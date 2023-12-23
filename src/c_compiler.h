@@ -18,7 +18,7 @@ bugreport(log): /
 #include <stdio.h>
 
 
-typedef map<string,Var>    symtable;
+typedef map<string,Var>       symtable;
 typedef map<string,TreeNode*> functable;
 
 typedef stack<Var> runstack;
@@ -35,7 +35,6 @@ class CCompiler{
     
     //public members
     //==============
-    void run(); // will be deprecated 
     void generate(const string& outfile);
     void link(const string& cppfile);
   
@@ -44,46 +43,45 @@ class CCompiler{
 
     //private members
     //===============
-    void compile(TreeNode*);  
+    void compile(TreeNode*, ofstream&);  
 
-    void compConstantString ( TreeNode* );
-    void compBlock      ( TreeNode* );
-    void compFor        ( TreeNode* );
-    void compForEach    ( TreeNode* );
-    void compWhile      ( TreeNode* );
-    void compIf         ( TreeNode* );
-    void compPrint      ( TreeNode* );
-    void compInput      ( TreeNode* );
-    void compAssign     ( TreeNode* );
-    void compExpression ( TreeNode* );
-    void compId         ( TreeNode* );
-    void compConstant   ( TreeNode* );
+    void compConstantString ( TreeNode*, ofstream& );
+    void compBlock      ( TreeNode*, ofstream& );
+    void compFor        ( TreeNode*, ofstream& );
+    void compForEach    ( TreeNode*, ofstream& );
+    void compWhile      ( TreeNode*, ofstream& );
+    void compIf         ( TreeNode*, ofstream& );
+    void compPrint      ( TreeNode*, ofstream& );
+    void compInput      ( TreeNode*, ofstream& );
+    void compAssign     ( TreeNode*, ofstream& );
+    void compExpression ( TreeNode*, ofstream& );
+    void compId         ( TreeNode*, ofstream& );
+    void compConstant   ( TreeNode*, ofstream& );
     
-    void compFunction   ( TreeNode* );
-    void compRetFunction( TreeNode* );
-    void compBreak      ( TreeNode* );
-    void compReturn     ( TreeNode* );
-    void compExit       ( TreeNode* );
+    void compFunction   ( TreeNode*, ofstream& );
+    void compRetFunction( TreeNode*, ofstream& );
+    void compBreak      ( TreeNode*, ofstream& );
+    void compReturn     ( TreeNode*, ofstream& );
+    void compExit       ( TreeNode*, ofstream& );
 
-    Var getVal ( TreeNode* );
-    
-    void compAdd  ( TreeNode* );
-    void compMul  ( TreeNode* );
-    void compDiv  ( TreeNode* );
-    void compSub  ( TreeNode* );
-    void compMod  ( TreeNode* );
-    void compNot  ( TreeNode* );
+    // Var getVal ( TreeNode* ); // to be deprecated
+    void compBinaryOperator( TreeNode*, const string&, ofstream& );
+    void compAdd   ( TreeNode*, ofstream& );
+    void compMul   ( TreeNode*, ofstream& );
+    void compDiv   ( TreeNode*, ofstream& );
+    void compSub   ( TreeNode*, ofstream& );
+    void compMod   ( TreeNode*, ofstream& );
+    void compMinus ( TreeNode*, ofstream& );
 
-    void compGE   ( TreeNode* );
-    void compGT   ( TreeNode* );
-    void compLE   ( TreeNode* );
-    void compLT   ( TreeNode* );
-    void compNE   ( TreeNode* );
-    void compEQ   ( TreeNode* );
-    
-    void compAnd   ( TreeNode* );
-    void compOr    ( TreeNode* );
-    void compMinus ( TreeNode* );
+    void compGE   ( TreeNode*, ofstream& );
+    void compGT   ( TreeNode*, ofstream& );
+    void compLE   ( TreeNode*, ofstream& );
+    void compLT   ( TreeNode*, ofstream& );
+    void compNE   ( TreeNode*, ofstream& );
+    void compEQ   ( TreeNode*, ofstream& );
+    void compAnd  ( TreeNode*, ofstream& );
+    void compOr   ( TreeNode*, ofstream& );
+    void compNot  ( TreeNode*, ofstream& );
 
     void compRun   ( TreeNode* );
     void compWrite ( TreeNode* );
@@ -102,6 +100,7 @@ class CCompiler{
     bool bBreak;   //used for break statement
     
     ofstream out;
+    ofstream hdr; // header output.h containing function implementations
 };
 
 

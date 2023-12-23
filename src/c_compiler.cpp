@@ -16,60 +16,46 @@ CCompiler::CCompiler(TreeNode* tree){
   bReturn=false;
 }
 
-void CCompiler::run(){
-  bBreak=false;
-  bReturn=false;
-  
-  // compile program block
-  TreeNode* node;
-  TreeNode::const_iterator i;
-  for(i = tree->begin() ; i != tree->end(); ++i ){
-
-    node=*i;
-    if( node->getType() == blockNode){
-      symtable main;
-      symbolTables.push( main ); //new symbol table for main block
-      compile( node );  //compile into asm
-      symbolTables.pop(); //free up stack
-      
-    }
-    else if( node->getType() == functionNode ){
-      string funcname=node->firstChild()->getName();
-      functionTable[ funcname ] = node; //store for later use
-    }
-
-  }
-
-}
-
 void CCompiler::generate(const string& outfile){
   out.open(outfile);
+  hdr.open("output.h");
 
-  out << "#include <iostream>" << endl;
-  out << "#include <string>" << endl;
-  out << endl;
-  out << "int main(){" << endl;
+  out << "#include <iostream>" << std::endl;
+  out << "#include <string>" << std::endl;
+
+  // we will store function implementations in seperate .h file
+  out << "#include \"output.h\"" << std::endl; 
+  out << std::endl;
+  out << "int main(){" << std::endl;
   
-  // first pass, just translate all functions
+  // we need this for variable type detection and coercion only
+  symtable main_symtable; 
+  symbolTables.push(main_symtable);
+
+  // intial pass, just translate all top level blocks into main() 
+  // keep track of functions in a functionTable for later use
   TreeNode* node;
   TreeNode::const_iterator i;
   for(i = tree->begin() ; i != tree->end(); ++i ){
     node=*i;
     if (node->getType() == functionNode ) {
       string funcname=node->firstChild()->getName();
-      functionTable[ funcname ] = node; //store for later use
+      functionTable[ funcname ] = node; // store in map for later use
     } 
     else if (node->getType() == blockNode) {
-      compile(node);
+      compile(node, out);
     }
   }
 
   // if user uses his own return this will be called first.
   // by default always return 0
-  out << "  return 0;" << endl;
-  out << "}" << endl;
+  out << "  return 0;" << std::endl;
+  out << "}" << std::endl;
+
+  symbolTables.pop(); //release main symtable
 
   out.close();
+  hdr.close(); // close output.h
 }
 
 void CCompiler::link(const string& cppfile){
@@ -77,85 +63,84 @@ void CCompiler::link(const string& cppfile){
   string gcc_command = "g++ " + cppfile + " -o output";
   system(gcc_command.c_str());
 
-  cout << "saved executable 'output'" << endl;
+  cout << "saved executable 'output'" << std::endl;
 
 }
 
-void CCompiler::compile(TreeNode* node){
+void CCompiler::compile(TreeNode* node, ofstream& out){
   switch( node->getType() ){
-    case blockNode          : compBlock( node );        break;
-    case printNode          : compPrint( node );        break;
-    case stringConstantNode : compConstantString( node );     break;
-    case assignNode         : compAssign( node );       break;
-    case idNode             : compId( node );           break;
-    case exitNode           : compExit( node );         break;
-    case constantNode       : compConstant( node );     break; 
+    case blockNode          : compBlock( node, out );           break;
+    case printNode          : compPrint( node, out );           break;
+    case stringConstantNode : compConstantString( node, out);   break;
+    case assignNode         : compAssign( node, out );          break;
+    case idNode             : compId( node, out );              break;
+    case exitNode           : compExit( node, out );            break;
+    case constantNode       : compConstant( node, out );        break; 
 
+    case functionCallNode   : compFunction( node, out );        break;
+    case addNode            : compAdd( node, out );             break;
+    case mulNode            : compMul( node, out );             break;
+    case divNode            : compDiv( node, out );             break;
+    case subNode            : compSub( node, out );             break;
+    case modNode            : compMod( node, out );             break;
+    case minusNode          : compMinus( node, out );           break;
+
+    case nodeGE             : compGE( node, out );              break; 
+    case nodeGT             : compGT( node, out );              break;
+    case nodeLE             : compLE( node, out );              break;
+    case nodeLT             : compLT( node, out );              break;
+    case nodeNE             : compNE( node, out );              break;
+    case nodeEQ             : compEQ( node, out );              break;
+    case andNode            : compAnd( node, out );             break;
+    case orNode             : compOr( node, out );              break;
+    case notNode            : compNot( node, out );             break;
+
+    case whileNode          : compWhile( node, out );           break;
+    case breakNode          : compBreak( node, out );           break;
+
+    // case funcReturnNode     : compRetFunction( node );  break;
+    // case returnNode         : compReturn( node );       break;
     // case forNode            : compFor( node );          break;
     // case forEachNode        : compForEach( node );      break;
-    // case whileNode          : compWhile( node );        break;
     // case ifNode             : compIf( node );           break;
     // case inputNode          : compInput( node );        break;
     // case expressionNode     : compExpression( node );   break;
-    // 
-    // case addNode            : compAdd( node );          break;
-    // case mulNode            : compMul( node );          break;
-    // case divNode            : compDiv( node );          break;
-    // case subNode            : compSub( node );          break;
-    // case modNode            : compMod( node );          break;
-    // case minusNode          : compMinus( node );        break;
-    //     
-    // case nodeGE             : compGE( node );           break; 
-    // case nodeGT             : compGT( node );           break;
-    // case nodeLE             : compLE( node );           break;
-    // case nodeLT             : compLT( node );           break;
-    // case nodeNE             : compNE( node );           break;
-    // case nodeEQ             : compEQ( node );           break;
-    // 
-    // case andNode            : compAnd( node );          break;
-    // case orNode             : compOr( node );           break;
-    // case notNode            : compNot( node );          break;
-    // 
-    // case functionCallNode   : compFunction( node );     break;
-    // case funcReturnNode     : compRetFunction( node );  break;
-    // case returnNode         : compReturn( node );       break;
-    // case breakNode          : compBreak( node );        break;
-    // 
+  
     // case runNode            : compRun( node );          break;
     // case writeNode          : compWrite( node );        break;
     // case substrNode         : compSubstr( node );       break;
-    // 
+     
     default                 : cerr<<"Found unsupported node: name='"<<
                               node->getName()<<"', type="<<
-                              node->getType()<<" in tree!"<<endl; 
+                              node->getType()<<" in tree!"<<std::endl; 
                               break;
   }  
 }
 
  
-void CCompiler::compBlock( TreeNode* node ){
+void CCompiler::compBlock( TreeNode* node, ofstream& out ){
   //compile all statements in block
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
     out << "  ";
-    compile( *i );
+    compile( *i, out );
     out << std::endl;
   }
 }
 
-void CCompiler::compPrint( TreeNode* node ){
+void CCompiler::compPrint( TreeNode* node, ofstream& out ){
   out << "std::cout";
 
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
     out << " << ";
-    compile( *i ); //compile expression
+    compile( *i, out ); //compile expression
   }
 
   out << ";";
 }
 
-void CCompiler::compConstantString( TreeNode* node ){
+void CCompiler::compConstantString( TreeNode* node, ofstream& out ){
   if (node->getName() == "newline") {
     out << "std::endl";
     return;
@@ -164,7 +149,7 @@ void CCompiler::compConstantString( TreeNode* node ){
   out << "\"" << node->getValue().strVal << "\"";
 }
 
-void CCompiler::compConstant( TreeNode* node ){
+void CCompiler::compConstant( TreeNode* node, ofstream& out ){
   Var v = node->getValue();
   if (v.bString) {
     out << "\"" << v.strVal << "\"";
@@ -174,88 +159,216 @@ void CCompiler::compConstant( TreeNode* node ){
   }
 }
 
-void CCompiler::compAssign( TreeNode* node ){
+void CCompiler::compAssign( TreeNode* node, ofstream& out ){
   TreeNode* expr = node->secondChild();
   
-  // TODO when compile expression determine the type!
-  // compile( expr );
-
-  // assume double and a constant here
+  // assume double but ideally we should compile first to get type and then output it!
+  // problem we would need to compile the RHS first for this without outputing to stream
+  // then determine type and output double or not and then output the RHS code...
   string vartype = "double";
-  TreeNode* var  = node->firstChild();
-  out << vartype << " " << var->getName() << " = ";
+  TreeNode* var = node->firstChild();
+  string varname = var->getName();
 
-  // for now assume number
-  out << expr->getValue().val;
+   // also searching in top might not be enough here. ideally we bubble up...
+   if ( (symbolTables.top()).find(varname) == (symbolTables.top()).end()) {
+     // new veriable insert it into symtable
+     // assume it will be a double by setting bstring == false
+     Var var_val;
+     var_val.bString = false;
+ 
+     ( symbolTables.top() )[ varname ] = var_val;
+     out << vartype << " " << varname << " = ";
+   }
+   else {
+     // variable already existed, regular assign.
+     // again we should typecheck this here as x = "hello" then later x = x / 2 -> should give error
+     // as we cant device strings by 2...
+     out << varname << " = ";
+   }
+
+  // again also first assign we should determine the type here and set it for subsecquent assigns
+  compile(expr, out);
+
+  // out << expr->getValue().val; // this is for a constant
   out << ";";
-
-  // ( symbolTables.top() )[ var->getName() ] = expr->getValue();
 }
 
  
-void CCompiler::compId( TreeNode* node ){
+void CCompiler::compId( TreeNode* node, ofstream& out ){
+  // TODO: store type here on symtable instead of val!!!
   // node->setValue( ( symbolTables.top() )[ node->getName() ] );
   out << node->getName();
 }
 
-void CCompiler::compExit( TreeNode* node ){
+void CCompiler::compExit( TreeNode* node, ofstream& out ){
   out << "exit(";
-  compile( node->firstChild() ); // the expression that is first param of exit
-  // int exitcode = node->firstChild()->getValue().val;
+  // todo: verify expression is an int or double here
+  compile( node->firstChild(), out );
   out << ");";
 }
 
 
-// //compile a function
-// //first child   = function name
-// //second child  = parameters
-// void CCompiler::compFunction( TreeNode* node ){
-//   string funcname = node->firstChild()->getName();
-// 
-//   //locate function node  
-//   functable::iterator p=functionTable.find( funcname );
-//   if( p==functionTable.end() ){
-//     cerr<<"RUN ERROR: Call to undefined function : "<<funcname<<"."<<endl;
-//     return;
-//   }
-//   
-//   TreeNode* funcnode    = p->second;
-//   TreeNode* funcIds     = funcnode->secondChild();
-//   TreeNode* callparams  = node->secondChild();
-//     
-//   //check if number of parameters match
-//   if( callparams->size() != funcIds->size() ){
-//     cerr<<"RUN ERROR: Call to function "<<funcname<<" with wrong number of parameters."<<endl;
-//     return;
-//   }
-// 
-//   //pass parameters to function
-//   //by adding them to it's symboltable and setting the values
-//   TreeNode::iterator pfrom,pto=funcIds->begin();
-//   symtable funcSymTable;
-//   
-//   for(pfrom=callparams->begin(); pfrom!=callparams->end(); ++pfrom ){
-//     
-//     //compile the parameters which can be expressions
-//     compile( *pfrom ); 
-//     
-//     string idname=(*pto)->getName();
-//     funcSymTable[idname]= (*pfrom)->getValue();
-//     ++pto;
-//   
-//   }
-//   
-//   symbolTables.push(funcSymTable); //use new symboltable for current function
-//   
-//   //compile function statement block
-//   bReturn=false; //set to true when return is called
-//   compile( funcnode->thirdChild() );
-//   bReturn=false; //function compution done
-//   
-//   symbolTables.pop(); //release function symboltable    
+//compile a function call will also compile the function implementation
+// this way we only compile what is actually used and it allows for setting param types based on how
+// it is called.
+// first child   = function name
+// second child  = parameters
+// this is the variant wihtout a return and should gen a void function implementation
+void CCompiler::compFunction( TreeNode* node, ofstream& out ){
+  string funcname = node->firstChild()->getName();
+
+  //locate function node  
+  functable::iterator p=functionTable.find( funcname );
+  if( p==functionTable.end() ){
+    cerr<<"RUN ERROR: Call to undefined function : "<<funcname<<"."<<endl;
+    return;
+  }
+  
+  TreeNode* funcnode    = p->second;
+  TreeNode* funcIds     = funcnode->secondChild();
+  TreeNode* callparams  = node->secondChild();
+    
+  // check if number of parameters between call and definition match
+  if( callparams->size() != funcIds->size() ){
+    // in a more strongly typed language you'll also check the params match in type
+    cerr<<"RUN ERROR: Call to function "<<funcname<<" with wrong number of parameters."<<endl;
+    return;
+  }
+
+  //pass parameters to function
+  //by adding them to it's symboltable and setting the values
+  TreeNode::iterator pfrom,pto=funcIds->begin();
+  symtable funcSymTable;
+  
+  out << funcname << "(";
+  for(pfrom=callparams->begin(); pfrom!=callparams->end(); ++pfrom ){
+    //compile the parameters which can be expressions
+    if (pfrom != callparams->begin()) out<< ", ";
+    compile( *pfrom, out ); 
+    
+    // string idname=(*pto)->getName();
+    // funcSymTable[idname]= (*pfrom)->getValue();
+    // ++pto;
+  }
+  out << ");" << std::endl;
+  
+  symbolTables.push(funcSymTable); //use new symboltable for current function
+  bReturn=false; //set to true when return is called
+
+  // compile function definition into header, we also now know the call param types.
+  // for now to get poc working we just use double always
+
+  // append function body in hdr
+  hdr << "void " << funcname << "(";
+  for(pto = funcIds->begin(); pto != funcIds->end(); ++pto){
+    if (pto != funcIds->begin()) hdr << ", ";
+    hdr << "double " << (*pto)->getName();
+  }
+  hdr << ") {" << std::endl;
+  compile( funcnode->thirdChild(), hdr );
+  hdr << "}" << std::endl << std::endl;
+
+  bReturn=false; //function compution done
+  symbolTables.pop(); //release function symboltable    
+}
+
+
+void CCompiler::compBinaryOperator( TreeNode* node, const string& opp, ofstream& out) {
+  compile( node->firstChild(), out );
+  out << opp;
+  compile( node-> secondChild(), out );
+}
+        
+void CCompiler::compAdd( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " + ", out);
+}
+
+void CCompiler::compMul( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " * ", out);
+}
+
+void CCompiler::compDiv( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " / ", out);
+}
+
+void CCompiler::compSub( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " - ", out);
+}
+
+void CCompiler::compMod( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " % ", out);
+}
+
+void CCompiler::compMinus( TreeNode* node, ofstream& out ){
+  out << "-";
+  compile( node->firstChild(), out);
+}
+
+void CCompiler::compGE( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " >= ", out);
+}
+
+void CCompiler::compGT( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " > ", out);
+}
+void CCompiler::compLE( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " <= ", out);
+}
+
+void CCompiler::compLT( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " < ", out);
+}
+
+void CCompiler::compNE( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " != ", out);
+}
+
+void CCompiler::compEQ( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " == ", out);
+}
+
+void CCompiler::compAnd( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " && ", out);
+}
+
+void CCompiler::compOr( TreeNode* node, ofstream& out ){
+  compBinaryOperator(node, " || ", out);
+}
+
+void CCompiler::compNot( TreeNode* node, ofstream& out ){
+  out << "!";
+  compile( node->firstChild(), out);
+}
+
+
+void CCompiler::compWhile( TreeNode* node, ofstream& out ){
+  TreeNode* condition = node->firstChild();
+  TreeNode* statements = node->secondChild();
+
+  out << "while (";
+  // bBreak=false;
+  compile( condition, out );
+  out << ") {" << std::endl;
+
+  compile( statements, out );
+
+  out << "}" << std::endl;
+
+ // bBreak=false;
+}
+
+void CCompiler::compBreak( TreeNode* node, ofstream& out ){
+  bBreak=true; //stops loop block compution
+  out << "break";
+}
+
+
+// GETVAL AND SETVAL IS NOT NEEDED HERE!
+// Var CCompiler::getVal( TreeNode* node, ofstream& out ){
+//   compile( node, out );
+//   return node->getValue();
 // }
-// 
-// 
+
 // //compile a function and expect and get return 
 // //value from stack
 // //first child   = function name
@@ -277,14 +390,6 @@ void CCompiler::compExit( TreeNode* node ){
 //   runStack.push( node->firstChild()->getValue() );
 //   bReturn=true; //notify blocks of return
 // }
-// 
-// 
-// void CCompiler::compBreak( TreeNode* node ){
-//   bBreak=true; //stops loop block compution
-// }
-// 
-//
-// 
 // 
 // 
 // 
@@ -378,22 +483,6 @@ void CCompiler::compExit( TreeNode* node ){
 // }
 // 
 // 
-// 
-// void CCompiler::compWhile( TreeNode* node ){
-// 
-//   TreeNode* condition = node->firstChild();
-//   TreeNode* statements = node->secondChild();
-// 
-//   bBreak=false;
-//   compile( condition );
-//   while( condition->getValue().val != 0 ){
-//     compile( statements );
-//     //if( bBreak || bReturn ) break; //jump out loop
-//     compile( condition );
-//   }
-//   bBreak=false;
-// }
-// 
 //      
 // void CCompiler::compIf( TreeNode* node ){
 // 
@@ -451,47 +540,8 @@ void CCompiler::compExit( TreeNode* node ){
 //   cerr<<"compExpression is not implemented, because it should not be needed!"<<endl;
 // }
 // 
-//// 
-// // 
-// Var CCompiler::getVal( TreeNode* node ){
-//   compile( node );
-//   return node->getValue();
-// }
-// 
-//         
-// void CCompiler::compAdd( TreeNode* node ){
-//   node->setValue( getVal( node->firstChild() )
-//                   + 
-//                   getVal( node->secondChild() ) );
-// }
 // 
 //        
-// void CCompiler::compMul( TreeNode* node ){
-//   node->setValue( getVal( node->firstChild() )
-//                   * 
-//                   getVal( node->secondChild() ) );
-// }
-// 
-//        
-// void CCompiler::compDiv( TreeNode* node ){
-//   node->setValue( getVal( node->firstChild() )
-//                   / 
-//                   getVal( node->secondChild() ) );
-// }
-// 
-//        
-// void CCompiler::compSub( TreeNode* node ){
-//   node->setValue( getVal( node->firstChild() )
-//                   - 
-//                   getVal( node->secondChild() ) );
-// }
-// 
-// void CCompiler::compMod( TreeNode* node ){
-//   node->setValue( getVal( node->firstChild() )
-//                   %
-//                   getVal( node->secondChild() ) );
-// }
-// 
 //        
 // void CCompiler::compLT( TreeNode* node ){
 //   node->setValue( (double) (
@@ -569,11 +619,7 @@ void CCompiler::compExit( TreeNode* node ){
 //   node->setValue( 1 - getVal( node->firstChild() ).val ); 
 // }
 // 
-// 
-// void CCompiler::compMinus( TreeNode* node ){
-//   node->setValue( - getVal( node->firstChild() ).val ); 
-// }
-// 
+//
 // 
 // string CCompiler::runCommand( const string& command ){
 //   FILE *pstream;
@@ -626,4 +672,3 @@ void CCompiler::compExit( TreeNode* node ){
 //     node->setValue( "" );
 //   }
 // }
-
