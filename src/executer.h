@@ -52,7 +52,6 @@ class Executer{
     void execPrint      ( TreeNode* );
     void execInput      ( TreeNode* );
     void execAssign     ( TreeNode* );
-    void execExpression ( TreeNode* );
     void execId         ( TreeNode* );
     void execConstant   ( TreeNode* );
     

@@ -30,10 +30,9 @@ enum NodeType {
                 printNode,
                 inputNode,
                 assignNode,
-                expressionNode,  // 16
                 idNode,
                 constantNode,
-                stringConstantNode,  // 19
+                stringConstantNode,  // 18
             
                 addNode,
                 mulNode,

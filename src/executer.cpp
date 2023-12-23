@@ -52,7 +52,6 @@ void Executer::execute(TreeNode* node){
     case printNode          : execPrint( node );        break;
     case inputNode          : execInput( node );        break;
     case assignNode         : execAssign( node );       break;
-    case expressionNode     : execExpression( node );   break;
     case idNode             : execId( node );           break;
     case constantNode       : execConstant( node );     break; 
     case stringConstantNode : execConstant( node );     break; //for now handle same as ordinary constant
@@ -392,11 +391,6 @@ void Executer::execAssign( TreeNode* node ){
 
   execute( expr );
   ( symbolTables.top() )[ var->getName() ] = expr->getValue();
-}
-
-    
-void Executer::execExpression( TreeNode* node ){
-  std::cerr<<"execExpression is not implemented, because it should not be needed!" << std::endl;
 }
 
 

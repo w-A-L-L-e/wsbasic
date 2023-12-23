@@ -104,7 +104,6 @@ void CCompiler::compile(TreeNode* node, ofstream& out){
     // case forEachNode        : compForEach( node );      break;
     // case ifNode             : compIf( node );           break;
     // case inputNode          : compInput( node );        break;
-    // case expressionNode     : compExpression( node );   break;
   
     // case runNode            : compRun( node );          break;
     // case writeNode          : compWrite( node );        break;
@@ -192,6 +191,13 @@ void CCompiler::compAssign( TreeNode* node, ofstream& out ){
   // out << expr->getValue().val; // this is for a constant
   out << ";";
 }
+
+
+// maybe we can get away with doing a compile type thing without writing to output
+// void CCompiler::compExpressionType( TreeNode* node ){
+// this should just iterate our ast and determine expression type that would be returned when executed
+// }
+
 
  
 void CCompiler::compId( TreeNode* node, ofstream& out ){
@@ -358,7 +364,7 @@ void CCompiler::compWhile( TreeNode* node, ofstream& out ){
 }
 
 void CCompiler::compBreak( TreeNode* node, ofstream& out ){
-  bBreak=true; //stops loop block compution
+  // bBreak=true; //stops loop block compution
   out << "break";
 }
 
@@ -427,8 +433,6 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 //   bBreak=false;
 //   
 // }
-// 
-// 
 // 
 // void CCompiler::compFor( TreeNode* node ){
 //   TreeNode* id=node->firstChild();
@@ -535,91 +539,12 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // }
 // 
 //
-//     
-// void CCompiler::compExpression( TreeNode* node ){
-//   cerr<<"compExpression is not implemented, because it should not be needed!"<<endl;
-// }
-// 
-// 
-//        
-//        
-// void CCompiler::compLT( TreeNode* node ){
-//   node->setValue( (double) (
-//                   getVal( node->firstChild() )
-//                   < 
-//                   getVal( node->secondChild() ) 
-//                   ) 
-//                 );
-// }
-// 
-// void CCompiler::compLE( TreeNode* node ){
-//   node->setValue( (double) (
-//                   getVal( node->firstChild() )
-//                   <= 
-//                   getVal( node->secondChild() ) 
-//                   ) 
-//                 );
-// }
-// 
-// void CCompiler::compGT( TreeNode* node ){
-//   node->setValue( (double) (
-//                   getVal( node->firstChild() )
-//                   >
-//                   getVal( node->secondChild() ) 
-//                   ) 
-//                 );
-// }
-// 
-// void CCompiler::compGE( TreeNode* node ){
-//   node->setValue( (double) (
-//                   getVal( node->firstChild() )
-//                   >=
-//                   getVal( node->secondChild() ) 
-//                   ) 
-//                 );
-// }
-// 
-// 
-// void CCompiler::compEQ( TreeNode* node ){
-//   node->setValue( (double) (
-//                   getVal( node->firstChild() )
-//                   ==
-//                   getVal( node->secondChild() ) 
-//                   ) 
-//                 );
-// }
-// 
-// 
-// void CCompiler::compNE( TreeNode* node ){
-//   node->setValue( (double) (
-//                   getVal( node->firstChild() )
-//                   !=
-//                   getVal( node->secondChild() ) 
-//                   ) 
-//                 );
-// }
-// 
-// 
-//   
-// void CCompiler::compAnd( TreeNode* node ){
-//   bool nl = getVal( node->firstChild() ).val != 0;
-//   bool nr = getVal( node->secondChild() ).val != 0;
-//   node->setValue( (double) (nl && nr) );
-// }
-// 
-//        
-// void CCompiler::compOr( TreeNode* node ){
-//   bool nl = getVal( node->firstChild() ).val != 0;
-//   bool nr = getVal( node->secondChild() ).val != 0;
-//   node->setValue( (double) (nl || nr) );
-// }
-// 
+//      
 // 
 // void CCompiler::compNot( TreeNode* node ){
 //   node->setValue( 1 - getVal( node->firstChild() ).val ); 
 // }
 // 
-//
 // 
 // string CCompiler::runCommand( const string& command ){
 //   FILE *pstream;

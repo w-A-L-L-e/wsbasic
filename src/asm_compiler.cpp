@@ -97,7 +97,6 @@ void AsmCompiler::compile(TreeNode* node){
     case printNode          : compPrint( node );        break;
     case inputNode          : compInput( node );        break;
     case assignNode         : compAssign( node );       break;
-    case expressionNode     : compExpression( node );   break;
     case idNode             : compId( node );           break;
     case constantNode       : compConstant( node );     break; 
     case stringConstantNode : compConstant( node );     break; //for now handle same as ordinary constant
@@ -438,12 +437,7 @@ void AsmCompiler::compAssign( TreeNode* node ){
   ( symbolTables.top() )[ var->getName() ] = expr->getValue();
 }
 
-    
-void AsmCompiler::compExpression( TreeNode* node ){
-  cerr<<"compExpression is not implemented, because it should not be needed!"<<endl;
-}
-
-
+   
 void AsmCompiler::compId( TreeNode* node ){
   node->setValue( ( symbolTables.top() )[ node->getName() ] );
 }

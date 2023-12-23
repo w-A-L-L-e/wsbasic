@@ -54,7 +54,6 @@ class CCompiler{
     void compPrint      ( TreeNode*, ofstream& );
     void compInput      ( TreeNode*, ofstream& );
     void compAssign     ( TreeNode*, ofstream& );
-    void compExpression ( TreeNode*, ofstream& );
     void compId         ( TreeNode*, ofstream& );
     void compConstant   ( TreeNode*, ofstream& );
     

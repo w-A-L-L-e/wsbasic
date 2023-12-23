@@ -54,7 +54,6 @@ class AsmCompiler{
     void compPrint      ( TreeNode* );
     void compInput      ( TreeNode* );
     void compAssign     ( TreeNode* );
-    void compExpression ( TreeNode* );
     void compId         ( TreeNode* );
     void compConstant   ( TreeNode* );
     
