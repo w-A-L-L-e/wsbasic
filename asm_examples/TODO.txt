@@ -1,0 +1,4 @@
+look at generation.hpp here
+https://github.com/orosmatthew/hydrogen-cpp/blob/master/src/generation.hpp
+this does already _, -, *, / on ints
+
