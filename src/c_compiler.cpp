@@ -20,6 +20,7 @@ void CCompiler::generate(const string& outfile){
   out.open(outfile);
   hdr.open("output.h");
 
+  out << "#include <stdio.h>" << std::endl;
   out << "#include <stdlib.h>" << std::endl;
   out << "#include <strings.h>" << std::endl;
 
@@ -97,13 +98,13 @@ void CCompiler::compile(TreeNode* node, ofstream& out){
 
     case whileNode          : compWhile( node, out );           break;
     case breakNode          : compBreak( node, out );           break;
+    case ifNode             : compIf( node, out );              break;
+    // case inputNode          : compInput( node, out );           break;
 
     // case funcReturnNode     : compRetFunction( node );  break;
     // case returnNode         : compReturn( node );       break;
     // case forNode            : compFor( node );          break;
     // case forEachNode        : compForEach( node );      break;
-    // case ifNode             : compIf( node );           break;
-    // case inputNode          : compInput( node );        break;
   
     // case runNode            : compRun( node );          break;
     // case writeNode          : compWrite( node );        break;
@@ -129,16 +130,18 @@ void CCompiler::compBlock( TreeNode* node, ofstream& out ){
 
 void CCompiler::compPrint( TreeNode* node, ofstream& out ){
   TreeNode::iterator i;
+  out << "printf(\"%f %s\", ";
   for( i=node->begin(); i!=node->end(); ++i ){
-    out << "printf(";
+    // again here we need the type. to keep it simple we assume number/double here always
+    if (i!=node->begin()) out << ",";
     compile( *i, out ); //compile expression
-    out << ");";
   }
+  out << ");";
 }
 
 void CCompiler::compConstantString( TreeNode* node, ofstream& out ){
   if (node->getName() == "newline") {
-    out << "std::endl";
+    out << "\"\\n\"";
     return;
   }
 
@@ -353,9 +356,10 @@ void CCompiler::compWhile( TreeNode* node, ofstream& out ){
   compile( condition, out );
   out << ") {" << std::endl;
 
+  // TODO: increment compile indent here
   compile( statements, out );
 
-  out << "}" << std::endl;
+  out << "  }" << std::endl;
 
  // bBreak=false;
 }
@@ -364,6 +368,46 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
   // bBreak=true; //stops loop block compution
   out << "break";
 }
+
+void CCompiler::compIf( TreeNode* node, ofstream& out ){
+  TreeNode* condition = node->firstChild();
+  TreeNode* ifblok = node->secondChild();
+
+  //determine if there is an else part
+  if( node->size() == 2 ){ //no else
+    out << "if (";
+    compile( condition, out );
+    out << ") {" << endl;
+    compile( ifblok, out );
+    out << "}" << endl;
+  }
+  else{ //else part given
+    TreeNode* elseblok = node->thirdChild();
+    out << "if (";
+    compile( condition, out );
+    out << ") {" << endl;
+
+    compile( ifblok, out );
+    out << endl << "  }" << endl;
+
+    out << "  else {" << endl;
+    compile( elseblok, out );
+    out << endl << "  }" << endl;
+  }
+}
+
+ 
+// void CCompiler::compInput( TreeNode* node ){
+//   string varName = node->firstChild()->getName();
+//   Var val;
+//   
+//   //ask input from cin
+//   //cout<<"?"; // basic style , don't like it :)
+//   cin>>val;
+//   
+//   ( symbolTables.top() )[ varName ] = val;  
+// }
+
 
 
 // GETVAL AND SETVAL IS NOT NEEDED HERE!
@@ -483,39 +527,6 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // 
 // }
 // 
-// 
-//      
-// void CCompiler::compIf( TreeNode* node ){
-// 
-//   TreeNode* condition = node->firstChild();
-//   TreeNode* ifblok = node->secondChild();
-// 
-//   //determine if there is an else part
-//   if( node->size() == 2 ){ //no else
-//     
-//     compile( condition );
-//     if( condition->getValue().val != 0 ){
-//       compile( ifblok );
-//     }   
-//  
-//   }
-//   else{ //else part given
-//     TreeNode* elseblok = node->thirdChild();
-//     compile( condition );
-//     if( condition->getValue().val != 0 ){
-//       compile( ifblok );
-//     }
-//     else{
-//       compile( elseblok );
-//     }
-// 
-//   }
-// 
-// }
-// 
-// 
-// 
-// 
 // /*     
 // void CCompiler::compPrintLn( TreeNode* node ){
 //   compPrint( node );
@@ -523,20 +534,7 @@ void CCompiler::compBreak( TreeNode* node, ofstream& out ){
 // }
 // */
 // 
-// 
-// void CCompiler::compInput( TreeNode* node ){
-//   string varName = node->firstChild()->getName();
-//   Var val;
-//   
-//   //ask input from cin
-//   //cout<<"?"; // basic style , don't like it :)
-//   cin>>val;
-//   
-//   ( symbolTables.top() )[ varName ] = val;  
-// }
-// 
-//
-//      
+////     
 // 
 // void CCompiler::compNot( TreeNode* node ){
 //   node->setValue( 1 - getVal( node->firstChild() ).val ); 

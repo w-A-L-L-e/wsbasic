@@ -83,7 +83,7 @@ int main(int argc, char** arg){
     }
     else if(cpp_compile){
       cout << "generating c++ code and linking..." << endl;
-      CCompiler compiler(root);
+      CppCompiler compiler(root);
       compiler.generate("output.cpp");
       compiler.link("output.cpp");
     }
