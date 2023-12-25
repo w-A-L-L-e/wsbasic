@@ -1,58 +1,59 @@
 #!/usr/local/bin/wsbasic
-CXX         = g++ 
+# FLAGS       = -O2 -Wall -g # DEBUG FLAGS
 FLAGS       = -O2 -Wall
+CXX         = g++ 
 INSTALL_DIR = /usr/local/bin/
 
-all: wsbasic compiler_poc
+OBJECTS = \
+	src/main.o \
+	src/var.o \
+	src/lexer.o \
+	src/parser.o \
+	src/treenode.o \
+	src/executer.o \
+	src/asm_compiler.o \
+	src/c_compiler.o \
+	src/cpp_compiler.o \
+	src/string_utils.o
 
-var.o: src/var.cpp src/var.h
-	$(CXX) $(FLAGS) -c src/var.cpp
+all: wsbasic
 
-lexer.o : src/lexer.cpp src/lexer.h
-	$(CXX) $(FLAGS) -c src/lexer.cpp
+%.o: %.cpp
+	$(CXX) $(FLAGS) -c $< -o $@
 
-parser.o: src/parser.cpp src/parser.h
-	$(CXX) $(FLAGS) -c src/parser.cpp
+%.o: %.cpp %.h
+	$(CXX) $(FLAGS) -c $< -o $@
 
-treenode.o: src/treenode.cpp src/treenode.h
-	$(CXX) $(FLAGS) -c src/treenode.cpp
-	
-executer.o: src/executer.cpp src/executer.h
-	$(CXX) $(FLAGS) -c src/executer.cpp
-
-asm_compiler.o: src/asm_compiler.cpp src/asm_compiler.h
-	$(CXX) $(FLAGS) -c src/asm_compiler.cpp
-
-c_compiler.o: src/c_compiler.cpp src/c_compiler.h
-	$(CXX) $(FLAGS) -c src/c_compiler.cpp
-
-cpp_compiler.o: src/cpp_compiler.cpp src/cpp_compiler.h
-	$(CXX) $(FLAGS) -c src/cpp_compiler.cpp
-
-wsbasic: src/main.cpp var.o lexer.o parser.o treenode.o executer.o asm_compiler.o c_compiler.o cpp_compiler.o
-	$(CXX) $(FLAGS) src/main.cpp -o wsbasic lexer.o parser.o var.o treenode.o executer.o asm_compiler.o c_compiler.o cpp_compiler.o
+wsbasic: $(OBJECTS)
+	$(CXX) $(FLAGS) -o $@ $(OBJECTS) 
 
 treetest: src/treenode.o src/treetest.cpp
 	$(CXX) $(FLAGS) -o treetest src/treetest.cpp treenode.o
 
 compiler_poc: src/compiler_poc.cpp
 	$(CXX) $(FLAGS) -o compiler_poc src/compiler_poc.cpp
-	@echo "make testcompile   -> proof of concept on how we can compile real executables"
+	echo "make testcompile   -> proof of concept on how we can compile real executables"
 
 testcompile:
-	@./compiler_poc
-	@./out
+	./compiler_poc
+	./out
 	echo $?
 
 debug: wsbasic
-	$(CXX) -g src/main.cpp -o wsbasic_debug lexer.o parser.o var.o treenode.o executer.o asm_compiler.o c_compiler.o
-	lldb ./wsbasic_debug hello.bas
+	@echo "MacOS DEBUGGER HOWTO (make sure makefile uses the debug flags see top line in make):"
+	@echo ""
+	@echo "1. Just type 'b main': set breakpoint on main"
+	@echo "2. type 'run' to execute up to main"
+	@echo "3. type 'gui' to show current position in your sources nicer."
+	@echo "4. use 's' for step and 'n' for next ..."
+	@echo ""
+	lldb ./wsbasic scripts/compiler_test.b
 
 install:
 	cp wsbasic $(INSTALL_DIR)
 
 clean:
-	@rm -vf *~ *.o a.out core wsbasic treetest compiler_poc
+	@rm -vf *~ src/*.o a.out core wsbasic treetest compiler_poc
 	@rm -vf scripts/*~
 	@rm -vf output output.asm output.cpp output.o output.h
 

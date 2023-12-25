@@ -109,5 +109,3 @@ class Parser{
 };
 
 #endif
-
-

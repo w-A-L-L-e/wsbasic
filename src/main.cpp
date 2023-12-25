@@ -51,9 +51,10 @@ int main(int argc, char** arg){
   }
 
 
-  ifstream in(arg[argpos]);
+  string script_file = string(arg[argpos]);
+  ifstream in(script_file.c_str());
   if( !in.is_open () ){
-    cerr<<"could not open file: "<<arg[argpos]<<endl;
+    cerr << "could not open file: " << script_file <<endl;
     return 1;
   }
 
@@ -71,21 +72,27 @@ int main(int argc, char** arg){
     if(asm_compile){
       // create an nasm compiler instance
       cout << "generating asm code and linking..." << endl;
+      string asm_file = basename(script_file) + ".asm";
+
       AsmCompiler compiler(root);
       compiler.generate("output.asm");
       compiler.link("output.asm");
     }
     else if(c_compile){
       cout << "generating c code and linking..." << endl;
+      string c_file = basename(script_file) + ".c";
+
       CCompiler compiler(root);
-      compiler.generate("output.c");
-      compiler.link("output.c");
+      compiler.generate(c_file);
+      compiler.link(c_file);
     }
     else if(cpp_compile){
       cout << "generating c++ code and linking..." << endl;
+      string cpp_file = basename(script_file) + ".cpp";
+
       CppCompiler compiler(root);
-      compiler.generate("output.cpp");
-      compiler.link("output.cpp");
+      compiler.generate(cpp_file);
+      compiler.link(cpp_file);
     }
     else {
       // directly execute the AST

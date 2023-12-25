@@ -16,9 +16,8 @@ bugreport(log): /
 #include <map>
 #include <stack>
 #include <fstream>
-
 #include <stdio.h>
-
+#include "string_utils.h"
 
 typedef map<string,Var>       symtable;
 typedef map<string,TreeNode*> functable;

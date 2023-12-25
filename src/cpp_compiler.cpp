@@ -18,8 +18,11 @@ CppCompiler::CppCompiler(TreeNode* tree){
 }
 
 void CppCompiler::generate(const string& outfile){
+  string header_name = outfile;
+  replace_all(header_name, ".cpp", ".h");
+
   out.open(outfile);
-  hdr.open("output.h");
+  hdr.open(header_name);
 
   // in code generation also make doubles always have decimal
   out << std::fixed;
@@ -29,7 +32,7 @@ void CppCompiler::generate(const string& outfile){
   out << "#include <string>" << std::endl;
 
   // we will store function implementations in seperate .h file
-  out << "#include \"output.h\"" << std::endl; 
+  out << "#include \"" << header_name << "\"" << std::endl; 
 
   //TODO: instead have a more extensive wsbasic.h here
   hdr << "#include \"src/var.h\"" << std::endl;
@@ -71,13 +74,16 @@ void CppCompiler::generate(const string& outfile){
 }
 
 void CppCompiler::link(const string& cppfile){
-  // TODO: output file = cfile without .c extension
+  string exe_name = cppfile;
+  replace_all(exe_name, ".cpp", "");
+  string header_name = exe_name + ".h";
+
   // TODO: have a wsbasic.h and libwsbasic.a here and link with those
-  string gcc_command = "g++ " + cppfile + " var.o -o output";
+  // instead of var.o
+  string gcc_command = "g++ " + cppfile + " src/var.o -o "+exe_name;
   system(gcc_command.c_str());
 
-  cout << "saved executable 'output'" << std::endl;
-
+  cout << "saved executable '" << exe_name << "'" << std::endl;
 }
 
 void CppCompiler::compile(TreeNode* node, ofstream& out){
