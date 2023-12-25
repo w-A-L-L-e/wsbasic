@@ -22,6 +22,9 @@ class Var{
     //======================
     Var();
     Var(const Var&);
+    Var(double d);
+    Var(const string& s);
+
     ~Var(){}
     
     
@@ -29,9 +32,16 @@ class Var{
     //==============
     void toString(); //explicit conversion to string strVal
     void toDouble(); //explicit conversion to double val
+
+    string getTypeStr();
+    Var getType();
     
     //operators
     //=========
+    operator int();
+    operator double();
+    operator string();
+
     Var& operator=(const Var&);
     Var& operator=(const string&);
     Var& operator=(double);

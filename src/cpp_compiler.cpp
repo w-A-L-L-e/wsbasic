@@ -8,6 +8,7 @@ will be more performant however we do have a bigger depencency on gcc when used
 =============================================================================*/
 
 #include "cpp_compiler.h"
+#include <iomanip>
 
 CppCompiler::CppCompiler(TreeNode* tree){
   this->tree = tree;
@@ -20,13 +21,23 @@ void CppCompiler::generate(const string& outfile){
   out.open(outfile);
   hdr.open("output.h");
 
+  // in code generation also make doubles always have decimal
+  out << std::fixed;
+  hdr << std::fixed;
+
   out << "#include <iostream>" << std::endl;
   out << "#include <string>" << std::endl;
 
   // we will store function implementations in seperate .h file
   out << "#include \"output.h\"" << std::endl; 
+  //TODO: instead have a more extensive wsbasic.h here
+  out << "#include \"src/var.h\"" << std::endl;
+
   out << std::endl;
   out << "int main(){" << std::endl;
+
+  // set fixed, matches executer way of displaying (always a decimal in double)
+  out << "  std::cout << std::fixed;" << std::endl;
   
   // we need this for variable type detection and coercion only
   symtable main_symtable; 
@@ -60,7 +71,8 @@ void CppCompiler::generate(const string& outfile){
 
 void CppCompiler::link(const string& cppfile){
   // TODO: output file = cfile without .c extension
-  string gcc_command = "g++ " + cppfile + " -o output";
+  // TODO: have a wsbasic.h and libwsbasic.a here and link with those
+  string gcc_command = "g++ " + cppfile + " var.o -o output";
   system(gcc_command.c_str());
 
   cout << "saved executable 'output'" << std::endl;
@@ -160,11 +172,10 @@ void CppCompiler::compConstant( TreeNode* node, ofstream& out ){
 
 void CppCompiler::compAssign( TreeNode* node, ofstream& out ){
   TreeNode* expr = node->secondChild();
-  
-  // assume double but ideally we should compile first to get type and then output it!
-  // problem we would need to compile the RHS first for this without outputing to stream
-  // then determine type and output double or not and then output the RHS code...
-  string vartype = "double";
+  // for our asm and c versions of compiler this wont work anymore
+  // however if we want truly dynamic object oriented scripts everything is a Var
+  // that way you can go from x = 1.0 to x = "some str" later in your scripts
+  string vartype = "Var";
   TreeNode* var = node->firstChild();
   string varname = var->getName();
 
@@ -180,35 +191,23 @@ void CppCompiler::compAssign( TreeNode* node, ofstream& out ){
    }
    else {
      // variable already existed, regular assign.
-     // again we should typecheck this here as x = "hello" then later x = x / 2 -> should give error
-     // as we cant device strings by 2...
+     // by using Var type everywhere this just works and the Var class handles conversion/coercion
      out << varname << " = ";
    }
 
   // again also first assign we should determine the type here and set it for subsecquent assigns
   compile(expr, out);
-
-  // out << expr->getValue().val; // this is for a constant
   out << ";";
 }
 
-
-// maybe we can get away with doing a compile type thing without writing to output
-// void CppCompiler::compExpressionType( TreeNode* node ){
-// this should just iterate our ast and determine expression type that would be returned when executed
-// }
-
-
  
 void CppCompiler::compId( TreeNode* node, ofstream& out ){
-  // TODO: store type here on symtable instead of val!!!
   // node->setValue( ( symbolTables.top() )[ node->getName() ] );
   out << node->getName();
 }
 
 void CppCompiler::compExit( TreeNode* node, ofstream& out ){
   out << "exit(";
-  // todo: verify expression is an int or double here
   compile( node->firstChild(), out );
   out << ");";
 }

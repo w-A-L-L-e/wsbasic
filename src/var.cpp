@@ -17,6 +17,16 @@ Var::Var( const Var& n ){
   *this=n;
 }
 
+Var::Var( double d ){
+  this->val = d;
+  this->bString = false;
+}
+
+Var::Var( const string& s ){
+  this->strVal = s;
+  this->bString = true;
+}
+
 void Var::toString(){
   ostringstream os;
   os<<val;
@@ -29,7 +39,19 @@ void Var::toDouble(){
   is>>val;
   bString=false;
 }
-    
+
+// allow conversion of Var into int, double and string
+Var::operator int(){
+  return (int) this->val;
+}
+
+Var::operator double(){
+  return this->val;
+}
+
+Var::operator string(){
+  return this->strVal;
+}
 
 Var& Var::operator=( const Var& n ){
   if(this != &n){
@@ -233,13 +255,27 @@ ostream& operator<<(ostream& os, const Var& n){
   return os;
 }
 
-//read double
+// read double
+// in future vesion we could read from stream a string
+// and convert to double if needed
 istream& operator>>(istream& is, Var& n){
   n.bString=false;
   is>>n.val;
   return is;
 }
 
+string Var::getTypeStr() {
+  if (bString) return "str";
+  return "dec";
+  // future version should have "int" also
+}
 
+Var Var::getType(){
+  Var v;
+  v.bString = true;
+  if (bString) v.strVal = "str";
+  else v.strVal = "dec";
 
+  return v;
+}
 
