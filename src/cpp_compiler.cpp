@@ -225,8 +225,8 @@ void CppCompiler::compFunction( TreeNode* node, ofstream& out ){
   //locate function node  
   functable::iterator p=functionTable.find( funcname );
   if( p==functionTable.end() ){
-    cerr<<"RUN ERROR: Call to undefined function : "<<funcname<<"."<<endl;
-    return;
+    cerr << "COMPILE ERROR: Call to undefined function : "<<funcname<<"."<<endl;
+    exit(1);
   }
   
   TreeNode* funcnode    = p->second;
@@ -236,8 +236,8 @@ void CppCompiler::compFunction( TreeNode* node, ofstream& out ){
   // check if number of parameters between call and definition match
   if( callparams->size() != funcIds->size() ){
     // in a more strongly typed language you'll also check the params match in type
-    cerr<<"RUN ERROR: Call to function "<<funcname<<" with wrong number of parameters."<<endl;
-    return;
+    cerr << "COMPILE ERROR: Call to function "<<funcname<<" with wrong number of parameters."<<endl;
+    exit(1);
   }
 
   //pass parameters to function
