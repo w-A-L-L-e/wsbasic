@@ -30,8 +30,9 @@ void CppCompiler::generate(const string& outfile){
 
   // we will store function implementations in seperate .h file
   out << "#include \"output.h\"" << std::endl; 
+
   //TODO: instead have a more extensive wsbasic.h here
-  out << "#include \"src/var.h\"" << std::endl;
+  hdr << "#include \"src/var.h\"" << std::endl;
 
   out << std::endl;
   out << "int main(){" << std::endl;
@@ -162,12 +163,14 @@ void CppCompiler::compConstantString( TreeNode* node, ofstream& out ){
 
 void CppCompiler::compConstant( TreeNode* node, ofstream& out ){
   Var v = node->getValue();
+  out << "Var(";
   if (v.bString) {
     out << "\"" << v.strVal << "\"";
   }
   else {
     out << v.val;
   }
+  out << ")";
 }
 
 void CppCompiler::compAssign( TreeNode* node, ofstream& out ){
@@ -267,7 +270,7 @@ void CppCompiler::compFunction( TreeNode* node, ofstream& out ){
   hdr << "void " << funcname << "(";
   for(pto = funcIds->begin(); pto != funcIds->end(); ++pto){
     if (pto != funcIds->begin()) hdr << ", ";
-    hdr << "double " << (*pto)->getName();
+    hdr << "Var " << (*pto)->getName();
   }
   hdr << ") {" << std::endl;
   compile( funcnode->thirdChild(), hdr );
