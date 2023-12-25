@@ -24,7 +24,11 @@ all: wsbasic
 %.o: %.cpp %.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
-wsbasic: $(OBJECTS)
+lib/libwsbasic.a: $(OBJECTS)
+	cp src/var.h lib/wsbasic.h
+	ar rvs lib/libwsbasic.a src/var.o 
+
+wsbasic: $(OBJECTS) lib/libwsbasic.a 
 	$(CXX) $(FLAGS) -o $@ $(OBJECTS) 
 
 treetest: src/treenode.o src/treetest.cpp
@@ -56,4 +60,5 @@ clean:
 	@rm -vf *~ src/*.o a.out core wsbasic treetest compiler_poc
 	@rm -vf scripts/*~
 	@rm -vf output output.asm output.cpp output.o output.h
+	@rm -vf lib/libwsbasic.a
 

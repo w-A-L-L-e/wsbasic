@@ -14,7 +14,7 @@ description   : Open a file, parse it into a tree and then execute it
 int main(int argc, char** arg){
   int argpos = 1;
   if(argc < 2){
-    cout <<"Usage: "<<arg[0]<<" [-ast, -cpp, -asm] <WSBASIC SCRIPT> "<<endl;
+    cout <<"usage: "<<arg[0]<<" [-ast, -cpp, -asm] <script> "<<endl;
     cout <<"   -ast : show parse result in absact syntax tree for debugging" << endl;
     cout <<"   -cpp : convert to C++ and then compile + link" << endl;
     cout <<"   -c   : convert to C and then compile + link" << endl;
