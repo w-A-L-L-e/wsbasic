@@ -26,10 +26,9 @@ all: wsbasic
 
 copy_libfiles:
 	cp src/var.h src/var.cpp lib/
-	cp lib/var.h lib/wsbasic.h
 
-lib/libwsbasic.a: copy_libfiles lib/var.o
-	ar rvs lib/libwsbasic.a lib/var.o 
+lib/libwsbasic.a: copy_libfiles lib/var.o lib/utils.o
+	ar rvs lib/libwsbasic.a lib/var.o lib/utils.o
 
 wsbasic: $(OBJECTS) lib/libwsbasic.a 
 	$(CXX) $(FLAGS) -o $@ $(OBJECTS) 

@@ -17,6 +17,7 @@ bugreport(log):
 using namespace std;
 
 class Var {
+  // public friend operators
   friend Var operator+(const Var& left, const Var& right);
   friend Var operator-(const Var& left, const Var& right);
   friend Var operator*(const Var& left, const Var& right);
@@ -34,14 +35,21 @@ class Var {
   friend istream& operator>>(istream& in, Var& obj);
   
   public:
+    // constructors
     Var();
     Var(double val);
     Var(const string& sval);
 
     int toInt();
+
+    // Var(const char[]); // gives ambiguity errors
     // operator int(); // this gives loads of ambiguity errors
+    // Var& operator=(const char[]);
 
     Var& operator=(const Var& obj);
+    Var& operator=(const string&);
+    Var& operator=(double);
+
     Var& operator+=(const Var& obj);
     Var& operator-=(const Var& obj);
     Var& operator*=(const Var& obj);

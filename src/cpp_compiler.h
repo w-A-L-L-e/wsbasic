@@ -83,12 +83,10 @@ class CppCompiler{
     void compOr   ( TreeNode*, ofstream& );
     void compNot  ( TreeNode*, ofstream& );
 
-    void compRun   ( TreeNode* );
-    void compWrite ( TreeNode* );
-    void compSubstr( TreeNode* );
+    void compRun   ( TreeNode*, ofstream& );
+    void compWrite ( TreeNode*, ofstream& );
+    void compSubstr( TreeNode*, ofstream& );
     
-    string runCommand( const string& );
-        
     //private locals
     //==============
     TreeNode* tree;
@@ -102,7 +100,4 @@ class CppCompiler{
     ofstream out;
     ofstream hdr; // header output.h containing function implementations
 };
-
-
 #endif
-

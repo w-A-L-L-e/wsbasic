@@ -179,10 +179,35 @@ Var::Var(const string& str) {
   val = 0;
 }
 
+// Var::Var(const char str[]) {
+//   bString = true;
+//   strVal = string(str);
+//   val = 0;
+// }
+
+
 Var &Var::operator=(const Var &obj) {
   val = obj.val;
   strVal = obj.strVal;
   bString = obj.bString;
+  return *this;
+}
+
+Var& Var::operator=( const string& str ){
+  strVal=str;
+  bString=true;
+  return *this;
+}
+
+// Var& Var::operator=( const char str[] ){
+//   strVal=string(str);
+//   bString=true;
+//   return *this;
+// }
+
+Var& Var::operator=( double n ){
+  val=n;
+  bString=false;
   return *this;
 }
 
