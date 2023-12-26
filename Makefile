@@ -24,10 +24,11 @@ all: wsbasic
 %.o: %.cpp %.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
-copy_header:
+copy_libfiles:
+	cp src/var.h src/var.cpp lib/
 	cp lib/var.h lib/wsbasic.h
 
-lib/libwsbasic.a: copy_header lib/var.o
+lib/libwsbasic.a: copy_libfiles lib/var.o
 	ar rvs lib/libwsbasic.a lib/var.o 
 
 wsbasic: $(OBJECTS) lib/libwsbasic.a 
@@ -59,7 +60,7 @@ install:
 	cp wsbasic $(INSTALL_DIR)
 
 clean:
-	@rm -vf *~ src/*.o a.out core wsbasic treetest compiler_poc lib/*.o
+	@rm -vf *~ src/*.o a.out core wsbasic treetest compiler_poc lib/*.o lib/var.h lib/var.cpp
 	@rm -vf scripts/*~
 	@rm -vf output output.asm output.cpp output.o output.h
 	@rm -vf lib/libwsbasic.a
