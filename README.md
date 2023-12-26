@@ -194,9 +194,106 @@ As stated in the original release, this is a LGPL project but with a small addit
 So enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author 
 being Walter Schreppers. Any changes to the sources are encouraged to be released as LGPL.
 
-
-
 Look in scripts dir for more elaborate examples. It's pretty much got everything like bash has to offer and more...
+
+
+## Compiling scripts to C++
+
+The ASM and C versions of compilers are more in the proof of concept stage. However the CppCompiler is pretty much just as capable
+as the executor (interpreting). For cpp compiler only functions with return, for loops and run and substr need implementing.
+Apart from that we tried already a little benchmark to compute primes using while loop and compiling definitately gives around a 400% boost in speed. We haven't optimised at all to reduce object copies etc. So there is even more low hanging fruit here.
+
+```
+$ cat benchmark.b
+#!/usr/local/bin/wsbasic
+
+i=2
+while(i < 5000)
+begin
+  prime = 1
+  j=2
+  while j < (i-1)
+  begin
+    if( (i % j) == 0 )
+    begin
+      prime=0
+    end
+    j=j+1
+  end
+
+  if prime == 1 
+  begin
+    print(i)
+    print(" ")
+  end
+
+  i=i+1
+end
+
+println("\ndone")
+```
+
+Execution using interpreting:
+```
+ time ./wsbasic benchmark.b 
+2.000000 3.000000 5.000000 7.000000 11.000000 13.000000 17.000000 19.000000 23.000000 ...
+./wsbasic benchmark.b  5.41s user 0.09s system 98% cpu 5.598 total
+```
+
+Compiling our benchmark.b to c++:
+```
+ ./wsbasic -cpp benchmark.b
+generating c++ code and linking...
+saved executable 'benchmark'
+```
+
+Run our generated native exe we get exact same output but it runs a lot faster:
+```
+time ./benchmark
+2.000000 3.000000 5.000000 7.000000 11.000000 13.000000 17.000000 19.000000 23.000000 ...
+./benchmark  1.43s user 0.01s system 99% cpu 1.453 total
+```
+
+The generated c++ output is readable but already shows room for improvements.
+```
+#include "benchmark.h"
+#include <iostream>
+#include <string>
+
+int main() {
+  std::cout << std::fixed;
+  Var i = Var(2.000000);
+  while (i < Var(5000.000000)) {
+    Var prime = Var(1.000000);
+    Var j = Var(2.000000);
+    while (j < i - Var(1.000000)) {
+      if (i % j == Var(0.000000)) {
+        prime = Var(0.000000);
+      }
+
+      j = j + Var(1.000000);
+    }
+
+    if (prime == Var(1.000000)) {
+      std::cout << i;
+      std::cout << " ";
+    }
+
+    i = i + Var(1.000000);
+  }
+
+  std::cout << "\ndone" << std::endl;
+  return 0;
+}
+```
+
+The generated benchmark.h now only contains the include file but if you write methods in your basic scripts
+their implementation will be compiled into the header.
+
+You can test this using the compiler_test.b script
+```
+./wsbasic -cpp compiler_test.b
+```
 
 
 ## UPDATES
@@ -239,6 +336,7 @@ Hello world
 
 19/12/2023: Shortly revisited this for a few hours in and started on a compiler class that would generate asm to also support compiling into a binary executable. Did a little proof of concept to see it would work with nasm after seeing some youtube video that sparked my interest. 
 
+## Compiling scripts ASM and C versions
 Compiling to binary is just in proof of concept fase right now, might revisit this and complete it somewhere in 2024 if I have time. However
 as poc it shows it would be pretty easy to get most features up and running quite quickly. Using llvm would however make it much more performant
 than doing our simple asm generation here. But not relying on llvm does allow this to be ported to a low resource embedded system or an amiga or something like that :D
