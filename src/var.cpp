@@ -1,276 +1,229 @@
-/*=============================================================================
-author        : Walter Schreppers
-filename      : var.cpp
-description   : Var class to implement value objects in simplest way 
-                that allows intuitive coercion
-bugreport(log):/
-=============================================================================*/
 #include "var.h"
 
-Var::Var(){
-  strVal="";
-  val=0;
-  bString=false;
-}
+#include <cmath>
+#include <iostream>
+#include <limits.h>
+#include <string>
+#include <vector>
+using namespace std;
 
-Var::Var( const Var& n ){
-  *this=n;
-}
-
-Var::Var( double d ){
-  this->val = d;
-  this->bString = false;
-}
-
-Var::Var( const string& s ){
-  this->strVal = s;
-  this->bString = true;
-}
-
-void Var::toString(){
-  ostringstream os;
-  os<<val;
-  strVal=os.str();
-  bString=true;
-}
-
-void Var::toDouble(){
-  istringstream is(strVal);
-  is>>val;
-  bString=false;
-}
-
-// allow conversion of Var into int, double and string
-Var::operator int(){
-  return (int) this->val;
-}
-
-Var::operator double(){
-  return this->val;
-}
-
-Var::operator string(){
-  return this->strVal;
-}
-
-Var& Var::operator=( const Var& n ){
-  if(this != &n){
-
-    if( bString == n.bString ){
-      strVal=n.strVal;
-      val=n.val;
-      bString=n.bString;
-    }
-    
-    if(n.bString){
-      bString=true;
-      strVal=n.strVal;
-      
-      Var tmp;
-      tmp.strVal=n.strVal;
-      tmp.toDouble();
-      val=tmp.val;
-    }
-    
-    if(!n.bString){
-      bString=false;
-      val=n.val;
-      
-      Var tmp;
-      tmp.val=n.val;
-      tmp.toString();
-      strVal=tmp.strVal;
-    }
-
-  }
-  return *this;
-}
-
-
-Var& Var::operator=( const string& s ){
-  strVal=s;
-  bString=true;
-  return *this;
-}
-
-
-Var& Var::operator=( double n ){
-  val=n;
-  bString=false;
-  return *this;
-}
-
-
-
-Var& Var::operator+( const Var& n ){
-  if(!bString && !n.bString){
-    val+=n.val;
-  }
-  else if(bString && n.bString){
-    strVal+=n.strVal;
-  }
-  else{
-    if(!bString){
-      bool b=bString; 
-      toString();
-      bString=b;
-    }
-    
-    if(!n.bString){
-      Var tmp=n;
-      tmp.toString();
-      strVal+=tmp.strVal;
-    }
-    else{
-      strVal+=n.strVal;
-    }
-    
-    val+=n.val;
-  }
-  return *this;
-}
-
-
-Var& Var::operator%( const Var& n ){
-  if(!bString && !n.bString){
-    val = (long)val % (long)n.val;
-  }
-  else if(bString && n.bString){
-    //strVal+=n.strVal;
-    std::cerr << "Error: modulo not allowd on string" << std::endl;
-  }
-  else{
-    //val+=n.val;
-    std::cerr << "Error: invalid type for modulo operator" << std::endl;
-  }
-  return *this;
-}
-
-
-
-Var& Var::operator-( const Var& n ){
-  if(!bString && !n.bString){
-    val-=n.val;
-  }
-  else if(bString && n.bString){
-    //strVal-=n.strVal;
-    cerr<<"cannot subtract strings"<<endl;
-  }
-  else {
-    val-=n.val;
-    toString();
-    bString=false;
+// friends definitions
+Var operator+(const Var &left, const Var &right) {
+  Var temp;
+  if (!left.bString && !right.bString) {
+    temp.bString = false;
+    temp.val = left.val + right.val;
+  } else if (left.bString && right.bString) {
+    temp.bString = true;
+    temp.strVal = left.strVal + right.strVal;
+  } else {
+    cerr << "RUN ERROR: can't add string + double" << endl;
+    exit(1);
   }
 
-  return *this;
+  return temp;
 }
 
+Var operator-(const Var &left, const Var &right) {
+  Var temp;
+  if (!left.bString && !right.bString) {
+    temp.bString = false;
+    temp.val = left.val - right.val;
+  } else {
+    cerr << "RUN ERROR: can't subtract strings" << endl;
+    exit(1);
+  }
 
-Var& Var::operator*( const Var& n ){
-  if(!bString && !n.bString){
-    val*=n.val;
-  }
-  else{
-    cerr<<"cannot multiply strings"<<endl;
-  }
-  
-  return *this;
+  return temp;
 }
 
+Var operator*(const Var &left, const Var &right) {
+  Var temp;
+  if (!left.bString && !right.bString) {
+    temp.bString = false;
+    temp.val = left.val * right.val;
+  } else {
+    cerr << "RUN ERROR: can't multiply strings" << endl;
+    exit(1);
+  }
 
-Var& Var::operator/( const Var& n ){
-  if(!bString && !n.bString){
-    val/=n.val;
-  }
-  else if(bString && n.bString){
-    //strVal/=n.strVal;
-    cerr<<"cannot divide strings"<<endl;
-  }
-  else{
-    val/=n.val;
-    toString();
-    bString=false;
-  }
-  return *this;
+  return temp;
 }
 
+Var operator/(const Var &left, const Var &right) {
+  Var temp;
+  if (!left.bString && !right.bString) {
+    temp.bString = false;
+    temp.val = left.val / right.val;
+  } else {
+    cerr << "RUN ERROR: can't divide strings" << endl;
+    exit(1);
+  }
 
+  return temp;
+}
 
-bool Var::operator==( const Var& n ) const {
-  if( bString && n.bString ) return strVal==n.strVal; 
-  if( !bString && !n.bString ) return val == n.val;
+Var operator%(const Var &left, const Var &right) {
+  Var temp;
+  if (!left.bString && !right.bString) {
+    temp.bString = false;
+    temp.val = (long)left.val % (long)right.val;
+  } else {
+    cerr << "RUN ERROR: can't do mod operator on strings" << endl;
+    exit(1);
+  }
+
+  return temp;
+}
+
+bool operator==(const Var &left, const Var &right) {
+  if (left.bString && right.bString)
+    return left.strVal == right.strVal;
+  if (!left.bString && !right.bString)
+    return left.val == right.val;
+
+  // different types always false
   return false;
 }
 
+bool operator!=(const Var &left, const Var &right) { return !(left == right); }
 
-bool Var::operator!=( const Var& n ) const {
-  if( bString && n.bString ) return strVal!=n.strVal; 
-  if( !bString && !n.bString ) return val != n.val;
+bool operator<(const Var &left, const Var &right) {
+  if (left.bString && right.bString)
+    return left.strVal < right.strVal;
+  if (!left.bString && !right.bString)
+    return left.val < right.val;
+
+  // different types always false
   return false;
 }
 
+bool operator>(const Var &left, const Var &right) {
+  if (left.bString && right.bString)
+    return left.strVal > right.strVal;
+  if (!left.bString && !right.bString)
+    return left.val > right.val;
 
-bool Var::operator<( const Var& n ) const {
-  if( bString && n.bString ) return strVal<n.strVal; 
-  if( !bString && !n.bString ) return val < n.val;
+  // different types always false
   return false;
 }
 
+bool operator<=(const Var &left, const Var &right) {
+  //  return ( (left < right) || (left == right) );
+  if (left.bString && right.bString)
+    return left.strVal <= right.strVal;
+  if (!left.bString && !right.bString)
+    return left.val <= right.val;
 
-bool Var::operator<=( const Var& n ) const {
-  if( bString && n.bString ) return strVal<=n.strVal; 
-  if( !bString && !n.bString ) return val <= n.val;
+  // different types always false
   return false;
 }
 
+bool operator>=(const Var &left, const Var &right) {
+  // return ( (left > right) || (left == right) );
+  if (left.bString && right.bString)
+    return left.strVal >= right.strVal;
+  if (!left.bString && !right.bString)
+    return left.val >= right.val;
 
-bool Var::operator>( const Var& n ) const {
-  if( bString && n.bString ) return strVal>n.strVal; 
-  if( !bString && !n.bString ) return val > n.val;
+  // different types always false
   return false;
 }
 
-
-bool Var::operator>=( const Var& n ) const {
-  if( bString && n.bString ) return strVal>=n.strVal; 
-  if( !bString && !n.bString ) return val >= n.val;
-  return false;
-}
-
-
-
-//output double or string
-ostream& operator<<(ostream& os, const Var& n){
-  if(n.bString){
-    os<<n.strVal;
-  }  
-  else{
-    os<<n.val;
+ostream &operator<<(ostream &out, const Var &obj) {
+  if (obj.bString) {
+    out << obj.strVal;
+  } else {
+    out << obj.val;
   }
-  return os;
+  return out;
 }
 
-// read double
-// in future vesion we could read from stream a string
-// and convert to double if needed
-istream& operator>>(istream& is, Var& n){
-  n.bString=false;
-  is>>n.val;
-  return is;
+// todo parse and make double if its double and string type for all else...
+istream &operator>>(istream &in, Var &obj) {
+  obj.bString = false;
+  in >> obj.val;
+  return in;
 }
 
-string Var::getTypeStr() {
-  if (bString) return "str";
-  return "dec";
-  // future version should have "int" also
+
+
+// public members
+Var::Var() {
+  bString = false;
+  strVal = "";
+  val = 0;
 }
 
-Var Var::getType(){
-  Var v;
-  v.bString = true;
-  if (bString) v.strVal = "str";
-  else v.strVal = "dec";
-
-  return v;
+Var::Var(double x) {
+  bString = false;
+  strVal = "";
+  val = x;
 }
 
+Var::Var(const string& str) {
+  bString = true;
+  strVal = str;
+  val = 0;
+}
+
+Var &Var::operator=(const Var &obj) {
+  val = obj.val;
+  strVal = obj.strVal;
+  bString = obj.bString;
+  return *this;
+}
+
+Var &Var::operator+=(const Var &obj) {
+  *this = *this + obj;
+  return *this;
+}
+
+Var &Var::operator-=(const Var &obj) {
+  *this = *this - obj;
+  return *this;
+}
+
+Var &Var::operator*=(const Var &obj) {
+  *this = *this * obj;
+  return *this;
+}
+
+Var &Var::operator/=(const Var &obj) {
+  *this = *this / obj;
+  return *this;
+}
+Var &Var::operator++() {
+  *this = *this + 1;
+  return *this;
+}
+
+Var Var::operator++(int) {
+  Var before = *this;
+  *this = *this + 1;
+  return before;
+}
+
+Var &Var::operator--() {
+  *this = *this - 1;
+  return *this;
+}
+
+Var Var::operator--(int) {
+  Var before = *this;
+  *this = *this - 1;
+  return before;
+}
+
+Var Var::operator+() const { return *this; }
+
+Var Var::operator-() const {
+  if (bString) {
+    cerr << "Can't negate a string." << endl;
+    exit(1);
+  }
+  Var temp;
+  temp.val = -val;
+  temp.bString = bString;
+  return temp;
+}

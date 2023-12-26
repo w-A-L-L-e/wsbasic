@@ -165,6 +165,9 @@ void CppCompiler::compConstantString( TreeNode* node, ofstream& out ){
   // make escaped newline work (todo apply this to all excaped chars)
   string cstr = node->getValue().strVal;
   replace_all(cstr, "\n", "\\n");
+  replace_all(cstr, "\r", "\\r");
+  // TODO: use generic backslash escape as we need \033 and \u also to work here
+  // replace_all(cstr, "\u", "\\u");
 
   out << "\"" << cstr << "\"";
 }

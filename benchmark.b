@@ -1,7 +1,7 @@
 #!/usr/local/bin/wsbasic
 
 i=2
-while(i < 1000)
+while(i < 5000)
 begin
   prime = 1
   j=2
