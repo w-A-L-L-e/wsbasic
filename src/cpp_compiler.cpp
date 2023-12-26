@@ -221,9 +221,9 @@ void CppCompiler::compId( TreeNode* node, ofstream& out ){
 }
 
 void CppCompiler::compExit( TreeNode* node, ofstream& out ){
-  out << "exit(";
+  out << "exit( Var(";
   compile( node->firstChild(), out );
-  out << ");";
+  out << ").toInt() );";
 }
 
 

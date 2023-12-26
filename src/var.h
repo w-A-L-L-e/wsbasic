@@ -38,6 +38,9 @@ class Var {
     Var(double val);
     Var(const string& sval);
 
+    int toInt();
+    // operator int(); // this gives loads of ambiguity errors
+
     Var& operator=(const Var& obj);
     Var& operator+=(const Var& obj);
     Var& operator-=(const Var& obj);

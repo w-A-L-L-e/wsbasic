@@ -7,7 +7,19 @@
 #include <vector>
 using namespace std;
 
-// friends definitions
+// friend definitions
+// Var::operator int(){
+//   return (int) this->val;
+// }
+
+int Var::toInt() {
+  if (bString) {
+    cerr << "RUN ERROR: can't get int from string type" << endl;
+    exit(1);
+  }
+  return (int) this->val;
+}
+
 Var operator+(const Var &left, const Var &right) {
   Var temp;
   if (!left.bString && !right.bString) {

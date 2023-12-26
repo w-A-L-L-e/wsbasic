@@ -1,3 +1,12 @@
+/*=============================================================================
+author        : Walter Schreppers
+filename      : var.h
+description   : Represent variable values and operations on them
+                This is now also the main libwsbasic.a header used by compiled
+                scripts as they need the var class to operate correctly.
+bugreport(log):
+=============================================================================*/
+
 #ifndef WSBASIC_VAR_H 
 #define WSBASIC_VAR_H 
 
@@ -29,6 +38,9 @@ class Var {
     Var(double val);
     Var(const string& sval);
 
+    int toInt();
+    // operator int(); // this gives loads of ambiguity errors
+
     Var& operator=(const Var& obj);
     Var& operator+=(const Var& obj);
     Var& operator-=(const Var& obj);
@@ -41,7 +53,8 @@ class Var {
     Var operator+() const;
     Var operator-() const;
    
-  private:
+  // TODO: make some getters/setters and return these to private
+  // private:
     double val;
     string strVal;
     bool bString;
