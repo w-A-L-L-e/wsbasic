@@ -1,6 +1,6 @@
 #!/usr/local/bin/wsbasic
-# FLAGS       = -O2 -Wall -g # DEBUG FLAGS
-FLAGS       = -O2 -Wall
+FLAGS       = -O2 -Wall -g # DEBUG FLAGS
+# FLAGS       = -O2 -Wall
 CXX         = g++ 
 INSTALL_DIR = /usr/local/bin/
 
@@ -24,9 +24,11 @@ all: wsbasic
 %.o: %.cpp %.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
-lib/libwsbasic.a: $(OBJECTS)
-	cp src/var.h lib/wsbasic.h
-	ar rvs lib/libwsbasic.a src/var.o 
+copy_header:
+	cp lib/var.h lib/wsbasic.h
+
+lib/libwsbasic.a: copy_header lib/var.o
+	ar rvs lib/libwsbasic.a lib/var.o 
 
 wsbasic: $(OBJECTS) lib/libwsbasic.a 
 	$(CXX) $(FLAGS) -o $@ $(OBJECTS) 
@@ -57,7 +59,7 @@ install:
 	cp wsbasic $(INSTALL_DIR)
 
 clean:
-	@rm -vf *~ src/*.o a.out core wsbasic treetest compiler_poc
+	@rm -vf *~ src/*.o a.out core wsbasic treetest compiler_poc lib/*.o
 	@rm -vf scripts/*~
 	@rm -vf output output.asm output.cpp output.o output.h
 	@rm -vf lib/libwsbasic.a

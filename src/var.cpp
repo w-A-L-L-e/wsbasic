@@ -170,15 +170,10 @@ Var& Var::operator*( const Var& n ){
   if(!bString && !n.bString){
     val*=n.val;
   }
-  else if(bString && n.bString){
-    //strVal*=n.strVal;
+  else{
     cerr<<"cannot multiply strings"<<endl;
   }
-  else{
-    val*=n.val;
-    toString();
-    bString=false;
-  }
+  
   return *this;
 }
 

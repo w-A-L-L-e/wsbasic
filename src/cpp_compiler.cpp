@@ -33,9 +33,7 @@ void CppCompiler::generate(const string& outfile){
 
   // we will store function implementations in seperate .h file
   out << "#include \"" << header_name << "\"" << std::endl; 
-
-  //TODO: instead have a more extensive wsbasic.h here
-  hdr << "#include \"src/var.h\"" << std::endl;
+  hdr << "#include \"lib/wsbasic.h\"" << std::endl;
 
   out << std::endl;
   out << "int main(){" << std::endl;
@@ -164,7 +162,11 @@ void CppCompiler::compConstantString( TreeNode* node, ofstream& out ){
     return;
   }
 
-  out << "\"" << node->getValue().strVal << "\"";
+  // make escaped newline work (todo apply this to all excaped chars)
+  string cstr = node->getValue().strVal;
+  replace_all(cstr, "\n", "\\n");
+
+  out << "\"" << cstr << "\"";
 }
 
 void CppCompiler::compConstant( TreeNode* node, ofstream& out ){
