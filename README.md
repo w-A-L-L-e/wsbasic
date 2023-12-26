@@ -175,8 +175,9 @@ be extended to a compiler by adding 1 more class (a compiler class that iterates
 ### Compiling scripts to C++
 
 The ASM and C versions of compilers are more in the proof of concept stage. However the CppCompiler is pretty much just as capable
-as the executor (interpreting). For cpp compiler only functions with return, for loops and run and substr need implementing.
-Apart from that we tried already a little benchmark to compute primes using while loop and compiling definitately gives around a 400% boost in speed. We haven't optimised at all to reduce object copies etc. So there is even more low hanging fruit here.
+as the executor (interpreting). For cpp compiler only a couple more todos: functions with return, for loops and substr need implementing. Apart from that we tried already a little benchmark to compute primes using while loop and compiling definitately gives around a 400% boost in speed. We haven't optimised at all to reduce object copies etc. So there is even more low hanging fruit here.
+Also in 2023 we rewrote the Var class which already made the executor about 3 times faster so in reality vs old wsbasic executor
+when compiling you get a factor 7 to 10 times faster performance. It's actually faster than python now ;).
 
 ```
 $ cat benchmark.b
@@ -261,6 +262,20 @@ int main() {
   return 0;
 }
 ```
+
+Rewrote the benchmark to python and running it there shows the interpreter is a little faster
+than wsbasic (this is python 3.9.11 which should be faster than older pythons). 
+And also python is working with integers here and wsbasic does not use those yet (all is casted to double).
+So most likely the executor will be around same speed but compiler mode smokes it already.
+
+```
+python benchmark.py                                                             wschrep@walter
+2 3 5 7 11 13 17 19 23
+...
+python benchmark.py  3.56s user 0.11s system 79% cpu 4.598 total
+```
+So our compiled version is at least twice as fast as python currently...
+
 
 The generated benchmark.h now only contains the include file but if you write methods in your basic scripts
 their implementation will be compiled into the header.
