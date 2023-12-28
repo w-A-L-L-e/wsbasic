@@ -1,5 +1,5 @@
 #!/usr/local/bin/wsbasic
-FLAGS       = -O2 -Wall -g # DEBUG FLAGS
+FLAGS       = -O3 -Wall -g # DEBUG FLAGS
 # FLAGS       = -O2 -Wall
 CXX         = g++ 
 INSTALL_DIR = /usr/local/bin/
