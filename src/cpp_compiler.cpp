@@ -281,7 +281,7 @@ void CppCompiler::compFunction(TreeNode *node, ofstream &out) {
   for (pto = funcIds->begin(); pto != funcIds->end(); ++pto) {
     if (pto != funcIds->begin())
       hdr << ", ";
-    hdr << "Var " << (*pto)->getName();
+    hdr << "const Var& " << (*pto)->getName();
   }
   hdr << ") {" << std::endl;
   compile(funcnode->thirdChild(), hdr);

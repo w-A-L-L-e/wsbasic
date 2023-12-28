@@ -4,7 +4,7 @@
 int main() {
   std::cout << std::fixed;
   double i = 2;
-  while (i < 10000) {
+  while (i < 20000) {
     double prime = 1;
     double j = 2;
     while (j < i - 1) {

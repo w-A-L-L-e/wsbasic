@@ -46,11 +46,7 @@ class Var {
     double toDecimal();
     const char* toString();
 
-    // operator int(); // this gives loads of ambiguity errors
-    // Var& operator=(const char[]);
-
     Var& operator=(const Var& obj);
-    // Var& operator=(const std::string&);
     Var& operator=(double);
 
     Var& operator+=(const Var& obj);

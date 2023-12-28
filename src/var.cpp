@@ -189,13 +189,6 @@ Var &Var::operator=(const Var &obj) {
   return *this;
 }
 
-// Var& Var::operator=( const string& str ){
-//   strVal=str;
-//   bString=true;
-//   return *this;
-// }
-
-
 Var& Var::operator=( double n ){
   decVal=n;
   bString=false;
