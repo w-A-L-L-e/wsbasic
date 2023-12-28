@@ -291,6 +291,31 @@ void CppCompiler::compFunction(TreeNode *node, ofstream &out) {
   symbolTables.pop(); // release function symboltable
 }
 
+
+// //compile a function and expect and get return
+// //value from stack
+// //first child   = function name
+// //second child  = parameters
+// void CppCompiler::compRetFunction( TreeNode* node ){
+//   compFunction( node );
+//   if( runStack.size() == 0 ){
+//     cerr<<"RUN ERROR: function "<<node->firstChild()->getName()
+//         <<" did not return a value!"<<endl;
+//     return;
+//   }
+//   node->setValue( runStack.top() ); //set return val
+//   runStack.pop(); //remove from stack
+// }
+//
+//
+// void CppCompiler::compReturn( TreeNode* node ){
+//   compile( node->firstChild() ); //compile return expression
+//   runStack.push( node->firstChild()->getValue() );
+//   bReturn=true; //notify blocks of return
+// }
+//
+//
+
 void CppCompiler::compBinaryOperator(TreeNode *node, const string &opp,
                                      ofstream &out) {
   compile(node->firstChild(), out);
@@ -425,29 +450,7 @@ void CppCompiler::compRun(TreeNode *node, ofstream &out) {
   out << ")";
 }
 
-// //compile a function and expect and get return
-// //value from stack
-// //first child   = function name
-// //second child  = parameters
-// void CppCompiler::compRetFunction( TreeNode* node ){
-//   compFunction( node );
-//   if( runStack.size() == 0 ){
-//     cerr<<"RUN ERROR: function "<<node->firstChild()->getName()
-//         <<" did not return a value!"<<endl;
-//     return;
-//   }
-//   node->setValue( runStack.top() ); //set return val
-//   runStack.pop(); //remove from stack
-// }
-//
-//
-// void CppCompiler::compReturn( TreeNode* node ){
-//   compile( node->firstChild() ); //compile return expression
-//   runStack.push( node->firstChild()->getValue() );
-//   bReturn=true; //notify blocks of return
-// }
-//
-//
+
 //
 // void CppCompiler::compForEach( TreeNode* node ){
 //   //cout<<"sorry dude not implemented yet"<<endl;
