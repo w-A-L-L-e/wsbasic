@@ -18,10 +18,10 @@ bugreport(log):/
 #include <stdio.h>
 
 
-typedef map<string,Var>    symtable;
-typedef map<string,TreeNode*> functable;
+typedef std::map<std::string,Var>       symtable;
+typedef std::map<std::string,TreeNode*> functable;
 
-typedef stack<Var> runstack;
+typedef std::stack<Var> runstack;
 
 //using namespace std;
 
@@ -97,12 +97,12 @@ class Executer{
     void execWrite ( TreeNode* );
     void execSubstr( TreeNode* );
     
-    string runCommand( const string& );
+    std::string runCommand( const std::string& );
         
     //private locals
     //==============
     TreeNode* tree;
-    stack<symtable> symbolTables;
+    std::stack<symtable> symbolTables;
     functable       functionTable;  //keep track of functionNode's
     runstack        runStack;       //stores parameters and return value of functions
     

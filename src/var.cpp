@@ -5,26 +5,23 @@
 #include <limits.h>
 #include <string>
 #include <vector>
+
 using namespace std;
 
 // friend definitions
-// Var::operator int(){
-//   return (int) this->val;
-// }
-
 int Var::toInt() {
   if (bString) {
     cerr << "RUN ERROR: can't get int from string type" << endl;
     exit(1);
   }
-  return (int) this->val;
+  return (int) this->decVal;
 }
 
 Var operator+(const Var &left, const Var &right) {
   Var temp;
   if (!left.bString && !right.bString) {
     temp.bString = false;
-    temp.val = left.val + right.val;
+    temp.decVal = left.decVal + right.decVal;
   } else if (left.bString && right.bString) {
     temp.bString = true;
     temp.strVal = left.strVal + right.strVal;
@@ -40,7 +37,7 @@ Var operator-(const Var &left, const Var &right) {
   Var temp;
   if (!left.bString && !right.bString) {
     temp.bString = false;
-    temp.val = left.val - right.val;
+    temp.decVal = left.decVal - right.decVal;
   } else {
     cerr << "RUN ERROR: can't subtract strings" << endl;
     exit(1);
@@ -53,7 +50,7 @@ Var operator*(const Var &left, const Var &right) {
   Var temp;
   if (!left.bString && !right.bString) {
     temp.bString = false;
-    temp.val = left.val * right.val;
+    temp.decVal = left.decVal * right.decVal;
   } else {
     cerr << "RUN ERROR: can't multiply strings" << endl;
     exit(1);
@@ -66,7 +63,7 @@ Var operator/(const Var &left, const Var &right) {
   Var temp;
   if (!left.bString && !right.bString) {
     temp.bString = false;
-    temp.val = left.val / right.val;
+    temp.decVal = left.decVal / right.decVal;
   } else {
     cerr << "RUN ERROR: can't divide strings" << endl;
     exit(1);
@@ -79,7 +76,7 @@ Var operator%(const Var &left, const Var &right) {
   Var temp;
   if (!left.bString && !right.bString) {
     temp.bString = false;
-    temp.val = (long)left.val % (long)right.val;
+    temp.decVal = (long)left.decVal % (long)right.decVal;
   } else {
     cerr << "RUN ERROR: can't do mod operator on strings" << endl;
     exit(1);
@@ -92,7 +89,7 @@ bool operator==(const Var &left, const Var &right) {
   if (left.bString && right.bString)
     return left.strVal == right.strVal;
   if (!left.bString && !right.bString)
-    return left.val == right.val;
+    return left.decVal == right.decVal;
 
   // different types always false
   return false;
@@ -104,7 +101,7 @@ bool operator<(const Var &left, const Var &right) {
   if (left.bString && right.bString)
     return left.strVal < right.strVal;
   if (!left.bString && !right.bString)
-    return left.val < right.val;
+    return left.decVal < right.decVal;
 
   // different types always false
   return false;
@@ -114,7 +111,7 @@ bool operator>(const Var &left, const Var &right) {
   if (left.bString && right.bString)
     return left.strVal > right.strVal;
   if (!left.bString && !right.bString)
-    return left.val > right.val;
+    return left.decVal > right.decVal;
 
   // different types always false
   return false;
@@ -125,7 +122,7 @@ bool operator<=(const Var &left, const Var &right) {
   if (left.bString && right.bString)
     return left.strVal <= right.strVal;
   if (!left.bString && !right.bString)
-    return left.val <= right.val;
+    return left.decVal <= right.decVal;
 
   // different types always false
   return false;
@@ -136,7 +133,7 @@ bool operator>=(const Var &left, const Var &right) {
   if (left.bString && right.bString)
     return left.strVal >= right.strVal;
   if (!left.bString && !right.bString)
-    return left.val >= right.val;
+    return left.decVal >= right.decVal;
 
   // different types always false
   return false;
@@ -146,7 +143,7 @@ ostream &operator<<(ostream &out, const Var &obj) {
   if (obj.bString) {
     out << obj.strVal;
   } else {
-    out << obj.val;
+    out << obj.decVal;
   }
   return out;
 }
@@ -154,7 +151,7 @@ ostream &operator<<(ostream &out, const Var &obj) {
 // todo parse and make double if its double and string type for all else...
 istream &operator>>(istream &in, Var &obj) {
   obj.bString = false;
-  in >> obj.val;
+  in >> obj.decVal;
   return in;
 }
 
@@ -164,49 +161,43 @@ istream &operator>>(istream &in, Var &obj) {
 Var::Var() {
   bString = false;
   strVal = "";
-  val = 0;
+  decVal = 0;
 }
 
 Var::Var(double x) {
   bString = false;
   strVal = "";
-  val = x;
+  decVal = x;
+}
+
+Var::Var(const char* str) {
+  decVal = 0;
+  bString = true;
+  strVal = string(str);
 }
 
 Var::Var(const string& str) {
+  decVal = 0;
   bString = true;
   strVal = str;
-  val = 0;
 }
 
-// Var::Var(const char str[]) {
-//   bString = true;
-//   strVal = string(str);
-//   val = 0;
-// }
-
-
 Var &Var::operator=(const Var &obj) {
-  val = obj.val;
+  decVal = obj.decVal;
   strVal = obj.strVal;
   bString = obj.bString;
   return *this;
 }
 
-Var& Var::operator=( const string& str ){
-  strVal=str;
-  bString=true;
-  return *this;
-}
-
-// Var& Var::operator=( const char str[] ){
-//   strVal=string(str);
+// Var& Var::operator=( const string& str ){
+//   strVal=str;
 //   bString=true;
 //   return *this;
 // }
 
+
 Var& Var::operator=( double n ){
-  val=n;
+  decVal=n;
   bString=false;
   return *this;
 }
@@ -260,7 +251,7 @@ Var Var::operator-() const {
     exit(1);
   }
   Var temp;
-  temp.val = -val;
+  temp.decVal = -decVal;
   temp.bString = bString;
   return temp;
 }

@@ -9,6 +9,8 @@ will be more performant however we do have a bigger depencency on gcc when used
 
 #include "c_compiler.h"
 
+using namespace std;
+
 CCompiler::CCompiler(TreeNode* tree){
   this->tree = tree;
   functionTable.clear();
@@ -154,7 +156,7 @@ void CCompiler::compConstant( TreeNode* node, ofstream& out ){
     out << "\"" << v.strVal << "\"";
   }
   else {
-    out << v.val;
+    out << v.decVal;
   }
 }
 

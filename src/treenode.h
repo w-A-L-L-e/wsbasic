@@ -59,7 +59,7 @@ enum NodeType {
               };
 
 
-class TreeNode:public list<TreeNode*> {
+class TreeNode:public std::list<TreeNode*> {
 
   public:
   
@@ -99,19 +99,19 @@ class TreeNode:public list<TreeNode*> {
     NodeType getType();
     void setType(NodeType t);
     
-    void setName(const string&);
-    string getName() const;  
+    void setName(const std::string&);
+    std::string getName() const;  
     
     void setValue(const Var&);
     void setValue(double d){ value = d; }
-    void setValue(const string& s){ value = s; }
+    void setValue(const std::string& s){ value = s; }
     
     Var getValue();
     int getRow(){ return fRow; }
     int getCol(){ return fCol; }
 
-    void setStrValue(const string&);
-    string getStrValue();
+    void setStrValue(const std::string&);
+    std::string getStrValue();
     
     TreeNode::iterator lookup(); //gives location in parent list as iterator (used by prevSibling and nextSibling)
     bool hasChildren(){ return size()!=0; }
@@ -130,10 +130,10 @@ class TreeNode:public list<TreeNode*> {
 
     //private locals
     //==============
-    string name;
+    std::string name;
     NodeType fType;
     Var value;
-    string strValue;
+    std::string strValue;
     
     int fRow, fCol; //for runtime error messages.
     

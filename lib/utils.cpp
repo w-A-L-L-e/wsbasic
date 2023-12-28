@@ -1,11 +1,11 @@
 #include "wsbasic.h"
 
-string runCommand( const string& command ){
+std::string runCommand( const std::string& command ){
   FILE *pstream;
   
   if(  ( pstream = popen( command.c_str(), "r" ) ) == NULL ) return "";
   
-  string Line;
+  std::string Line;
   char buf[100];
   
   while( fgets(buf, sizeof(buf), pstream) !=NULL){
@@ -17,7 +17,6 @@ string runCommand( const string& command ){
 }
 
 Var wsbasic_shell_run( const Var& command ){
-  string res = runCommand(command.strVal);
-  return Var(res);
+  return runCommand(command.strVal);
 }
 

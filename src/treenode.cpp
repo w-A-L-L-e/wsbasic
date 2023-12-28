@@ -6,6 +6,8 @@ bugreport(log):/
 =============================================================================*/
 #include "treenode.h"
 
+using namespace std;
+
 void TreeNode::init(){
   clear();
   parent=NULL;
@@ -135,7 +137,7 @@ void TreeNode::show(int indent){
     }
     else {
       ostringstream os;
-      os << v.val;
+      os << v.decVal;
       cval += os.str();
     }
     s += "constant = " + cval; 
@@ -149,7 +151,7 @@ void TreeNode::show(int indent){
     }
     else {
       ostringstream os;
-      os << v.val;
+      os << v.decVal;
       cval += os.str();
     }
     if(getName() != "newline") s += " = " + cval;

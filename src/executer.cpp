@@ -7,6 +7,7 @@ bugreport(log):/
 
 #include "executer.h"
 
+using namespace std;
 
 Executer::Executer(TreeNode* tree){
   this->tree = tree;
@@ -202,7 +203,7 @@ void Executer::execReturn( TreeNode* node ){
 
 void Executer::execExit( TreeNode* node ){
   execute( node->firstChild() );
-  int exitcode = node->firstChild()->getValue().val;
+  int exitcode = node->firstChild()->getValue().decVal;
   exit(exitcode);
 }
 
@@ -281,7 +282,7 @@ void Executer::execFor( TreeNode* node ){
   
   if(node->size() == 4 ){ //for loop without step part
     bBreak=false;
-    for( double d=startVal.val; d<=stopVal.val; d=d+1 ){
+    for( double d=startVal.decVal; d<=stopVal.decVal; d=d+1 ){
       (symbolTables.top() )[name] = d;
       execute( statements );
       if( bBreak || bReturn ) break; //jump out loop
@@ -295,15 +296,15 @@ void Executer::execFor( TreeNode* node ){
     execute(step);
     Var stepVal=step->getValue();
     bBreak=false;
-    if( (stepVal.val >= 0.0) && (startVal.val <= stopVal.val) ){
-      for( double d=startVal.val; d<=stopVal.val; d=d+stepVal.val ){
+    if( (stepVal.decVal >= 0.0) && (startVal.decVal <= stopVal.decVal) ){
+      for( double d=startVal.decVal; d<=stopVal.decVal; d=d+stepVal.decVal ){
         (symbolTables.top() )[name] = d;
         execute( statements );
         if( bBreak || bReturn ) break; //jump out loop
       }
     }
-    else if( (stepVal.val < 0.0) && (startVal.val >= stopVal.val) ){
-      for( double d=startVal.val; d>=stopVal.val; d=d+stepVal.val ){
+    else if( (stepVal.decVal < 0.0) && (startVal.decVal >= stopVal.decVal) ){
+      for( double d=startVal.decVal; d>=stopVal.decVal; d=d+stepVal.decVal ){
         (symbolTables.top() )[name] = d;
         execute( statements );
         if( bBreak || bReturn ) break; //jump out loop
@@ -320,7 +321,7 @@ void Executer::execWhile( TreeNode* node ){
 
   bBreak=false;
   execute( condition );
-  while( condition->getValue().val != 0 ){
+  while( condition->getValue().decVal != 0 ){
     execute( statements );
     //if( bBreak || bReturn ) break; //jump out loop
     execute( condition );
@@ -337,7 +338,7 @@ void Executer::execIf( TreeNode* node ){
   if( node->size() == 2 ){ //no else
     
     execute( condition );
-    if( condition->getValue().val != 0 ){
+    if( condition->getValue().decVal != 0 ){
       execute( ifblok );
     }   
  
@@ -345,7 +346,7 @@ void Executer::execIf( TreeNode* node ){
   else{ //else part given
     TreeNode* elseblok = node->thirdChild();
     execute( condition );
-    if( condition->getValue().val != 0 ){
+    if( condition->getValue().decVal != 0 ){
       execute( ifblok );
     }
     else{
@@ -506,26 +507,26 @@ void Executer::execNE( TreeNode* node ){
 
 
 void Executer::execAnd( TreeNode* node ){
-  bool nl = getVal( node->firstChild() ).val != 0;
-  bool nr = getVal( node->secondChild() ).val != 0;
+  bool nl = getVal( node->firstChild() ).decVal != 0;
+  bool nr = getVal( node->secondChild() ).decVal != 0;
   node->setValue( (double) (nl && nr) );
 }
 
        
 void Executer::execOr( TreeNode* node ){
-  bool nl = getVal( node->firstChild() ).val != 0;
-  bool nr = getVal( node->secondChild() ).val != 0;
+  bool nl = getVal( node->firstChild() ).decVal != 0;
+  bool nr = getVal( node->secondChild() ).decVal != 0;
   node->setValue( (double) (nl || nr) );
 }
 
 
 void Executer::execNot( TreeNode* node ){
-  node->setValue( 1 - getVal( node->firstChild() ).val ); 
+  node->setValue( 1 - getVal( node->firstChild() ).decVal ); 
 }
 
 
 void Executer::execMinus( TreeNode* node ){
-  node->setValue( - getVal( node->firstChild() ).val ); 
+  node->setValue( - getVal( node->firstChild() ).decVal ); 
 }
 
 
@@ -565,8 +566,8 @@ void Executer::execWrite( TreeNode* node ){
 
 void Executer::execSubstr( TreeNode* node ){
   string id   = node->firstChild()->getName();
-  int from    = (int) getVal( node->secondChild() ).val-1;
-  int to      = (int) getVal( node->thirdChild() ).val;
+  int from    = (int) getVal( node->secondChild() ).decVal-1;
+  int to      = (int) getVal( node->thirdChild() ).decVal;
   
   
   string val  = (symbolTables.top())[id].strVal;
@@ -576,7 +577,7 @@ void Executer::execSubstr( TreeNode* node ){
   }
   else{
     std::cerr << "RUN ERROR: substring from, to arguments run out of string boundaries or from pos is not less than to."<< std::endl;
-    node->setValue( "" );
+    node->getValue().strVal = "";
   }
 }
 

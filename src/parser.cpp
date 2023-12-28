@@ -96,7 +96,7 @@ TreeNode* Parser::signedFactor(){
                   sfac=Factor();
                   if( sfac->getType() == constantNode ){
                     Var n=sfac->getValue();
-                    n.val = - n.val;
+                    n.decVal = - n.decVal;
                     sfac->setValue( n );
                     return sfac;
                   }
@@ -111,7 +111,7 @@ TreeNode* Parser::signedFactor(){
                   sfac=Factor();
                   if( sfac->getType() == constantNode ){
                     Var n=sfac->getValue();
-                    n.val = 1 - n.val;
+                    n.decVal = 1 - n.decVal;
                     sfac->setValue( n );
                     return sfac;
                   }

@@ -46,6 +46,7 @@ testcompile:
 	echo $?
 
 debug: wsbasic
+	# xcode-select --install
 	@echo "MacOS DEBUGGER HOWTO (make sure makefile uses the debug flags see top line in make):"
 	@echo ""
 	@echo "1. Just type 'b main': set breakpoint on main"

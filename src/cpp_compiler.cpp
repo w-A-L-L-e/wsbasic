@@ -10,6 +10,8 @@ will be more performant however we do have a bigger depencency on gcc when used
 #include "cpp_compiler.h"
 #include <iomanip>
 
+using namespace std;
+
 CppCompiler::CppCompiler(TreeNode *tree) {
   this->tree = tree;
   functionTable.clear();
@@ -179,7 +181,7 @@ void CppCompiler::compConstant(TreeNode *node, ofstream &out) {
   if (v.bString) {
     out << "\"" << v.strVal << "\"";
   } else {
-    out << v.val;
+    out << v.decVal;
   }
   out << ")";
 }

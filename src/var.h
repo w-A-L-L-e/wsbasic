@@ -3,7 +3,10 @@ author        : Walter Schreppers
 filename      : var.h
 description   : Represent variable values and operations on them
                 This is now also the main libwsbasic.a header used by compiled
-                scripts as they need the var class to operate correctly.
+                scripts.
+                TODO: most likely make this a base class and then add
+                string, double, int, array as seperate derived classes.
+                Then we can use polymorphism (however this will imply some pointers etc).
 bugreport(log):
 =============================================================================*/
 
@@ -13,8 +16,6 @@ bugreport(log):
 #include <string>
 #include <iostream>
 #include <sstream>
-
-using namespace std;
 
 class Var {
   // public friend operators
@@ -31,23 +32,25 @@ class Var {
   friend bool operator<=(const Var& left, const Var& right);
   friend bool operator>=(const Var& left, const Var& right);
 
-  friend ostream& operator<<(ostream& out, const Var& obj);
-  friend istream& operator>>(istream& in, Var& obj);
+  friend std::ostream& operator<<(std::ostream& out, const Var& obj);
+  friend std::istream& operator>>(std::istream& in, Var& obj);
   
   public:
     // constructors
     Var();
     Var(double val);
-    Var(const string& sval);
+    Var(const char* str);
+    Var(const std::string& str);
 
     int toInt();
+    double toDecimal();
+    const char* toString();
 
-    // Var(const char[]); // gives ambiguity errors
     // operator int(); // this gives loads of ambiguity errors
     // Var& operator=(const char[]);
 
     Var& operator=(const Var& obj);
-    Var& operator=(const string&);
+    // Var& operator=(const std::string&);
     Var& operator=(double);
 
     Var& operator+=(const Var& obj);
@@ -61,10 +64,12 @@ class Var {
     Var operator+() const;
     Var operator-() const;
    
-  // TODO: make some getters/setters and return these to private
-  // private:
-    double val;
-    string strVal;
     bool bString;
+    double decVal;
+    std::string strVal;
+
+    // TODO: add integer also (but most likely switch to polymorphism first...)
+    // bool    bDecimal;
+    // int     intVal;
 };
 #endif
