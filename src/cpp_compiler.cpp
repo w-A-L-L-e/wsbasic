@@ -77,7 +77,7 @@ void CppCompiler::link(const string &cppfile) {
 
   // TODO: have a wsbasic.h and libwsbasic.a here and link with those
   // instead of var.o
-  string gcc_command = "g++ " + cppfile + " lib/libwsbasic.a -o " + exe_name;
+  string gcc_command = "g++ -O2 -Wall " + cppfile + " lib/libwsbasic.a -o " + exe_name;
   system(gcc_command.c_str());
 
   cout << "saved executable '" << exe_name << "'" << std::endl;

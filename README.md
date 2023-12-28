@@ -213,7 +213,7 @@ Execution using interpreting:
 ```
  time ./wsbasic benchmark.b 
 2.000000 3.000000 5.000000 7.000000 11.000000 13.000000 17.000000 19.000000 23.000000 ...
-./wsbasic benchmark.b  5.41s user 0.09s system 98% cpu 5.598 total
+./wsbasic benchmark.b  7.24s user 0.44s system 70% cpu 10.938 total
 ```
 
 Compiling our benchmark.b to c++:
@@ -221,13 +221,6 @@ Compiling our benchmark.b to c++:
  ./wsbasic -cpp benchmark.b
 generating c++ code and linking...
 saved executable 'benchmark'
-```
-
-Run our generated native exe we get exact same output but it runs a lot faster:
-```
-time ./benchmark
-2.000000 3.000000 5.000000 7.000000 11.000000 13.000000 17.000000 19.000000 23.000000 ...
-./benchmark  1.43s user 0.01s system 99% cpu 1.453 total
 ```
 
 The generated c++ output is readable but already shows room for improvements.
@@ -263,18 +256,30 @@ int main() {
 }
 ```
 
-Rewrote the benchmark to python and running it there shows the interpreter is a little faster
-than wsbasic (this is python 3.9.11 which should be faster than older pythons). 
-And also python is working with integers here and wsbasic does not use those yet (all is casted to double).
-So most likely the executor will be around same speed but compiler mode smokes it already.
+Run our generated native exe we get exact same output but it runs a lot faster:
+```
+time ./benchmark
+2.000000 3.000000 5.000000 7.000000 11.000000 13.000000 17.000000 19.000000 23.000000 ...
+./benchmark  1.43s user 0.01s system 99% cpu 1.453 total
+```
+
+Rewrote the benchmark to python manually and running it there shows the latest python interpreter is a little faster
+than wsbasic interpreting mode.
 
 ```
-python benchmark.py                                                             wschrep@walter
-2 3 5 7 11 13 17 19 23
-...
-python benchmark.py  3.56s user 0.11s system 79% cpu 4.598 total
+$ python --version
+Python 3.11.7
+
+$ time python benchmark.py
+2 3 5 7 11 13 17 19 23 ... 4999 
+done
+
+python benchmark.py  5.83s user 0.27s system 70% cpu 8.696 total
 ```
-So our compiled version is at least twice as fast as python currently...
+
+And also python is working with integers here and wsbasic does not use those yet (all is casted to double).
+So most likely the wsbasic executor will be around same speed when we add integere support. But even with only double as types
+the compiled version beats python already (1.4 sec vs 5.8 with python).
 
 
 The generated benchmark.h now only contains the include file but if you write methods in your basic scripts
