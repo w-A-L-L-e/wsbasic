@@ -12,10 +12,12 @@ println(x)
 
 
 x=0
-while (x < 12) 
+while (1==1) 
 begin
   println(x)
   x = x + 2
+  if (x>10)
+    break
 end
 
 println( 3.1 + 4*2 + 6/2 ) # this should be 3 + 8 + 3 == 14.1

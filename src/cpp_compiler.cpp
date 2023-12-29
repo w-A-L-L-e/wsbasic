@@ -382,20 +382,18 @@ void CppCompiler::compWhile(TreeNode *node, ofstream &out) {
   TreeNode *statements = node->secondChild();
 
   out << "while (";
-  // bBreak=false;
   compile(condition, out);
   out << ") {" << std::endl;
 
   compile(statements, out);
 
   out << "}" << std::endl;
-
-  // bBreak=false;
 }
 
 void CppCompiler::compBreak(TreeNode *node, ofstream &out) {
   // bBreak=true; //stops loop block compution
   out << "break";
+  out << ";" << std::endl;
 }
 
 void CppCompiler::compIf(TreeNode *node, ofstream &out) {

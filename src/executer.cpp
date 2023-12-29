@@ -323,7 +323,7 @@ void Executer::execWhile( TreeNode* node ){
   execute( condition );
   while( condition->getValue().decVal != 0 ){
     execute( statements );
-    //if( bBreak || bReturn ) break; //jump out loop
+    if( bBreak || bReturn ) break; //jump out loop
     execute( condition );
   }
   bBreak=false;
