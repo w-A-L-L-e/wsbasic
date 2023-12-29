@@ -116,8 +116,8 @@ void CppCompiler::compile(TreeNode *node, ofstream &out) {
     case inputNode: compInput(node, out); break;
     case runNode:   compRun(node, out);   break;
 
-    // case funcReturnNode     : compRetFunction( node );  break;
-    // case returnNode         : compReturn( node );       break;
+    case funcReturnNode     : compRetFunction(node, out);  break;
+    case returnNode         : compReturn(node, out);       break;
     // case forNode            : compFor( node );          break;
     // case forEachNode        : compForEach( node );      break;
 
@@ -228,7 +228,7 @@ void CppCompiler::compId(TreeNode *node, ofstream &out) {
 //  param types based on how it is called. first child   = function name second
 //  child  = parameters this is the variant wihtout a return and should gen a
 //  void function implementation
-void CppCompiler::compFunction(TreeNode *node, ofstream &out) {
+void CppCompiler::compFunction(TreeNode *node, ofstream &out, bool returnFunction) {
   string funcname = node->firstChild()->getName();
 
   // locate function node
@@ -273,11 +273,15 @@ void CppCompiler::compFunction(TreeNode *node, ofstream &out) {
   symbolTables.push(funcSymTable); // use new symboltable for current function
   bReturn = false;                 // set to true when return is called
 
-  // compile function definition into header, we also now know the call param
-  // types. for now to get poc working we just use double always
+  // compile function definition into header
+  // we have an extra switch for return functions we return Var, otherwise void
+  if (returnFunction) {
+    hdr << "Var " << funcname << "(";
+  }
+  else{
+    hdr << "void " << funcname << "(";
+  }
 
-  // append function body in hdr
-  hdr << "void " << funcname << "(";
   for (pto = funcIds->begin(); pto != funcIds->end(); ++pto) {
     if (pto != funcIds->begin())
       hdr << ", ";
@@ -292,29 +296,18 @@ void CppCompiler::compFunction(TreeNode *node, ofstream &out) {
 }
 
 
-// //compile a function and expect and get return
-// //value from stack
-// //first child   = function name
-// //second child  = parameters
-// void CppCompiler::compRetFunction( TreeNode* node ){
-//   compFunction( node );
-//   if( runStack.size() == 0 ){
-//     cerr<<"RUN ERROR: function "<<node->firstChild()->getName()
-//         <<" did not return a value!"<<endl;
-//     return;
-//   }
-//   node->setValue( runStack.top() ); //set return val
-//   runStack.pop(); //remove from stack
-// }
-//
-//
-// void CppCompiler::compReturn( TreeNode* node ){
-//   compile( node->firstChild() ); //compile return expression
-//   runStack.push( node->firstChild()->getValue() );
-//   bReturn=true; //notify blocks of return
-// }
-//
-//
+//compile a function and expect and get return
+//first child   = function name
+//second child  = parameters
+void CppCompiler::compRetFunction( TreeNode* node, ofstream& out){
+  compFunction( node, out, true );
+}
+
+void CppCompiler::compReturn( TreeNode* node, ofstream& out){
+  out << "return ";
+  compile( node->firstChild(), out ); //compile return expression
+  out << ";";
+}
 
 void CppCompiler::compBinaryOperator(TreeNode *node, const string &opp,
                                      ofstream &out) {

@@ -58,7 +58,7 @@ class CppCompiler{
     void compId         ( TreeNode*, std::ofstream& );
     void compConstant   ( TreeNode*, std::ofstream& );
     
-    void compFunction   ( TreeNode*, std::ofstream& );
+    void compFunction   ( TreeNode*, std::ofstream&, bool returnFunction = false );
     void compRetFunction( TreeNode*, std::ofstream& );
     void compBreak      ( TreeNode*, std::ofstream& );
     void compReturn     ( TreeNode*, std::ofstream& );

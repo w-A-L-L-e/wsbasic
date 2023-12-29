@@ -1,14 +1,14 @@
 
 def add(a,b)
 begin
-  println(a+b)
-  # return a+b  # return is not implemented in compiler mode yet
+  return a+b
 end
 
 
 println("Start")
-add(2,3)
-# x=add(40,2)
+x=add(40,2)
+print("x=")
+println(x)
 
 
 x=0
