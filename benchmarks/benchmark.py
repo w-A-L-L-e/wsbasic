@@ -1,5 +1,6 @@
 #!env python
 i=2
+j=0
 while(i < 10000):
   prime = 1
   j=2
