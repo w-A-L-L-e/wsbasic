@@ -6,6 +6,7 @@ bugreport(log):/
 =============================================================================*/
 
 #include "lexer.h"
+#include <codecvt>
 
 Lexer::~Lexer(){
 }
@@ -133,9 +134,30 @@ void Lexer::skipWhite(){
 }
 
 
+string Lexer::unicodeConvert(char c1, char c2, char c3, char c4){
+  std::string unicodePointStr = "";
+  unicodePointStr += c1;
+  unicodePointStr += c2;
+  unicodePointStr += c3;
+  unicodePointStr += c4;
+
+  std::istringstream is(unicodePointStr);
+  int unicodeCodePoint;
+  is >> std::hex >> unicodeCodePoint;
+
+  // Create a UTF-8 string with the Unicode character
+  wchar_t unicodeChar = static_cast<wchar_t>(unicodeCodePoint);
+  std::wstring_convert<std::codecvt_utf8<wchar_t> > converter;
+  std::string utf8String = converter.to_bytes(unicodeChar);
+
+  return utf8String;
+}
+
 void Lexer::getStringConstant(token& t){
-  string constStr="";
+  string constStr=""; 
   int ch=getChar();
+  int c1, c2, c3, c4; // for u unicode escape seq
+                      //
   while( ch != '"' && !in->eof() ){
     
     if(ch == '\\'){ //escape sequence 
@@ -144,12 +166,26 @@ void Lexer::getStringConstant(token& t){
         case 'n': constStr+='\n'; break;
         case 't': constStr+='\t'; break;
         case 'f': constStr+='\f'; break;
+        case 'u': 
+          c1=getChar(); c2=getChar(); c3=getChar(); c4=getChar();
+          constStr += unicodeConvert(c1,c2,c3,c4);
+          break;
+
+        case '0':
+          c1=getChar(); c2=getChar(); 
+          if ((c1=='3') && (c2=='3')) constStr.push_back('\033');
+          else {
+            cerr << "Unrecognized ansi escape \\0" << c1 << c2 << endl;
+          }
+          break;
+
         case '"': constStr+='"';  break;
-        default : cerr<<"Unrecognized escape char \\"
-                      <<(char)ch<<" in stringconstant, skipping!"
-                      <<endl; break;
+        default : cerr << "Unrecognized escape char \\"
+                       << (char)ch<<" in stringconstant, skipping!"
+                       << endl; 
+                  break;
       }
-    }
+    } 
     else if(ch != '"'){ //anything but closing char
       constStr+=(char) ch;
     }

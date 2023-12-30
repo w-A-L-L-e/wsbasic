@@ -104,6 +104,7 @@ class Lexer {
     int getNumber(Var&);
     int getName(string&);
     void getStringConstant(token& t);
+    std::string unicodeConvert(char c1, char c2, char c3, char c4);
   
     //private locals
     //==============

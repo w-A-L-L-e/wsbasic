@@ -169,6 +169,7 @@ void CppCompiler::compConstantString(TreeNode *node, ofstream &out) {
   string cstr = node->getValue().strVal;
   replace_all(cstr, "\n", "\\n");
   replace_all(cstr, "\r", "\\r");
+  replace_all(cstr, "\0", "\\0");
   // TODO: use generic backslash escape as we need \033 and \u also to work here
   // replace_all(cstr, "\u", "\\u");
 

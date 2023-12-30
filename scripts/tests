@@ -11,3 +11,5 @@
 ../wsbasic runtest.b
 ../wsbasic strings.b
 ../wsbasic while.b
+../wsbasic mandelbrot.b
+
