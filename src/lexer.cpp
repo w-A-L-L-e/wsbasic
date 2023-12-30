@@ -166,19 +166,17 @@ void Lexer::getStringConstant(token& t){
         case 'n': constStr+='\n'; break;
         case 't': constStr+='\t'; break;
         case 'f': constStr+='\f'; break;
-        case 'u': 
+        case 'u':  // utf \u escape sequence
           c1=getChar(); c2=getChar(); c3=getChar(); c4=getChar();
           constStr += unicodeConvert(c1,c2,c3,c4);
           break;
-
-        case '0':
+        case '0':  // ansi escape char support
           c1=getChar(); c2=getChar(); 
           if ((c1=='3') && (c2=='3')) constStr.push_back('\033');
           else {
             cerr << "Unrecognized ansi escape \\0" << c1 << c2 << endl;
           }
           break;
-
         case '"': constStr+='"';  break;
         default : cerr << "Unrecognized escape char \\"
                        << (char)ch<<" in stringconstant, skipping!"
