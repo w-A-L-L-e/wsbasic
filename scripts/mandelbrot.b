@@ -25,9 +25,7 @@ begin
 end
 
 
-#### main routine ###
-#
-
+############################ main routine ################################
 width = 140  # number of characters on one line
 height = 42  # number of chars vertically
 
@@ -58,7 +56,8 @@ y_fin = 1.0
 dx = (x_fin - x_start)/(width-1)
 dy = (y_fin - y_start)/(height-1)
 
-block_char  = "\u2588"
+# block_char  = "\u2588" # full block
+block_char  = "\u2589"
 black       = "\033[22;30m"
 red         = "\033[22;31m"
 l_red       = "\033[01;31m"

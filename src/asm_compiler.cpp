@@ -63,6 +63,15 @@ void AsmCompiler::generate(const string& outfile){
   out << "      mov     rdx, msg.len" << std::endl;
   out << "      syscall" << std::endl;
 
+  // move qword ptr (8bytes) from mem pos rsi to rdi:
+  // mov [rsi], rdi
+  //
+  // move rdi into memory pos given by rsi:
+  // mov rdi, [rsi]
+  // 
+  // move constant 2 into rsi:
+  // mov rsi, 2
+  //
   // code for exit(25);
   out << "   mov rax, 0x2000001" << std::endl; // exit syscall
   out << "   mov rdi, " << 42 << std::endl;    // exit value

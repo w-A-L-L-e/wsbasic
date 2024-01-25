@@ -19,8 +19,8 @@ bugreport(log): /
 #include <stdio.h>
 #include "string_utils.h"
 
-typedef std::map<std::string,Var>       symtable;
-typedef std::map<std::string,TreeNode*> functable;
+typedef std::unordered_map<std::string,Var>       symtable;
+typedef std::unordered_map<std::string,TreeNode*> functable;
 
 typedef std::stack<Var> runstack;
 
