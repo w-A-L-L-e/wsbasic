@@ -64,7 +64,9 @@ void CCompiler::generate(const string& outfile){
 void CCompiler::link(const string& cppfile){
   // TODO: output file = cfile without .c extension
   string gcc_command = "gcc " + cppfile + " -o output";
-  system(gcc_command.c_str());
+  int res = system(gcc_command.c_str());
+
+  if (res != 0) cerr << "gcc compile failed" << endl;
 
   cout << "saved executable 'output'" << std::endl;
 

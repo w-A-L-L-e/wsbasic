@@ -80,8 +80,12 @@ void AsmCompiler::link(const string& asmfile){
   // TODO: output file = asmfile without .asm extension
   // assemble and link commands (this works on macos ventura)
   string asm_command = "nasm -f macho64 " + asmfile + " -o output.o";
-  system(asm_command.c_str());
-  system("ld -arch x86_64 -macos_version_min 10.10.0 -static output.o -o output");
+  int res;
+  res = system(asm_command.c_str());
+  if (res != 0) std::cerr << "assembly failed" << endl;
+
+  res = system("ld -arch x86_64 -macos_version_min 10.10.0 -static output.o -o output");
+  if (res != 0) std::cerr << "linking failed" << endl;
 
   cout << "saved executable 'output'" << endl;
 }

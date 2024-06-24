@@ -133,7 +133,7 @@ void Lexer::skipWhite(){
   ungetChar(look);
 }
 
-
+/* version that works up to c++17
 string Lexer::unicodeConvert(char c1, char c2, char c3, char c4){
   std::string unicodePointStr = "";
   unicodePointStr += c1;
@@ -150,6 +150,42 @@ string Lexer::unicodeConvert(char c1, char c2, char c3, char c4){
   std::wstring_convert<std::codecvt_utf8<wchar_t> > converter;
   std::string utf8String = converter.to_bytes(unicodeChar);
 
+  return utf8String;
+}
+*/
+
+// version for newer gcc on my linux ubuntu 22.0.4 generated with llama3:
+string Lexer::unicodeConvert(char c1, char c2, char c3, char c4) {
+  std::string unicodePointStr = "";
+  unicodePointStr += c1;
+  unicodePointStr += c2;
+  unicodePointStr += c3;
+  unicodePointStr += c4;
+
+  std::istringstream is(unicodePointStr);
+  int unicodeCodePoint;
+  is >> std::hex >> unicodeCodePoint;
+
+  // Create a UTF-8 string with the Unicode character
+  char utf8Bytes[4]; // max 4 bytes for a UTF-8 code point
+  int bytesWritten = 0;
+  if (unicodeCodePoint <= 0x7F) {
+    utf8Bytes[bytesWritten++] = static_cast<char>(unicodeCodePoint);
+  } else if (unicodeCodePoint <= 0x7FF) {
+    utf8Bytes[bytesWritten++] = 0xC0 | (unicodeCodePoint >> 6);
+    utf8Bytes[bytesWritten++] = 0x80 | (unicodeCodePoint & 0x3F);
+  } else if (unicodeCodePoint <= 0xFFFF) {
+    utf8Bytes[bytesWritten++] = 0xE0 | (unicodeCodePoint >> 12);
+    utf8Bytes[bytesWritten++] = 0x80 | ((unicodeCodePoint >> 6) & 0x3F);
+    utf8Bytes[bytesWritten++] = 0x80 | (unicodeCodePoint & 0x3F);
+  } else {
+    utf8Bytes[bytesWritten++] = 0xF0 | (unicodeCodePoint >> 18);
+    utf8Bytes[bytesWritten++] = 0x80 | ((unicodeCodePoint >> 12) & 0x3F);
+    utf8Bytes[bytesWritten++] = 0x80 | ((unicodeCodePoint >> 6) & 0x3F);
+    utf8Bytes[bytesWritten++] = 0x80 | (unicodeCodePoint & 0x3F);
+  }
+
+  std::string utf8String(utf8Bytes, bytesWritten);
   return utf8String;
 }
 
