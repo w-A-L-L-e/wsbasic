@@ -28,7 +28,7 @@ end
 #### main routine ###
 #
 
-width = 140  # number of characters on one line
+width = 80  # number of characters on one line
 height = 42  # number of chars vertically
 
 # full mandel set
@@ -75,7 +75,7 @@ l_cyan      = "\033[01;36m"
 gray        = "\033[22;37m"
 white       = "\033[01;37m"
 
-for i=0 to height
+for i=0 to 1 # height
 begin
   for j=0 to width
   begin

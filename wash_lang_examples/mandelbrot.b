@@ -28,7 +28,7 @@ end
 #### main routine ###
 #
 
-width = 100  # number of characters on one line
+width = 80  # number of characters on one line
 height = 42  # number of chars vertically
 
 # full mandel set
@@ -77,6 +77,8 @@ white       = "\033[01;37m"
 
 
 for i=0 to height
+  println ""  # workaround add newline here instead 
+  # TODO: fix parser bug here introduced by changing blocks
 
   for j=0 to width
     x = x_start + j*dx  # current real value
@@ -103,6 +105,7 @@ for i=0 to height
     print "\033[0m"  # reset colors
   end
 
-  println ""
+  # parser bug if we put this after second for loop it gets called more times
+  # println ""
 end
 
