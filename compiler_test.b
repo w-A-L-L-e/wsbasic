@@ -1,6 +1,5 @@
 
 def add(a,b)
-begin
   return a+b
 end
 
@@ -13,7 +12,6 @@ println(x)
 
 x=0
 while (1==1) 
-begin
   println(x)
   x = x + 2
   if (x>10)
@@ -28,6 +26,7 @@ if( expr > 15 )
   println(1.1)
 else
   println(2.1)
+end
 
 
 # assigning strings does not work yet with the compilers
