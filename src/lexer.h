@@ -11,17 +11,14 @@ bugreport(log): column will not be incremented enough when vars are read
 
 #include <stdlib.h>
 
-#include <string>
-#include <fstream>
 #include "var.h"
+#include <fstream>
+#include <string>
 
 using namespace std;
 
-
-
 enum types {
-  
-  tokIf=-40,
+  tokIf = -40,
   tokElse,
   tokWhile,
   tokFor,
@@ -37,11 +34,11 @@ enum types {
   tokPrint,
   tokPrintLn,
   tokInput,
-    
+
   tokOr,
   tokAnd,
   tokNot,
-  
+
   tokGe,
   tokGt,
   tokLe,
@@ -58,7 +55,7 @@ enum types {
   tokIn,
   tokSeperated,
   tokBy,
-    
+
   tokRun,
   tokMod,
   tokWrite,
@@ -68,51 +65,43 @@ enum types {
 
 };
 
-
 struct token {
   Var val;
-  string  str;
-  int     type;
+  string str;
+  int type;
 };
-
 
 class Lexer {
-  
-  public:
-    
-    //constructor and destructor
-    //==========================
-    Lexer( ifstream& );
-    ~Lexer();
-  
-    //public members
-    //==============
-    token lex(); //return token
-    int getRow();
-    int getCol();
-    
-    
-  private:
-    
-    //private members
-    //===============
-    int getChar();
-    void ungetChar(int);
-    void skipComment();
-    void skipWhite();
-    void checkKeywords(token&);
-    int getNumber(Var&);
-    int getName(string&);
-    void getStringConstant(token& t);
-    std::string unicodeConvert(char c1, char c2, char c3, char c4);
-  
-    //private locals
-    //==============
-    ifstream* in;
-    int row,col,prevCol;
+
+public:
+  // constructor and destructor
+  //==========================
+  Lexer(ifstream &);
+  ~Lexer();
+
+  // public members
+  //==============
+  token lex(); // return token
+  int getRow();
+  int getCol();
+
+private:
+  // private members
+  //===============
+  int getChar();
+  void ungetChar(int);
+  void skipComment();
+  void skipWhite();
+  void checkKeywords(token &);
+  int getNumber(Var &);
+  int getName(string &);
+  void getStringConstant(token &t);
+  std::string unicodeConvert(char c1, char c2, char c3, char c4);
+
+  // private locals
+  //==============
+  ifstream *in;
+  int row, col, prevCol;
 };
 
-
 #endif
-
-
