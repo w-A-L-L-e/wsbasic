@@ -28,7 +28,7 @@ end
 #### main routine ###
 #
 
-width = 140  # number of characters on one line
+width = 80  # number of characters on one line
 height = 42  # number of chars vertically
 
 # full mandel set
