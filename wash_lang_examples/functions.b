@@ -21,10 +21,9 @@ end
 
 
 def fac(i)
-  if(i<=1) begin
+  if(i<=1)
     return 1
-  end
-  else begin
+  else
     return i*fac(i-1)
   end
 end
