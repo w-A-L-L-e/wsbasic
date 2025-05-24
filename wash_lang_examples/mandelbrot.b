@@ -1,3 +1,6 @@
+# this now parses, but there is a bug somewhere so output is not same as before
+# its something simple most likely where more newlines are printed then we want
+
 def mandelbrot(real, imag)
   limit = 99 
   zReal = real
@@ -72,7 +75,9 @@ l_cyan      = "\033[01;36m"
 gray        = "\033[22;37m"
 white       = "\033[01;37m"
 
+
 for i=0 to height
+
   for j=0 to width
     x = x_start + j*dx  # current real value
     y = y_fin - i*dy    # current imaginary value
@@ -97,6 +102,7 @@ for i=0 to height
     
     print "\033[0m"  # reset colors
   end
+
   println ""
 end
 
