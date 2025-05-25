@@ -58,8 +58,6 @@ white       = "\033[01;37m"
 
 
 for i=0 to height
-  println ""  # workaround add newline here instead 
-  # TODO: fix parser bug here introduced by changing blocks
 
   for j=0 to width
     x = x_start + j*dx  # current real value
@@ -86,7 +84,6 @@ for i=0 to height
     print "\033[0m"  # reset colors
   end
 
-  # parser bug if we put this after second for loop it gets called more times
-  # println ""
+  println ""
 end
 

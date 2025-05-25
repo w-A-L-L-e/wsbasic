@@ -2,6 +2,11 @@
 
 WSBasic is a BASIC interpreter written in C++ using recursive descent OO techniques instead of the outdated lex/yacc tools. It can already be used as a scripting replacement for bash and was also used as basis for kturtle's logo interpreter. Can act as a replacement for bash or sh scripting.
 Added some ansi and unicode support that allowed to render this nice mandelbrot also on 30/12/2023.
+
+```
+./wsbasic examples/mandelbrot.b
+```
+
 <img width="1141" alt="Screenshot 2023-12-30 at 19 19 36" src="https://github.com/w-A-L-L-e/wsbasic/assets/710803/1083ad64-b897-47b5-9477-a099b0339a5f">
 
 ## Compiling wsbasic
