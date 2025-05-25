@@ -26,15 +26,14 @@ end
 
 
 #### main routine ###
-#
-width = 120  # number of characters on one line
+
+width = 80  # number of characters on one line
 height = 42  # number of chars vertically
 
-# full mandel set
-x_start = -2.0
-x_fin = 1.0
-y_start = -1.0
-y_fin = 1.0
+x_start = -0.33
+x_fin = -0.055
+y_start = -0.95
+y_fin = -0.82
 
 
 dx = (x_fin - x_start)/(width-1)

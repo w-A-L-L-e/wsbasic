@@ -20,6 +20,7 @@ using namespace std;
 enum types {
   tokIf = -40,
   tokElse,
+  tokElsif,
   tokWhile,
   tokFor,
   tokTo,

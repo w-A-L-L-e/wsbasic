@@ -455,7 +455,7 @@ TreeNode *Parser::While() {
   wNode->setName("while");
   Match(tokWhile);
   wNode->appendChild(Expression());
-  wNode->appendChild(Block(false));
+  wNode->appendChild(Block());
 
   return wNode;
 }
@@ -481,7 +481,7 @@ TreeNode *Parser::For() {
     fNode->appendChild(Expression()); // step expression
   }
 
-  fNode->appendChild(Block(false));
+  fNode->appendChild(Block());
 
   return fNode;
 }
@@ -507,7 +507,7 @@ TreeNode *Parser::ForEach() {
     fNode->appendChild(NewLineNode());
   }
 
-  fNode->appendChild(Block(false));
+  fNode->appendChild(Block());
 
   return fNode;
 }
@@ -668,34 +668,29 @@ TreeNode *Parser::Statement() {
   return new TreeNode(Unknown, row, col);
 }
 
-TreeNode *Parser::Block(bool expect_begin, bool if_block) {
+TreeNode *Parser::Block(bool if_block) {
   TreeNode *block = new TreeNode(blockNode, row, col);
   block->setName("block");
 
   if (look.type == -1)
     return 0;
 
-  if (expect_begin) {
-    Match(tokBegin);
-  }
-
   while ((look.type != tokEnd) && (look.type != tokEof)) {
+    // handle if/else blocks
+    if (if_block && (look.type == tokElse || look.type == tokElsif)) {
+      break;
+    }
+
     TreeNode *statement = Statement();
 
     if (statement) {
       block->appendChild(statement);
     } else {
-      return block;
-    }
-
-    // handle if/else blocks
-    if (if_block && look.type == tokElse) {
       break;
     }
   }
 
-  if (look.type == tokEnd) {
-    // match end, remove from pending tokens.
+  if (look.type == tokEnd && !if_block) {
     // for tokElse keep it as If parsing consumes it
     Match(tokEnd);
   }
@@ -715,14 +710,22 @@ TreeNode *Parser::If() {
   TreeNode *node = new TreeNode(ifNode, row, col);
   node->setName("if");
 
-  Match(tokIf);
+  if (look.type == tokIf)
+    Match(tokIf);
+  else
+    Match(tokElsif);
+
   node->appendChild(Expression());
-  node->appendChild(Block(false, true));
+  node->appendChild(Block(true));
 
-  if (look.type == tokElse) { // else part
+  if (look.type == tokElsif) { // elsif no need to match end
+    node->appendChild(If());
+  } else if (look.type == tokElse) { // else part
     Match(tokElse);
-
-    node->appendChild(Block(false, true));
+    node->appendChild(Block(true));
+    Match(tokEnd);
+  } else { // if without else
+    Match(tokEnd);
   }
 
   return node;
@@ -795,7 +798,7 @@ TreeNode *Parser::Function() {
   Match('(');
   func->appendChild(IdList());
   Match(')');
-  func->appendChild(Block(false));
+  func->appendChild(Block());
 
   return func;
 }

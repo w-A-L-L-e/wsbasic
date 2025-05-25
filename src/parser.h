@@ -63,7 +63,7 @@ private:
   TreeNode *Function();
   TreeNode *IdList();
   TreeNode *ParamList();
-  TreeNode *Block(bool expect_begin = true, bool if_block = false);
+  TreeNode *Block(bool if_block = false);
   TreeNode *MainBlock();
   TreeNode *Statement();
 
