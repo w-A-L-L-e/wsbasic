@@ -16,7 +16,6 @@ println "i after first while = ",i
 #
 i=1
 while i<10*2 
-#  begin : we dont need this anymore
   i=i+1
   print "i=", i, " "
   println "i+1=",i+1
