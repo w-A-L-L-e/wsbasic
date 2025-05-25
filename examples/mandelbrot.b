@@ -1,5 +1,7 @@
+# this now parses, but there is a bug somewhere so output is not same as before
+# its something simple most likely where more newlines are printed then we want
+
 def mandelbrot(real, imag)
-begin
   limit = 99 
   zReal = real
   zImag = imag
@@ -8,12 +10,10 @@ begin
   c4 = 4
   
   for i=0 to limit
-  begin
     r2 = zReal * zReal
     i2 = zImag * zImag
     
     if (r2 + i2 > c4)
-    begin
       return i
     end
     
@@ -27,8 +27,7 @@ end
 
 #### main routine ###
 #
-
-width = 80  # number of characters on one line
+width = 120  # number of characters on one line
 height = 42  # number of chars vertically
 
 # full mandel set
@@ -36,23 +35,6 @@ x_start = -2.0
 x_fin = 1.0
 y_start = -1.0
 y_fin = 1.0
-
-# down under
-# x_start = -0.25
-# x_fin = 0.05
-# y_start = -0.95
-# y_fin = -0.75
-	
-# x_start = -0.33
-# x_fin = -0.055
-# y_start = -0.95
-# y_fin = -0.82
-
-# zoom in more
-# x_start = -0.13
-# x_fin = -0.085
-# y_start = -0.91
-# y_fin = -0.88
 
 
 dx = (x_fin - x_start)/(width-1)
@@ -75,31 +57,37 @@ l_cyan      = "\033[01;36m"
 gray        = "\033[22;37m"
 white       = "\033[01;37m"
 
+
 for i=0 to height
-begin
+  println ""  # workaround add newline here instead 
+  # TODO: fix parser bug here introduced by changing blocks
+
   for j=0 to width
-  begin
     x = x_start + j*dx  # current real value
     y = y_fin - i*dy    # current imaginary value
 			
     value = mandelbrot(x,y)
     
     if (value == 100)     print " "
-    else if (value > 90)  print red, block_char
-    else if (value > 70)  print l_red, block_char
-    else if (value > 50)  print orange, block_char
-    else if (value > 30)  print yellow, block_char
-    else if (value > 20)  print l_green, block_char
-    else if (value > 10)  print green, block_char
-    else if (value > 5)   print l_cyan, block_char
-    else if (value > 4)   print cyan, block_char
-    else if (value > 3)   print l_blue, block_char
-    else if (value > 2)   print blue, block_char
-    else if (value > 1)   print magenta, block_char
-    else                  print l_magenta, block_char
+    elsif (value > 90)  print red, block_char
+    elsif (value > 70)  print l_red, block_char
+    elsif (value > 50)  print orange, block_char
+    elsif (value > 30)  print yellow, block_char
+    elsif (value > 20)  print l_green, block_char
+    elsif (value > 10)  print green, block_char
+    elsif (value > 5)   print l_cyan, block_char
+    elsif (value > 4)   print cyan, block_char
+    elsif (value > 3)   print l_blue, block_char
+    elsif (value > 2)   print blue, block_char
+    elsif (value > 1)   print magenta, block_char
+    else                  
+      print l_magenta, block_char
+    end 
     
     print "\033[0m"  # reset colors
   end
-  println ""
+
+  # parser bug if we put this after second for loop it gets called more times
+  # println ""
 end
 

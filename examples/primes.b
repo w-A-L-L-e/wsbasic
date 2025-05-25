@@ -1,16 +1,16 @@
 #!/usr/local/bin/wsbasic
 
-begin
 
-for i=0 to 50 begin
+for i=0 to 500
   prime = 1
 
   for j=2 to i-1
     if( i % j == 0 )
       prime=0
+    end
+  end
 
   if prime==1 
-  begin
     print(i)
     print(" ")
   end
@@ -19,5 +19,4 @@ end
 
 print("done")
 
-end
 

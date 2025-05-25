@@ -1,6 +1,5 @@
 #!/usr/local/bin/wsbasic
 def showName( name )
-begin
   println( "My name is "+ name )
 end
 
