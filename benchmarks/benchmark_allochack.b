@@ -14,20 +14,16 @@ prime=0
 j=0
 
 while(i < c5)
-begin
   prime = c1
   j = c2
   while j < (i-c1)
-  begin
     if( (i % j) == cz )
-    begin
       prime = cz
     end
     j = j + c1
   end
 
   if prime == c1 
-  begin
     print(i)
     print(" ")
   end
