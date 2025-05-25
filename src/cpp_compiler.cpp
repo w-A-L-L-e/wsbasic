@@ -20,8 +20,12 @@ CppCompiler::CppCompiler(TreeNode *tree) {
 }
 
 void CppCompiler::generate(const string &outfile) {
+  cout << "cpp generation started..." << endl;
   string header_name = outfile;
   replace_all(header_name, ".cpp", ".h");
+
+  cout << "output file=" << outfile << endl;
+  cout << "header file=" << header_name << endl;
 
   out.open(outfile);
   hdr.open(header_name);
@@ -79,56 +83,120 @@ void CppCompiler::link(const string &cppfile) {
 
   // TODO: have a wsbasic.h and libwsbasic.a here and link with those
   // instead of var.o
-  string gcc_command = "g++ -O3 -Wall " + cppfile + " lib/libwsbasic.a -o " + exe_name;
+  string gcc_command =
+      "g++ -O3 -Wall " + cppfile + " lib/libwsbasic.a -o " + exe_name;
   int res = system(gcc_command.c_str());
-  if (res != 0) cerr << "C++ compilation failed" << endl;
+  if (res != 0)
+    cerr << "C++ compilation failed" << endl;
 
   cout << "saved executable '" << exe_name << "'" << std::endl;
 }
 
 void CppCompiler::compile(TreeNode *node, ofstream &out) {
+  // cout << "compiling node=" << node->getName() << ", " << node->getValue()
+  //     << endl;
   switch (node->getType()) {
-    case blockNode:  compBlock(node, out);  break;
-    case printNode:  compPrint(node, out);  break;
-    case stringConstantNode:  compConstantString(node, out);  break;
-    case constantNode:        compConstant(node, out);        break;
-    case functionCallNode:    compFunction(node, out);        break;
-    case assignNode:          compAssign(node, out);          break;
-    case idNode:    compId(node, out);    break;
-    case exitNode:  compExit(node, out);  break;
-    case addNode:   compAdd(node, out);   break;
-    case mulNode:   compMul(node, out);   break;
-    case divNode:   compDiv(node, out);   break;
-    case subNode:   compSub(node, out);   break;
-    case modNode:   compMod(node, out);   break;
-    case minusNode: compMinus(node, out); break;
-    case nodeGE:    compGE(node, out);    break;
-    case nodeGT:    compGT(node, out);    break;
-    case nodeLE:    compLE(node, out);    break;
-    case nodeLT:    compLT(node, out);    break;
-    case nodeNE:    compNE(node, out);    break;
-    case nodeEQ:    compEQ(node, out);    break;
-    case andNode:   compAnd(node, out);   break;
-    case orNode:    compOr(node, out);    break;
-    case notNode:   compNot(node, out);   break;
-    case whileNode: compWhile(node, out); break;
-    case breakNode: compBreak(node, out); break;
-    case ifNode:    compIf(node, out);    break;
-    case inputNode: compInput(node, out); break;
-    case runNode:   compRun(node, out);   break;
+  case blockNode:
+    compBlock(node, out);
+    break;
+  case printNode:
+    compPrint(node, out);
+    break;
+  case stringConstantNode:
+    compConstantString(node, out);
+    break;
+  case constantNode:
+    compConstant(node, out);
+    break;
+  case functionCallNode:
+    compFunction(node, out);
+    break;
+  case assignNode:
+    compAssign(node, out);
+    break;
+  case idNode:
+    compId(node, out);
+    break;
+  case exitNode:
+    compExit(node, out);
+    break;
+  case addNode:
+    compAdd(node, out);
+    break;
+  case mulNode:
+    compMul(node, out);
+    break;
+  case divNode:
+    compDiv(node, out);
+    break;
+  case subNode:
+    compSub(node, out);
+    break;
+  case modNode:
+    compMod(node, out);
+    break;
+  case minusNode:
+    compMinus(node, out);
+    break;
+  case nodeGE:
+    compGE(node, out);
+    break;
+  case nodeGT:
+    compGT(node, out);
+    break;
+  case nodeLE:
+    compLE(node, out);
+    break;
+  case nodeLT:
+    compLT(node, out);
+    break;
+  case nodeNE:
+    compNE(node, out);
+    break;
+  case nodeEQ:
+    compEQ(node, out);
+    break;
+  case andNode:
+    compAnd(node, out);
+    break;
+  case orNode:
+    compOr(node, out);
+    break;
+  case notNode:
+    compNot(node, out);
+    break;
+  case whileNode:
+    compWhile(node, out);
+    break;
+  case breakNode:
+    compBreak(node, out);
+    break;
+  case ifNode:
+    compIf(node, out);
+    break;
+  case inputNode:
+    compInput(node, out);
+    break;
+  case runNode:
+    compRun(node, out);
+    break;
 
-    case funcReturnNode     : compRetFunction(node, out);  break;
-    case returnNode         : compReturn(node, out);       break;
+  case funcReturnNode:
+    compRetFunction(node, out);
+    break;
+  case returnNode:
+    compReturn(node, out);
+    break;
     // case forNode            : compFor( node );          break;
     // case forEachNode        : compForEach( node );      break;
 
     // case writeNode          : compWrite( node );        break;
     // case substrNode         : compSubstr( node );       break;
 
-    default:
-      cerr << "Found unsupported node: name='" << node->getName()
-           << "', type=" << node->getType() << " in tree!" << std::endl;
-      break;
+  default:
+    cerr << "Found unsupported node: name='" << node->getName()
+         << "', type=" << node->getType() << " in tree!" << std::endl;
+    break;
   }
 }
 
@@ -230,7 +298,8 @@ void CppCompiler::compId(TreeNode *node, ofstream &out) {
 //  param types based on how it is called. first child   = function name second
 //  child  = parameters this is the variant wihtout a return and should gen a
 //  void function implementation
-void CppCompiler::compFunction(TreeNode *node, ofstream &out, bool returnFunction) {
+void CppCompiler::compFunction(TreeNode *node, ofstream &out,
+                               bool returnFunction) {
   string funcname = node->firstChild()->getName();
 
   // locate function node
@@ -279,8 +348,7 @@ void CppCompiler::compFunction(TreeNode *node, ofstream &out, bool returnFunctio
   // we have an extra switch for return functions we return Var, otherwise void
   if (returnFunction) {
     hdr << "Var " << funcname << "(";
-  }
-  else{
+  } else {
     hdr << "void " << funcname << "(";
   }
 
@@ -297,17 +365,16 @@ void CppCompiler::compFunction(TreeNode *node, ofstream &out, bool returnFunctio
   symbolTables.pop(); // release function symboltable
 }
 
-
-//compile a function and expect and get return
-//first child   = function name
-//second child  = parameters
-void CppCompiler::compRetFunction( TreeNode* node, ofstream& out){
-  compFunction( node, out, true );
+// compile a function and expect and get return
+// first child   = function name
+// second child  = parameters
+void CppCompiler::compRetFunction(TreeNode *node, ofstream &out) {
+  compFunction(node, out, true);
 }
 
-void CppCompiler::compReturn( TreeNode* node, ofstream& out){
+void CppCompiler::compReturn(TreeNode *node, ofstream &out) {
   out << "return ";
-  compile( node->firstChild(), out ); //compile return expression
+  compile(node->firstChild(), out); // compile return expression
   out << ";";
 }
 
@@ -442,7 +509,6 @@ void CppCompiler::compRun(TreeNode *node, ofstream &out) {
   compile(node->firstChild(), out);
   out << ")";
 }
-
 
 //
 // void CppCompiler::compForEach( TreeNode* node ){
