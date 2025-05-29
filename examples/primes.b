@@ -1,6 +1,6 @@
 #!/usr/local/bin/wsbasic
 
-
+print("compute primes...")
 for i=0 to 500
   prime = 1
 
@@ -17,6 +17,6 @@ for i=0 to 500
 
 end
 
-print("done")
+println("done")
 
 

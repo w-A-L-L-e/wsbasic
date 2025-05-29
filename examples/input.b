@@ -1,4 +1,5 @@
 #!/usr/local/bin/wsbasic
+println("user input test")
 print "give number for i: "
 input i
 

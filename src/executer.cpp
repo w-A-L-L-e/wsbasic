@@ -362,7 +362,8 @@ void Executer::execPrint( TreeNode* node ){
   TreeNode::iterator i;
   for( i=node->begin(); i!=node->end(); ++i ){
     execute( *i ); //execute expression
-    cout << fixed << (*i)->getValue();
+    // cout << fixed << (*i)->getValue();
+    cout << (*i)->getValue();
   }
   cout<<flush;
 }

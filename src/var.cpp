@@ -5,6 +5,7 @@
 #include <limits.h>
 #include <string>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -25,7 +26,21 @@ Var operator+(const Var &left, const Var &right) {
   } else if (left.bString && right.bString) {
     temp.bString = true;
     temp.strVal = left.strVal + right.strVal;
-  } else {
+  } else if (left.bString && !right.bString) {
+    double v = right.decVal;
+    ostringstream os;
+    os << v;
+    temp.bString = true;
+    temp.strVal = left.strVal + os.str();
+  }
+  else if (!left.bString && right.bString){
+    double v = left.decVal;
+    ostringstream os;
+    os << v;
+    temp.bString = true;
+    temp.strVal = os.str() + right.strVal;
+  }
+  else {
     cerr << "RUN ERROR: can't add string + double" << endl;
     exit(1);
   }
