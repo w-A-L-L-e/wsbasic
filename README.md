@@ -423,6 +423,13 @@ to have i18n it was changed enough to call it his own.
 Also forgetting the original reference made to Jack Crenshaw
 which was the inspiration for both wsbasic and later kturtle's interpreter in the first place.
 Jack Crenshaw was also mentioned in my original wsbasic interpreter's license and readme. However I further extended the language
-shown in his example and made the code object oriented by splitting everything up in multiple classes. This was
+shown in his example and made the code object oriented by splitting everything up in multiple classes (and this was
+actually even before the Gang of Four did a similar thing in their design patterns book). This was
 a much larger undertaking then what kturtle ever did by just modifying the lexer to support multiple languages and
 converting some code to kde equivalents of the standard c++ libraries of vector and map used in wsbasic.
+
+When Cies stole my work I was only in my early 20's and was too busy working on other projects full time to make an actual
+living. Now that I'm older I can more easily say it was a pretty low thing to do. Even if he 'forgot' my contribution
+he should have at least mentioned Jack Crenshaw [https://compilers.iecc.com/crenshaw/]. Instead he decided to pretend it was all his own work and delegated
+some others to work full time in trade for a mention in his authors list and remove people again once he found a replacement
+person to do the further maintenance and coding features for free all the while always keeping his own name on top of the authors list.
