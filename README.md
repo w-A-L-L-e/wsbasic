@@ -415,12 +415,4 @@ Walter Schreppers
 
 ## License
 
-This project is released under LGPL.
-
-### Note on license
-
-As stated in the original release, this is a LGPL project but with a small addition that it requires a mention of the original author.
-So enjoy and feel to modify + reuse and even use in a commercial product. But do remember to include a reference to the original author
-being Walter Schreppers. Any changes to the sources are encouraged to be released as LGPL.
-
-Look in scripts dir for more elaborate examples. It's pretty much got everything like bash has to offer and more...
+Changed to MIT in 2026 as nobody including Cies Breijs from kturtle obeyed the original included LGPL license.
