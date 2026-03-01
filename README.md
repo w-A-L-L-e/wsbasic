@@ -416,3 +416,13 @@ Walter Schreppers
 ## License
 
 Changed to MIT in 2026 as nobody including Cies Breijs from kturtle obeyed the original included LGPL license.
+[https://github.com/KDE/kturtle/blob/master/AUTHORS]
+Sure he mentioned me at the beginning of the project but later on he decided that after modifying the code some
+to have i18n it was changed enough to call it his own.
+
+Also forgetting the original reference made to Jack Crenshaw
+which was the inspiration for both wsbasic and later kturtle's interpreter in the first place.
+Jack Crenshaw was also mentioned in my original wsbasic interpreter's license and readme. However I further extended the language
+shown in his example and made the code object oriented by splitting everything up in multiple classes. This was
+a much larger undertaking then what kturtle ever did by just modifying the lexer to support multiple languages and
+converting some code to kde equivalents of the standard c++ libraries of vector and map used in wsbasic.
