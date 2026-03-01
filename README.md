@@ -433,3 +433,13 @@ living. Now that I'm older I can more easily say it was a pretty low thing to do
 he should have at least mentioned Jack Crenshaw [https://compilers.iecc.com/crenshaw/]. Instead he decided to pretend it was all his own work and delegated
 some others to work full time in trade for a mention in his authors list and remove people again once he found a replacement
 person to do the further maintenance and coding features for free all the while always keeping his own name on top of the authors list.
+
+When you download kturtle today and open the about box to see who contributed you get three names Cies Breijs, Niels Slot
+and Mauricio Piacentini. I don't know Niels nor Mauricio and I'm sure they have contributed a lot to the current
+kturtle code to deserve the mention. But I do know Anne-Marie Mahfouf and myself we're once in the about
+box when kturtle in the early days. To set things right. At least Jack Cranshaw, myself and probably also Anny-Marie  
+need to be added back as contributors. Just from a scientific point of view you can't not admit that Jack Crenshaws work and
+my own was crucial to make kturtle happen. It's not like the about box doesn't have any space. It seems more like
+Cies decided to cut all ties with the people that know the origin story and spread a facade that he's the one that
+actually thought the core interpreter implementation up on his own. I'm pretty sure my name nor Jack Crenshaw was
+ever mentioned when he received his awards either...
