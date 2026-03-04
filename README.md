@@ -415,6 +415,8 @@ Walter Schreppers
 
 ## License
 
+Original project released as open source in 2002 with GNU Library or Lesser General Public License version 2.0 (LGPLv2).
+
 Changed to MIT in 2026 as nobody including Cies Breijs from kturtle obeyed the original included LGPL license.
 [https://github.com/KDE/kturtle/blob/master/AUTHORS]
 Sure he mentioned me at the beginning of the project but later on he decided that after modifying the code some
@@ -436,10 +438,11 @@ person to do the further maintenance and coding features for free all the while 
 
 When you download kturtle today and open the about box to see who contributed you get three names Cies Breijs, Niels Slot
 and Mauricio Piacentini. I don't know Niels nor Mauricio and I'm sure they have contributed a lot to the current
-kturtle code to deserve the mention. But I do know Anne-Marie Mahfouf and myself we're once in the about
-box when kturtle in the early days. To set things right. At least Jack Cranshaw, myself and probably also Anny-Marie  
+kturtle code to deserve the mention. But I do know Anne-Marie Mahfouf and myself we're once also in that same about
+box when kturtle was released in the early days. To set things right. At least Jack Cranshaw, myself and probably also Anny-Marie  
 need to be added back as contributors. Just from a scientific point of view you can't not admit that Jack Crenshaws work and
-my own was crucial to make kturtle happen. It's not like the about box doesn't have any space. It seems more like
-Cies decided to cut all ties with the people that know the origin story and spread a facade that he's the one that
-actually thought the core interpreter implementation up on his own. I'm pretty sure my name nor Jack Crenshaw was
-ever mentioned when he received his awards either...
+my own was crucial to make kturtle happen. It seems more like
+Cies decided to cut all ties with the people that know the origin story. Spreading a facade that he's the one that
+actually thought the core interpreter implementation up on his own. I'm pretty sure also neither my name nor
+Jack Crenshaw was ever mentioned when he received his awards. Same goes for the wikipedia entry about kturtle
+nobody of the core contributors is mentioned.
